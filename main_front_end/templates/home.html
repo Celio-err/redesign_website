@@ -93,6 +93,7 @@
       {% elif forloop.counter0 == 1 or forloop.counter0 == 4 %}
       {# Tile teks #}
       <a class="t s2 t-text" href="{% url 'noticia_detalho' n.pk %}">
+      {% if n.imagen %}<img src="/{{ n.imagen }}" alt="">{% endif %}
         <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
         <div>
           <div class="ttl">{{ n.nome_noticia }}</div>

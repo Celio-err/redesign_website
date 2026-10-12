@@ -38,10 +38,11 @@ a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
       <img src="{% static 'back_end/images/logo/logo_comicao.png' %}" alt="Logo Comissão da Função Pública">
       <span>Comissão da Função Pública</span>
     </a>
+<!-- Butaun Lingua (Tetum, Português, English) -->
     <div class="lang">
-      <a href="#">Tetun</a>
-      <a href="#">Português</a>
-      <a href="#" class="active">English</a>
+      <a href="javascript:void(0)" onclick="changeLanguage('tet')" class="nav-item nav-link px-2" title="Tetum">Tetun</a>
+      <a href="javascript:void(0)" onclick="changeLanguage('pt')" class="nav-item nav-link px-2" title="Português">Português</a>
+      <a href="javascript:void(0)" onclick="changeLanguage('en')" class="nav-item nav-link px-2" title="English" class="active">English</a>
     </div>
   </div>
   <nav class="wrap nav" aria-label="Main">
@@ -68,6 +69,12 @@ a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
   </div>
 </footer>
 
-{% block extra_js %}{% endblock %}
+{% block extra_js %}
+<script>
+function changeLanguage(langCode) {
+    document.getElementById('selected-language').value = langCode;
+    document.getElementById('language-form').submit();
+}
+{% endblock %}
 </body>
 </html>

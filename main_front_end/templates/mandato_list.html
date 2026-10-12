@@ -1,0 +1,71 @@
+{% extends 'master_front_end/base_home.html' %}
+
+{% block content %}
+<style>
+.team-item .team-img.team-img-square {
+    border-radius: 8px;
+    margin-top: 0;
+    transform: none;
+    margin-bottom: 0;
+}
+.team-item .team-img.team-img-square img {
+    border-radius: 6px;
+}
+</style>
+
+ <!-- Header Start -->
+            <div class="container-fluid bg-breadcrumb">
+                <div class="container text-center py-5" style="max-width: 900px;">
+                    <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">SOBRE A CFP</h4>
+                </div>
+            </div>
+            <!-- Header End -->
+        </div>
+        <!-- Navbar & Hero End -->
+
+<!-- Team Start -->
+<div class="container-fluid team py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+            <h4 class="text-primary">Mandatos</h4>
+            <h1 class="display-5 mb-4">{{ tipo_selecionado.tipo_mandato|default:"Membros do Mandato" }}</h1>
+        </div>
+        <div class="row g-4">
+
+            {% for m in mandatos %}
+            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="team-item">
+                   <div class="team-img team-img-square">
+                        {% if m.imagen %}
+                            <img src="{{ m.imagen.url }}" class="img-fluid w-100" style="aspect-ratio: 1/1; object-fit: cover;" alt="{{ m.nome_pessoa }}">
+                        {% else %}
+                            <img src="https://via.placeholder.com/300" class="img-fluid w-100" style="aspect-ratio: 1/1; object-fit: cover;" alt="{{ m.nome_pessoa }}">
+                        {% endif %}
+                    </div>
+                    <div class="team-title">
+                        <h4 class="mb-0">{{ m.nome_pessoa }}</h4>
+                        <p class="mb-0">{{ m.id_funcao_mandato }}</p>
+                    </div>
+                    <center>
+                    <a href="{% url 'detail_mandatu' m.pk %}" style="color: rgb(3, 3, 3)">Detalho</a>
+                    </center>
+                    <div class="team-icon">
+                        
+                    </div>
+                </div>
+                
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>Nenhum membro encontrado para este tipo de mandato.</p>
+            </div>
+            
+            {% endfor %}
+            
+
+        </div>
+    </div>
+</div>
+<!-- Team End -->
+
+{% endblock %}

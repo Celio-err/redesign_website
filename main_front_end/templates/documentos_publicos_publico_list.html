@@ -1,0 +1,96 @@
+{% extends 'master_front_end/base_home.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<style>
+.doc-simple-list {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.doc-simple-item {
+    padding: 12px 0;
+    opacity: 0;
+    animation: docFadeIn 0.5s ease forwards;
+}
+
+.doc-simple-link,
+.doc-simple-link:hover,
+.doc-simple-link:focus,
+.doc-simple-link:active {
+    color: #2d3436;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    transform: none;
+}
+
+.doc-bullet {
+    font-size: 28px;
+    line-height: 1;
+    color: #0f0f0f;
+    flex-shrink: 0;
+}
+
+@keyframes docFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">{% translate "DOCUMENTOS" %}</h4>
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Documento Start -->
+<div class="container-fluid doc-section py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+            <h4 class="text-primary">{% translate "Documentos" %}</h4>
+            <h1 class="display-5 mb-4">{% translate "Documentos Publicos" %}</h1>
+        </div>
+
+        <div class="doc-simple-list">
+            {% for r in relatorios %}
+            <div class="doc-simple-item">
+                {% if r.documentos_publicos %}
+                    <a href="{% url 'documentos_publicos_review' r.pk %}" class="doc-simple-link" target="_blank">
+                        <span class="doc-bullet">&bull;</span>
+                        {{ r.nome_documentos_publicos }}
+                    </a>
+                {% else %}
+                    <span class="doc-simple-link" style="cursor: default;">
+                        <span class="doc-bullet">&bull;</span>
+                        {{ r.nome_documentos_publicos }}
+                    </span>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div class="text-center py-4">
+                <p class="text-muted">{% translate "Nenhum documento encontrado." %}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+<!-- Documentos Publicos End -->
+
+{% endblock %}

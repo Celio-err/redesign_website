@@ -1,0 +1,99 @@
+{% extends 'master_front_end/base_home.html' %}
+
+{% block content %}
+<style>
+    .noticia-card {
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        height: 100%;
+    }
+    .noticia-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .noticia-card-img {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        background: #f1f2f6;
+    }
+    .noticia-card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .noticia-card-body {
+        padding: 20px;
+    }
+    .noticia-tipo-badge {
+        display: inline-block;
+        background: #e8f7ff;
+        color: #0984e3;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+    }
+    .noticia-data {
+        font-size: 13px;
+        color: #999;
+    }
+    </style>
+
+    <!-- Header Start -->
+    <div class="container-fluid bg-breadcrumb">
+        <div class="container text-center py-5" style="max-width: 900px;">
+            <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">NOTICIAS</h4>
+        </div>
+    </div>
+    <!-- Header End -->
+
+<!-- Noticias Start -->
+<div class="container-fluid team py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+            <h4 class="text-primary">Notícias</h4>
+            <h1 class="display-5 mb-4"> Todas Notícias</h1>
+        </div>
+        <div class="row g-4">
+
+            {% for t in t_noticias %}
+            <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
+                <a href="{% url 'home' %}" class="text-decoration-none text-dark">
+                    <div class="noticia-card">
+                       <div class="noticia-card-img">
+                        <img src="/{{ t.imagen }}" class="img-fluid">
+                    </div>
+                        <div class="noticia-card-body">
+                            {% if t.tipo_selecionado %}
+                                <span class="noticia-tipo-badge">{{ t.tipo_selecionado }}</span>
+                            {% endif %}
+                            <h4 class="mb-2">{{ t.nome_noticia }}</h4>
+                            <p class="noticia-data mb-0">
+                                <i class="fa fa-calendar"></i>
+                                {{ t.data_publicacao|date:"d/m/Y" }}
+                            </p>
+                             <a href="{% url 'noticia_detalho' t.pk %}">Detalhes da Notícia</a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>Nenhuma notícia encontrada.</p>
+            </div>
+            {% endfor %}
+             
+
+        </div>
+
+    </div>
+</div>
+<!-- Noticias End -->
+<!-- Noticias Recentes End -->
+
+{% endblock %}

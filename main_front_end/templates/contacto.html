@@ -1,0 +1,132 @@
+{% extends 'master_front_end/base_home.html' %}
+{% load i18n %}
+{% block content %}
+<style>
+    .contact-info-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        height: 100%;
+        transition: transform 0.25s ease;
+    }
+    .contact-info-card:hover {
+        transform: translateY(-3px);
+    }
+    .contact-icon {
+        width: 50px;
+        height: 50px;
+        background: #e8f7ff;
+        color: #0984e3;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    .map-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    height: 450px;
+    }
+
+</style>
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">{% translate "CONTACTO" %}</h4>
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Contact Section Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        
+        <!-- Section Title -->
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <h4 class="text-primary">{% translate "CONTACTO" %}</h4>
+            <h1 class="display-5 mb-4">{% translate "Fala Connosco" %}</h1>
+        </div>
+
+        <!-- Info Cards Row -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="contact-info-card border-top border-4 border-primary">
+                    <div class="contact-icon">
+                        <i class="fa fa-map-marker-alt"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">{% translate "Endereço" %}</h5>
+                    <p class="text-muted mb-0">Rua de Moçambique, Comoro, Dili, Timor-Leste</p>
+                </div>
+            </div>
+
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="contact-info-card border-top border-4 border-primary">
+                    <div class="contact-icon">
+                        <i class="fa fa-phone-alt"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">{% translate "Telefone" %}</h5>
+                    <p class="text-muted mb-1">+670 331 0000</p>
+                    <p class="text-muted mb-0">+670 7700 0000</p>
+                </div>
+            </div>
+
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="contact-info-card border-top border-4 border-primary">
+                    <div class="contact-icon">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Email</h5>
+                    <p class="text-muted mb-1">info@cfp.gov.tl</p>
+                    <p class="text-muted mb-0">suporte@cfp.gov.tl</p>
+                </div>
+            </div>
+        </div>
+        <!-- Full Width Google Map Section -->
+        
+<!-- Full Width Leaflet Map Section -->
+<div class="row wow fadeInUp" data-wow-delay="0.2s">
+    <div class="col-12">
+        <div class="map-container">
+            <div id="map" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+<!-- Contact Section End -->
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Koordinat lokasi
+        var lat = -8.56209538684203;
+        var lng = 125.56832667588387;
+
+        // Inisialisasi map
+        var map = L.map('map').setView([lat, lng], 16);
+
+        // Tile layer dari OpenStreetMap (gratis, tanpa API key)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Tambahkan marker
+        var marker = L.marker([lat, lng]).addTo(map);
+
+        // Popup saat marker diklik
+        marker.bindPopup("<b>Comissão da Função Pública</b><br>Rua de Moçambique, Comoro, Dili, Timor-Leste").openPopup();
+    });
+</script>
+
+{% endblock %}

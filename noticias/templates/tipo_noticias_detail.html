@@ -1,0 +1,43 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+
+  <div class="mb-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="{% url 'noticias_list' %}" class="text-decoration-none">Notícias</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'tipo_noticias_list' %}" class="text-decoration-none">Tipos</a></li>
+        <li class="breadcrumb-item active">{{ tipo.tipo_noticia }}</li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm rounded-3 mb-3">
+        <div class="card-body p-4">
+          <h2 class="h5 fw-semibold mb-3">{{ tipo.tipo_noticia }}</h2>
+          {% if tipo.descricao %}
+            <div class="text-muted">{{ tipo.descricao|linebreaks }}</div>
+          {% else %}
+            <p class="text-muted small fst-italic mb-0">Sem descrição.</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="{% url 'tipo_noticias_update' tipo.pk %}" class="btn btn-warning btn-sm">
+          <i class="fa fa-pencil me-1"></i> Editar
+        </a>
+        <a href="{% url 'tipo_noticias_delete' tipo.pk %}" class="btn btn-outline-danger btn-sm">
+          <i class="fa fa-trash me-1"></i> Excluir
+        </a>
+        <a href="{% url 'tipo_noticias_list' %}" class="btn btn-outline-secondary btn-sm ms-auto">
+          <i class="fa fa-arrow-left me-1"></i> Voltar
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

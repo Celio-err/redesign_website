@@ -1,0 +1,281 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Title -->
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>Notícias</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30" style="border-radius:12px; overflow:hidden;">
+
+            <!-- Header -->
+            <div class="full graph_head"
+                 style="background:linear-gradient(135deg,#0c253f 0%,#0c253f 100%);
+                        padding:20px 25px;
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;">
+
+                <div style="color:#fff;font-size:18px;font-weight:600;">
+                    <i class="fa fa-newspaper-o"></i> Lista de Notícias
+                </div>
+
+                <div>
+
+                    <a href="{% url 'tipo_noticias_list' %}"
+                       class="btn"
+                       style="background:rgba(255,255,255,.25);
+                              color:#fff;
+                              border:none;
+                              padding:9px 18px;
+                              border-radius:8px;
+                              font-weight:600;">
+
+                        <i class="fa fa-sliders"></i> Parâmetros
+                    </a>
+
+                    <a href="{% url 'noticias_create' %}"
+                       class="btn"
+                       style="background:#fff;
+                              color:#0984e3;
+                              padding:9px 18px;
+                              border-radius:8px;
+                              font-weight:600;">
+
+                        <i class="fa fa-plus"></i> Nova Notícia
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Body -->
+            <div class="padding_infor_info" style="padding:20px;">
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="table-responsive-sm">
+
+                    <table class="table">
+
+                        <thead>
+
+                        <tr style="background:#f8f9fa;">
+
+                            <th style="padding:12px 15px;border:none;
+                                color:#636e72;
+                                font-size:12px;
+                                text-transform:uppercase;
+                                letter-spacing:.5px;">
+                                Imagem
+                            </th>
+
+                            <th style="padding:12px 15px;border:none;
+                                color:#636e72;
+                                font-size:12px;
+                                text-transform:uppercase;
+                                letter-spacing:.5px;">
+                                Título
+                            </th>
+
+                            <th style="padding:12px 15px;border:none;
+                                color:#636e72;
+                                font-size:12px;
+                                text-transform:uppercase;
+                                letter-spacing:.5px;">
+                                Tipo
+                            </th>
+
+                            <th style="padding:12px 15px;border:none;
+                                color:#636e72;
+                                font-size:12px;
+                                text-transform:uppercase;
+                                letter-spacing:.5px;">
+                                Publicação
+                            </th>
+
+                            <th style="padding:12px 15px;border:none;
+                                color:#636e72;
+                                font-size:12px;
+                                text-transform:uppercase;
+                                letter-spacing:.5px;">
+                                Inserido por
+                            </th>
+
+                            <th class="text-center"
+                                style="padding:12px 15px;border:none;
+                                color:#636e72;
+                                font-size:12px;
+                                text-transform:uppercase;
+                                letter-spacing:.5px;">
+                                Ações
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        {% for noticia in noticias %}
+
+                        <tr style="border-bottom:1px solid #f0f0f0;">
+
+                            <!-- Image -->
+                            <td style="padding:14px 15px;vertical-align:middle;">
+
+                                {% if noticia.imagen %}
+                                    <img src="{{ noticia.imagen.url }}"
+                                         style="width:90px;
+                                                height:60px;
+                                                object-fit:cover;
+                                                border-radius:8px;">
+                                {% else %}
+                                    <div style="width:90px;
+                                                height:60px;
+                                                background:#f1f3f5;
+                                                border-radius:8px;
+                                                display:flex;
+                                                justify-content:center;
+                                                align-items:center;">
+
+                                        <i class="fa fa-image text-muted"></i>
+
+                                    </div>
+                                {% endif %}
+
+                            </td>
+
+                            <!-- Title -->
+                            <td style="padding:14px 15px;vertical-align:middle;font-weight:600;">
+                                {{ noticia.nome_noticia }}
+                            </td>
+
+                            <!-- Tipo -->
+                            <td style="padding:14px 15px;vertical-align:middle;">
+
+                                <span style="background:#e8f7ff;
+                                             color:#0984e3;
+                                             padding:4px 12px;
+                                             border-radius:20px;
+                                             font-size:12px;
+                                             font-weight:600;">
+
+                                    {{ noticia.id_tipo_noticia }}
+
+                                </span>
+
+                            </td>
+
+                            <!-- Date -->
+                            <td style="padding:14px 15px;vertical-align:middle;color:#636e72;">
+
+                                <i class="fa fa-calendar"></i>
+
+                                {{ noticia.data_publicacao|date:"d/m/Y" }}
+
+                            </td>
+
+                            <!-- User -->
+                            <td style="padding:14px 15px;vertical-align:middle;color:#636e72;">
+                                {{ noticia.inserido_por }}
+                            </td>
+
+                            <!-- Actions -->
+                            <td class="text-center"
+                                style="padding:14px 15px;vertical-align:middle;">
+
+                                <a href="{% url 'noticias_detail' noticia.pk %}"
+                                   class="btn btn-sm"
+                                   style="background:#e8f7ff;
+                                          color:#0984e3;
+                                          border-radius:6px;">
+
+                                    <i class="fa fa-eye"></i>
+
+                                </a>
+
+                                <a href="{% url 'noticias_update' noticia.pk %}"
+                                   class="btn btn-sm"
+                                   style="background:#fff6e0;
+                                          color:#e67e22;
+                                          border-radius:6px;">
+
+                                    <i class="fa fa-edit"></i>
+
+                                </a>
+
+                                <a href="{% url 'noticias_delete' noticia.pk %}"
+                                   class="btn btn-sm"
+                                   style="background:#ffeaea;
+                                          color:#e74c3c;
+                                          border-radius:6px;">
+
+                                    <i class="fa fa-trash"></i>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="6"
+                                class="text-center"
+                                style="padding:40px;color:#b2bec3;">
+
+                                <i class="fa fa-newspaper-o"
+                                   style="font-size:32px;
+                                          display:block;
+                                          margin-bottom:10px;"></i>
+
+                                Nenhuma notícia encontrada.
+
+                                <br><br>
+
+                                <a href="{% url 'noticias_create' %}"
+                                   class="btn btn-primary">
+
+                                    <i class="fa fa-plus"></i>
+
+                                    Criar primeira notícia
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

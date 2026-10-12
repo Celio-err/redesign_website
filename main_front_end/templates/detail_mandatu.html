@@ -1,0 +1,83 @@
+{% extends 'master_front_end/base_home.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+.noticia-detail-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 30px;
+}
+.noticia-detail-img {
+    width: 100%;
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.noticia-tipo-badge {
+    display: inline-block;
+    background: #e8f7ff;
+    color: #0984e3;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+}
+</style>
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h4 class="text-white display-4 mb-4">DETALLU MANDATU</h4>
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Detail Noticia Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="noticia-detail-card">
+                    
+                    {% if m.tipo_mandato %}
+                        <span class="noticia-tipo-badge mb-3">{{ m.tipo_mandato }}</span>
+                    {% endif %}
+
+                <center>
+                    <h1 class="display-6 mb-3">{{ m.nome_pessoa }}</h1>
+                    {% if m.imagen %}
+                    <div class="mb-4 text-center">
+
+                         <img src="/{{ m.imagen }}" class="img-fluid w-50" style="aspect-ratio: 1/1; object-fit: cover;" alt="{{ m.nome_pessoa }}">
+                    </div>
+                    {% endif %}
+                    <small>{{m.funcao_mandato}}</small>
+                </center>
+                    
+                <br>
+
+                    <div class="noticia-content lead text-secondary style="line-height: 1.8;">
+                        {% if m.descricao %}
+                            {{ m.descricao|linebreaks }}
+                        {% elif m.descricao %}
+                            {{ m.descricao|linebreaks }}
+                        {% else %}
+                            <p>Conteúdo não disponível.</p>
+                        {% endif %}
+                    </div>
+
+                    <hr class="my-4">
+                    
+                    <a href="javascript:history.back()" class="btn btn-secondary rounded-pill px-4 mt-5">
+                        <i class="fa fa-arrow-left me-2"></i>Voltar
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Detail Noticia End -->
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>{{ tipo.tipo_dddo }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30" style="border-radius: 12px; overflow: hidden;">
+
+            <div class="full graph_head" style="background: linear-gradient(135deg, #0c253f 0%, #0c253f 100%); padding: 25px;">
+                <div style="color: #fff; font-weight: 600; font-size: 18px;">
+                    <i class="fa fa-tag"></i> Detalhes do Tipo de DDDO
+                </div>
+            </div>
+
+            <div class="padding_infor_info" style="padding: 30px;">
+
+                <div style="border-left: 3px solid #4facfe; padding-left: 15px;">
+                    <label style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; display: block; margin-bottom: 5px;">
+                        <i class="fa fa-tag"></i> Tipo de DDDO
+                    </label>
+                    <p style="font-size: 16px; margin: 0; color: #2d3436;">{{ tipo.tipo_dddo }}</p>
+                </div>
+
+                <hr style="margin: 25px 0;">
+
+                <a href="{% url 'tipo_dddo_update' tipo.pk %}" class="btn" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #fff; padding: 10px 22px; border-radius: 8px; font-weight: 600;">
+                    <i class="fa fa-edit"></i> Editar
+                </a>
+
+                <a href="{% url 'tipo_dddo_list' %}" class="btn btn-secondary" style="padding: 10px 22px; border-radius: 8px; font-weight: 600;">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

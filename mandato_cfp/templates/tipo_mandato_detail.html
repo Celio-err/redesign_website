@@ -1,0 +1,48 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>{{ tipo.tipo_mandato }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30">
+
+            <div class="full graph_head">
+                <div class="heading1 margin_0">
+                    <h2>Detalhes do Tipo de Mandato</h2>
+                </div>
+            </div>
+
+            <div class="padding_infor_info">
+
+                <div class="form-group mb-3">
+                    <label class="font-weight-bold">Tipo de Mandato</label>
+                    <p>{{ tipo.tipo_mandato }}</p>
+                </div>
+
+                <hr>
+
+                <a href="{% url 'tipo_mandato_update' tipo.pk %}" class="btn btn-warning">
+                    <i class="fa fa-edit"></i> Editar
+                </a>
+
+                <a href="{% url 'tipo_mandato_list' %}" class="btn btn-secondary">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

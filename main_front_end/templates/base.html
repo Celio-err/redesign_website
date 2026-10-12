@@ -1,0 +1,73 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Comissão da Função Pública{% endblock %}</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--indigo:#2A2160;--gold:#B8862B;--ink:#1B1830;--line:#E4E0EE;--paper:#FBFAFD;--muted:#6A6580}
+body{margin:0;font-family:'Public Sans',sans-serif;color:var(--ink);background:var(--paper)}
+a{color:inherit;text-decoration:none}
+a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding-left:32px;padding-right:32px}
+.site-header{background:#fff;border-bottom:1px solid var(--line)}
+.site-header .top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding-top:18px;padding-bottom:18px}
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{height:50px;width:auto}
+.brand span{font-family:'Newsreader',serif;font-size:26px;font-weight:500;letter-spacing:-0.01em}
+.lang{display:flex;gap:22px;font-size:14px;font-weight:500}
+.lang a{color:var(--muted)}
+.lang a.active{color:var(--indigo);border-bottom:2px solid var(--gold);padding-bottom:2px}
+.nav{display:flex;flex-wrap:wrap;gap:6px 34px;font-size:15px;font-weight:500}
+.nav a{padding:14px 0}
+.nav a:hover{color:var(--gold)}
+.nav a.active{color:var(--indigo);border-bottom:3px solid var(--gold);margin-bottom:-1px}
+.site-footer{background:var(--ink);color:#CFCADF}
+.site-footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;padding-top:40px;padding-bottom:40px;font-size:14px;line-height:1.7}
+.site-footer .name{font-family:'Newsreader',serif;font-size:20px;color:#fff}
+</style>
+{% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap top">
+    <a href="/" class="brand">
+      <img src="{% static 'back_end/images/logo/logo_comicao.png' %}" alt="Logo Comissão da Função Pública">
+      <span>Comissão da Função Pública</span>
+    </a>
+    <div class="lang">
+      <a href="#">Tetun</a>
+      <a href="#">Português</a>
+      <a href="#" class="active">English</a>
+    </div>
+  </div>
+  <nav class="wrap nav" aria-label="Main">
+    <a href="/" {% if active_menu == 'home' %}class="active"{% endif %}>Home</a>
+    <a href="#" {% if active_menu == 'csc' %}class="active"{% endif %}>CSC &amp; ASEAN</a>
+    <a href="#" {% if active_menu == 'documents' %}class="active"{% endif %}>Public documents</a>
+    <a href="#" {% if active_menu == 'legislation' %}class="active"{% endif %}>Legislation</a>
+    <a href="#" {% if active_menu == 'about' %}class="active"{% endif %}>About CFP</a>
+    <a href="#" {% if active_menu == 'systems' %}class="active"{% endif %}>Systems</a>
+    <a href="#" {% if active_menu == 'contact' %}class="active"{% endif %}>Contact</a>
+  </nav>
+</header>
+
+{% block hero %}{% endblock %}
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="name">Comissão da Função Pública</div>
+    <div>[Alamat kantor], Dili, Timor-Leste<br>[Email] &nbsp; [Telepon]</div>
+  </div>
+</footer>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

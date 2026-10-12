@@ -1,0 +1,96 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>Meu Perfil</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30" style="border-radius: 12px; overflow: hidden;">
+
+            <div class="full graph_head" style="background: linear-gradient(135deg, #0c253f 0%, #0c253f 100%); padding: 25px; display: flex; align-items: center; gap: 20px;">
+
+                <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="color: #fff; font-weight: 700; font-size: 22px;">
+                        {{ usuario.username|first|upper }}
+                    </span>
+                </div>
+
+                <div>
+                    <div style="color: #fff; font-weight: 600; font-size: 18px;">
+                        {{ usuario.get_full_name|default:usuario.username }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="padding_infor_info" style="padding: 30px;">
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-group mb-4">
+                        <label style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; display: block; margin-bottom: 8px;">
+                            Nome de Utilizador
+                        </label>
+                        <input type="text" name="username" value="{{ usuario.username }}" style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; display: block; margin-bottom: 8px;">
+                            Email
+                        </label>
+                        <input type="email" name="email" value="{{ usuario.email }}" style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+
+                    <hr style="margin: 25px 0;">
+
+                    <div class="form-group mb-4">
+                        <label style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; display: block; margin-bottom: 8px;">
+                            Atualizar Palavra-passe
+                        </label>
+                        <input type="password" name="nova_senha" style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; display: block; margin-bottom: 8px;">
+                            Confirmar Palavra-passe
+                        </label>
+                        <input type="password" name="confirmar_senha" style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+
+                    <hr style="margin: 25px 0;">
+
+                    <button type="submit" class="btn" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #fff; padding: 10px 22px; border-radius: 8px; font-weight: 600; border: none;">
+                        <i class="fa fa-save"></i> Guardar
+                    </button>
+
+                    {% comment %} <a href="{% url 'perfil' %}" class="btn btn-secondary" style="padding: 10px 22px; border-radius: 8px; font-weight: 600;">
+                        <i class="fa fa-arrow-left"></i> Voltar
+                    </a> {% endcomment %}
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

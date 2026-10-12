@@ -1,0 +1,65 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>{{ tipo.tipo_documentos_publicos }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30" style="border-radius: 12px; overflow: hidden;">
+
+            <div class="full graph_head" style="background: linear-gradient(135deg, #0c253f 0%, #0c253f 100%); padding: 25px;">
+                <div style="color: #fff; font-weight: 600; font-size: 18px;">
+                    <i class="fa fa-tag"></i> Detalhes do Tipo de Documento
+                </div>
+            </div>
+
+            <div class="padding_infor_info" style="padding: 30px;">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-4">
+                        <div style="border-left: 3px solid #4facfe; padding-left: 15px;">
+                            <label style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; display: block; margin-bottom: 5px;">
+                                <i class="fa fa-tag"></i> Tipo de Documento
+                            </label>
+                            <p style="font-size: 16px; margin: 0; color: #2d3436;">{{ tipo.tipo_documentos_publicos }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-4">
+                        <div style="border-left: 3px solid #fd79a8; padding-left: 15px;">
+                            <label style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; display: block; margin-bottom: 5px;">
+                                <i class="fa fa-file-text-o"></i> Descrição
+                            </label>
+                            <p style="font-size: 15px; margin: 0; color: #636e72; line-height: 1.6;">{{ tipo.descricao|linebreaks|default:"—" }}</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr style="margin: 25px 0;">
+
+                <a href="{% url 'tipo_documentos_publicos_update' tipo.pk %}" class="btn" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #fff; padding: 10px 22px; border-radius: 8px; font-weight: 600;">
+                    <i class="fa fa-edit"></i> Editar
+                </a>
+
+                <a href="{% url 'tipo_documentos_publicos_list' %}" class="btn btn-secondary" style="padding: 10px 22px; border-radius: 8px; font-weight: 600;">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

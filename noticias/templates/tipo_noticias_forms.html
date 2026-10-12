@@ -1,0 +1,55 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+
+  <div class="mb-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="{% url 'noticias_list' %}" class="text-decoration-none">Notícias</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'tipo_noticias_list' %}" class="text-decoration-none">Tipos</a></li>
+        <li class="breadcrumb-item active">{% if form.instance.pk %}Editar{% else %}Novo{% endif %}</li>
+      </ol>
+    </nav>
+    <h1 class="h4 fw-semibold mb-0">{% if form.instance.pk %}Editar tipo{% else %}Novo tipo de notícia{% endif %}</h1>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-body p-4">
+          <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-4">
+              <label for="{{ field.id_for_label }}" class="form-label fw-medium small">
+                {{ field.label }}
+                {% if field.field.required %}<span class="text-danger ms-1">*</span>{% endif %}
+              </label>
+              {{ field }}
+              {% if field.help_text %}
+                <div class="form-text text-muted">{{ field.help_text }}</div>
+              {% endif %}
+              {% for error in field.errors %}
+                <div class="text-danger small mt-1"><i class="fa fa-exclamation-circle me-1"></i>{{ error }}</div>
+              {% endfor %}
+            </div>
+            {% endfor %}
+            <hr class="my-4">
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary">
+                <i class="fa fa-save me-1"></i>
+                {% if form.instance.pk %}Guardar{% else %}Criar tipo{% endif %}
+              </button>
+              <a href="{% url 'tipo_noticias_list' %}" class="btn btn-outline-secondary">
+                <i class="fa fa-arrow-left me-1"></i> Voltar
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

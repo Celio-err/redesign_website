@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Login - CFP</title>
+
+      <link rel="stylesheet" href="{% static 'back_end/css/bootstrap.min.css' %}" />
+
+      <style>
+         body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #4facfe 0%, #6d0681 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+         }
+
+         .login-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            padding: 45px 40px;
+            width: 100%;
+            max-width: 380px;
+         }
+
+         .login-logo {
+            text-align: center;
+            margin-bottom: 25px;
+         }
+
+         .login-logo img {
+            max-width: 140px;
+            height: auto;
+         }
+
+         .login-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 30px;
+         }
+
+         .form-group-custom {
+            margin-bottom: 20px;
+         }
+
+         .form-group-custom label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #636e72;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+         }
+
+         .form-group-custom input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #dfe6e9;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+         }
+
+         .form-group-custom input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.15);
+         }
+
+         .btn-login {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: opacity 0.2s ease, transform 0.15s ease;
+         }
+
+         .btn-login:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+         }
+
+         .alert-custom {
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+         }
+
+         .alert-custom.alert-error {
+            background: #fff0f0;
+            color: #d63031;
+            border: 1px solid #ffd6d6;
+         }
+
+         .alert-custom.alert-success {
+            background: #f0fff4;
+            color: #00b894;
+            border: 1px solid #b2f2d7;
+         }
+      </style>
+   </head>
+   <body>
+
+      <div class="login-card">
+
+         <div class="login-logo">
+            <img src="{% static 'back_end/images/logo/logo_comicao.png' %}" alt="Logo" />
+         </div>
+
+         <div class="login-title">Acesso ao Sistema</div>
+
+         {% if messages %}
+            {% for message in messages %}
+               <div class="alert-custom alert-{% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                  {{ message }}
+               </div>
+            {% endfor %}
+         {% endif %}
+
+         <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+
+            <div class="form-group-custom">
+               <label>USUÁRIO </label>
+               <input type="text" name="username" autocomplete="off" required>
+            </div>
+
+            <div class="form-group-custom">
+               <label>SENHA</label>
+               <input type="password" name="password" autocomplete="new-password" required>
+            </div>
+
+            <button type="submit" class="btn-login">Entrar</button>
+         </form>
+
+      </div>
+
+   </body>
+</html>

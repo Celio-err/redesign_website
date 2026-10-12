@@ -1,0 +1,113 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-27 16:32+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:53
+msgid "DOCUMENTOS"
+msgstr "PUBLIC DOCUMENTS"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:62
+msgid "Documentos"
+msgstr "Documents"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:63
+msgid "Documentos Publicos"
+msgstr "Public Documents"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:98
+msgid "Visualizar"
+msgstr "View"
+
+#: .\main_front_end\templates\home.html:51
+msgid "NOTICIAS"
+msgstr "NEWS"
+
+#: .\main_front_end\templates\home.html:60
+msgid "Notícias"
+msgstr "News"
+
+#: .\main_front_end\templates\home.html:61
+msgid "Notícias Mais Recentes"
+msgstr "Recent News"
+
+#: .\main_front_end\templates\home.html:81
+msgid "Detalhes da Notícia"
+msgstr "Detail News"
+
+#: .\main_front_end\templates\home.html:97
+msgid "Ver Todas as Notícias"
+msgstr "See all"
+
+#: .\main_front_end\templates\layout_fron_end\navbar.html:19
+msgid "INICIOS"
+msgstr "HOME"
+
+#: .\main_front_end\templates\layout_fron_end\navbar.html:38
+msgid "DOCUMENTOS PÚBLICOS"
+msgstr "PUBLIC DOCUMENTS"
+
+#: .\main_front_end\templates\layout_fron_end\navbar.html:46
+msgid "LEGISLAÇÃO"
+msgstr "LEGISLATION"
+
+#: .\main_front_end\templates\layout_fron_end\navbar.html:63
+msgid "SOBRE A CFP"
+msgstr "ABOUT CFP"
+
+#: .\main_front_end\templates\layout_fron_end\navbar.html:80
+msgid "SISTEMAS"
+msgstr "SYSTEMS"
+
+#: .\main_front_end\templates\layout_fron_end\navbar.html:126
+msgid "CONTATO"
+msgstr "CONTACT"
+
+#: .\main_front_end\templates\contacto.html:39
+msgid "CONTACTO"
+msgstr "CONTACT"
+
+msgid "Fala Connosco"
+msgstr "Talk with us"
+
+msgid "Endereço"
+msgstr "Address"
+
+msgid "Telefone"
+msgstr "Phone"
+
+msgid "Nenhum documento encontrado."
+msgstr "No documents here"
+
+#MENU NOTICIAS NIAN
+
+msgid "Nenhuma notícia encontrada."
+msgstr "No news found."
+
+#MENU LEJISLASAUN
+msgid "Deliberação, Decisão, Despacho e Orientação"
+msgstr "Deliberation, Decision, Order, and Guidance"
+
+msgid "Legislação"
+msgstr "Legislation"
+
+msgid "Publicações Deliberação, Decisão, Despacho e Orientação"
+msgstr "Publications Deliberation, Decision, Order, and Guideline"
+
+msgid "Nenhum documento DDDO encontrado."
+msgstr "No DDDO document found."

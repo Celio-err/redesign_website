@@ -1,0 +1,105 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>Lista Utilizadores</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30" style="border-radius: 12px; overflow: hidden;">
+
+            <div class="full graph_head" style="background: linear-gradient(135deg, #0c253f 0%, #0c253f 100%); padding: 20px 25px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="color: #fff; font-weight: 600; font-size: 18px;">
+                    <i class="fa fa-file-text"></i> Utilizadores
+                </div>
+                <div>
+                    <a href="{% url 'user_form' %}" class="btn" style="background: #fff; color: #0984e3; padding: 9px 18px; border-radius: 8px; font-weight: 600;">
+                        <i class="fa fa-plus"></i> Novo Utilizadores
+                    </a>
+                </div>
+            </div>
+
+            <div class="padding_infor_info" style="padding: 20px;">
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="table-responsive-sm">
+                    <table class="table">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Nome Utilizador</th>
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Email</th>
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Role</th>
+                                {% comment %} <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Estado</th> {% endcomment %}
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;" class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for utilizadores in utilizadores %}
+                            <tr style="border-bottom: 1px solid #f0f0f0;">
+                                <td style="padding: 14px 15px; vertical-align: middle; font-weight: 600; color: #2d3436;">
+                                    {{ utilizadores.username }}
+                                </td>
+                                <td style="padding: 14px 15px; vertical-align: middle;">
+                                    {{ utilizadores.email|default:"-" }}
+                                </td>
+                                <td style="padding: 14px 15px; vertical-align: middle;">
+                                    {% with role=utilizadores.groups.first %}
+                                        {% if role %}
+                                            <span style="background: #f0ecff; color: #6c5ce7; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">
+                                                {{ role.name }}
+                                            </span>
+                                        {% else %}
+                                            <span style="color: #b2bec3; font-size: 12px;">Sem role</span>
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                                {% comment %} <td style="padding: 14px 15px; vertical-align: middle;">
+                                    {% if utilizadores.is_active %}
+                                        <span style="background: #eafaf1; color: #27ae60; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">Ativo</span>
+                                    {% else %}
+                                        <span style="background: #ffeaea; color: #e74c3c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">Inativo</span>
+                                    {% endif %}
+                                </td> {% endcomment %}
+                                <td style="padding: 14px 15px; vertical-align: middle;" class="text-center">
+                                    <a href="{% url 'form_user_edit' utilizadores.pk %}" class="btn btn-sm" style="background: #fff6e0; color: #e67e22; border-radius: 6px;">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'delete_user' utilizadores.pk %}" class="btn btn-sm" style="background: #ffeaea; color: #e74c3c; border-radius: 6px;">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center" style="padding: 40px; color: #b2bec3;">
+                                    <i class="fa fa-inbox" style="font-size: 32px; display: block; margin-bottom: 10px;"></i>
+                                    Nenhum utilizador encontrado.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

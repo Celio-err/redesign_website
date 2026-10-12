@@ -1,0 +1,51 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>Excluir Mandato</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30">
+
+            <div class="full graph_head">
+                <div class="heading1 margin_0">
+                    <h2>Confirmar Exclusão</h2>
+                </div>
+            </div>
+
+            <div class="padding_infor_info">
+
+                <p>
+                    Tens certeza que queres excluir o mandato de
+                    <strong>"{{ mandato.nome_pessoa }}"</strong>?
+                    Esta ação não pode ser desfeita.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-trash"></i> Sim, Excluir
+                    </button>
+
+                    <a href="{% url 'mandato_detail' mandato.pk %}" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Cancelar
+                    </a>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

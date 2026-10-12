@@ -1,0 +1,91 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>{{ documento.nome_dddo }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30" style="border-radius: 12px; overflow: hidden;">
+
+            <div class="full graph_head" style="background: linear-gradient(135deg, #0c253f 0%, #0c253f 100%); padding: 25px;">
+                <div style="color: #fff; font-weight: 600; font-size: 18px;">
+                    <i class="fa fa-file-text"></i> Detalhes do DDDO
+                </div>
+            </div>
+
+            <div class="padding_infor_info" style="padding: 30px;">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-4">
+                        <div style="border-left: 3px solid #4facfe; padding-left: 15px;">
+                            <label style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; display: block; margin-bottom: 5px;">
+                                <i class="fa fa-file-o"></i> Nome
+                            </label>
+                            <p style="font-size: 16px; margin: 0; color: #2d3436;">{{ documento.nome_dddo }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <div style="border-left: 3px solid #a29bfe; padding-left: 15px;">
+                            <label style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; display: block; margin-bottom: 5px;">
+                                <i class="fa fa-tag"></i> Tipo
+                            </label>
+                            <p style="font-size: 16px; margin: 0;">
+                                <span style="background: #f0ecff; color: #6c5ce7; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;">
+                                    {{ documento.id_tipo_dddo }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-4">
+                        <div style="border-left: 3px solid #fdcb6e; padding-left: 15px;">
+                            <label style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; display: block; margin-bottom: 5px;">
+                                <i class="fa fa-file-text-o"></i> Descrição
+                            </label>
+                            <p style="font-size: 15px; margin: 0; color: #636e72; line-height: 1.6;">{{ documento.descricao|linebreaks|default:"—" }}</p>
+                        </div>
+                    </div>
+
+                    {% if documento.documentos_dddo %}
+                    <div class="col-md-12 mb-4">
+                        <div style="border-left: 3px solid #55efc4; padding-left: 15px;">
+                            <label style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; display: block; margin-bottom: 5px;">
+                                <i class="fa fa-paperclip"></i> Ficheiro
+                            </label>
+                            <a href="{% url 'documentos_dddo_download' documento.pk %}" class="btn" style="background: #e8f7ff; color: #0984e3; padding: 8px 18px; border-radius: 8px; font-weight: 600;">
+                                <i class="fa fa-download"></i> Descarregar {{ documento.nome_dddo_original }}
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                <hr style="margin: 25px 0;">
+
+                <a href="{% url 'documentos_dddo_update' documento.pk %}" class="btn" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #fff; padding: 10px 22px; border-radius: 8px; font-weight: 600;">
+                    <i class="fa fa-edit"></i> Editar
+                </a>
+
+                <a href="{% url 'documentos_dddo_list' %}" class="btn btn-secondary" style="padding: 10px 22px; border-radius: 8px; font-weight: 600;">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

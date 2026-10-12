@@ -1,0 +1,88 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div class="page_title">
+                <h2>Funções de Mandato</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30" style="border-radius: 12px; overflow: hidden;">
+
+            <div class="full graph_head" style="background: linear-gradient(135deg, #0c253f 0%, #0c253f 100%); padding: 20px 25px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="color: #fff; font-weight: 600; font-size: 18px;">
+                    <i class="fa fa-briefcase"></i> Funções de Mandato
+                </div>
+                <div>
+                    <a href="{% url 'mandato_list' %}" class="btn" style="background: rgba(255,255,255,0.25); color: #fff; padding: 9px 18px; border-radius: 8px; font-weight: 600; border: none;">
+                        <i class="fa fa-arrow-left"></i> Voltar
+                    </a>
+                    <a href="{% url 'funcao_mandato_create' %}" class="btn" style="background: #fff; color: #0984e3; padding: 9px 18px; border-radius: 8px; font-weight: 600;">
+                        <i class="fa fa-plus"></i> Inserir Função
+                    </a>
+                </div>
+            </div>
+
+            <div class="table_section padding_infor_info" style="padding: 20px;">
+                <div class="table-responsive-sm">
+
+                    <table class="table">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">No</th>
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Função</th>
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;" width="220">Ação</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for funcao in funcoes %}
+                            <tr style="border-bottom: 1px solid #f0f0f0;">
+                                <td style="padding: 14px 15px; vertical-align: middle; color: #b2bec3;">{{ forloop.counter }}</td>
+                                <td style="padding: 14px 15px; vertical-align: middle;">
+                                    <span style="background: #f0ecff; color: #6c5ce7; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">
+                                        {{ funcao.funcao_mandato }}
+                                    </span>
+                                </td>
+                                <td style="padding: 14px 15px; vertical-align: middle;">
+                                    <a href="{% url 'funcao_mandato_detail' funcao.pk %}"
+                                       class="btn btn-sm" style="background: #e8f7ff; color: #0984e3; border-radius: 6px;">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <a href="{% url 'funcao_mandato_update' funcao.pk %}"
+                                       class="btn btn-sm" style="background: #fff6e0; color: #e67e22; border-radius: 6px;">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'funcao_mandato_delete' funcao.pk %}"
+                                       class="btn btn-sm" style="background: #ffeaea; color: #e74c3c; border-radius: 6px;">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center" style="padding: 40px; color: #b2bec3;">
+                                    <i class="fa fa-inbox" style="font-size: 32px; display: block; margin-bottom: 10px;"></i>
+                                    Data Função Mandato Seidauk Iha.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

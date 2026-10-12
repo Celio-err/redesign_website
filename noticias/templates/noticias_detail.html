@@ -1,0 +1,70 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+
+  <div class="mb-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="{% url 'noticias_list' %}" class="text-decoration-none">Notícias</a></li>
+        <li class="breadcrumb-item active">{{ noticia.nome_noticia }}</li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      {% if noticia.imagen %}
+      <div style="width:100%; height:360px; border-radius:12px; overflow:hidden;" class="mb-4">
+        <img src="{{ noticia.imagen.url }}" alt="{{ noticia.nome_noticia }}"
+             style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      {% else %}
+      <div class="mb-4 d-flex align-items-center justify-content-center text-muted bg-light"
+           style="width:100%; height:200px; border-radius:12px;">
+        <div class="text-center">
+          <i class="fa fa-image fa-2x mb-2 d-block"></i>
+          <span class="small">Sem imagem</span>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="card border-0 shadow-sm rounded-3 mb-3">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-start justify-content-between mb-3">
+            <span class="badge rounded-pill text-bg-light border small">{{ noticia.id_tipo_noticia }}</span>
+            <span class="text-muted small">
+              <i class="fa fa-calendar-o me-1"></i>{{ noticia.data_publicacao|date:"d/m/Y" }}
+            </span>
+          </div>
+          <h2 class="h4 fw-semibold mb-3">{{ noticia.nome_noticia }}</h2>
+          {% if noticia.descricao %}
+          <p class="text-muted">{{ noticia.descricao|linebreaks }}</p>
+          {% endif %}
+          <hr class="my-3">
+          <div>{{ noticia.noticia|linebreaks }}</div>
+          <hr class="my-3">
+          <p class="text-muted small mb-0">
+            <i class="fa fa-user-o me-1"></i> Inserido por <strong>{{ noticia.inserido_por }}</strong>
+          </p>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="{% url 'noticias_update' noticia.pk %}" class="btn btn-warning btn-sm">
+          <i class="fa fa-pencil me-1"></i> Editar
+        </a>
+        <a href="{% url 'noticias_delete' noticia.pk %}" class="btn btn-outline-danger btn-sm">
+          <i class="fa fa-trash me-1"></i> Excluir
+        </a>
+        <a href="{% url 'noticias_list' %}" class="btn btn-outline-secondary btn-sm ms-auto">
+          <i class="fa fa-arrow-left me-1"></i> Voltar
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

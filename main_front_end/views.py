@@ -56,9 +56,17 @@ def noticias_publico_lista(request, pk):
 @logout_required(redirect_to='index')
 def noticia_detalho(request, pk):
     noticia = get_object_or_404(NoticiasView, pk=pk)
-    
+
+    outras_noticias = (
+        NoticiasView.objects
+        .exclude(pk=pk)
+        .order_by('-data_publicacao')[:6]
+    )
+
     return render(request, "noticia_detalho.html", {
-        "noticia": noticia
+        "noticia": noticia,
+        "outras_noticias": outras_noticias,
+        "active_menu": "home",
     })
 
 @logout_required(redirect_to='index')

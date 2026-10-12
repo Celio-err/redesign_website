@@ -1,99 +1,143 @@
-{% extends 'master_front_end/base_home.html' %}
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% translate "Todas Notícias" %} — Comissão da Função Pública{% endblock %}
+
+{% block extra_head %}
+<style>
+.list-hero{background:var(--pattern-bg);color:#fff}
+.list-hero .wrap{padding-top:64px;padding-bottom:56px}
+.list-hero h1{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:64px;line-height:1;letter-spacing:-.03em}
+.list-hero p{margin:18px 0 0;font-size:17px;color:#D9D2EC}
+
+.list{padding-top:40px;padding-bottom:96px}
+
+/* Toolbar: pencarian + filter tipe */
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:12px}
+.bar input[type=search],.bar select{font:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:6px;padding:11px 14px;min-width:0}
+.bar input[type=search]{flex:1 1 260px}
+.bar select{flex:0 1 200px}
+.bar input:focus,.bar select:focus{outline:2px solid var(--gold);outline-offset:1px}
+.bar button{font:inherit;font-size:15px;font-weight:500;color:#fff;background:var(--indigo);border:0;border-radius:6px;padding:11px 22px;cursor:pointer}
+.bar .reset{font-size:14px;color:var(--muted);border-bottom:1px solid var(--line)}
+.count{font-size:14px;color:var(--muted);margin:0 0 20px}
+
+/* Bento: blok 5 tile berulang (1 besar 2x2 + 4 kecil) */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:190px;grid-auto-flow:dense;gap:14px}
+.tile{position:relative;overflow:hidden;border-radius:6px;display:flex;flex-direction:column;justify-content:flex-end;box-sizing:border-box;color:#fff;background:var(--indigo)}
+.tile:nth-child(5n+1){grid-column:span 2;grid-row:span 2}
+.tile>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.tile:hover>img{transform:scale(1.04)}
+.tile .shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(27,24,48,.9),rgba(27,24,48,.25) 60%,rgba(27,24,48,0))}
+.tile .in{position:relative;padding:20px}
+.tile .meta{font-size:13px;color:#E4DEF5;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tile .tag{font-size:12px;font-weight:500;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:1px 10px}
+.tile .ttl{margin:8px 0 0;font-family:'Newsreader',serif;font-size:19px;line-height:1.25;font-weight:500;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tile:nth-child(5n+1) .ttl{font-size:30px;line-height:1.15;-webkit-line-clamp:4}
+.tile:nth-child(5n+1) .in{padding:28px}
+.tile:hover .ttl{text-decoration:underline;text-underline-offset:3px}
+/* Tile teks (tanpa foto) */
+.tile.txt{background:#ECE8F6;color:var(--ink);justify-content:space-between}
+.tile.txt .in{padding:20px;display:flex;flex-direction:column;justify-content:space-between;height:100%;box-sizing:border-box}
+.tile.txt .meta{color:#5A5475}
+.tile.txt .tag{border-color:rgba(42,33,96,.3);color:var(--indigo)}
+.tile.txt .ttl{color:var(--indigo)}
+
+/* Paginator */
+.pager{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin-top:48px;font-size:15px}
+.pager a,.pager span{min-width:40px;height:40px;padding:0 12px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;border-radius:6px}
+.pager a{color:var(--indigo);border:1px solid var(--line);background:#fff;font-weight:500}
+.pager a:hover{border-color:var(--indigo)}
+.pager .cur{background:var(--indigo);color:#fff;font-weight:600}
+.pager .gap{color:var(--muted);min-width:24px;padding:0}
+.empty{padding:64px 0;text-align:center;color:var(--muted)}
+.empty a{color:var(--indigo);border-bottom:1px solid var(--indigo)}
+
+@media(max-width:960px){
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .tile:nth-child(5n+1){grid-column:span 2;grid-row:span 1;min-height:280px}
+}
+@media(max-width:600px){
+  .list-hero h1{font-size:44px}
+  .bento{grid-template-columns:1fr}
+  .tile:nth-child(5n+1){grid-column:span 1}
+}
+</style>
+{% endblock %}
+
+{% block hero %}
+<section class="list-hero">
+  <div class="wrap">
+    <h1>{% translate "Todas Notícias" %}</h1>
+    <p>{{ page_obj.paginator.count }} {% translate "notícias publicadas" %}</p>
+  </div>
+</section>
+{% endblock %}
 
 {% block content %}
-<style>
-    .noticia-card {
-        background: #fff;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-        height: 100%;
-    }
-    .noticia-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    .noticia-card-img {
-        width: 100%;
-        height: 200px;
-        overflow: hidden;
-        background: #f1f2f6;
-    }
-    .noticia-card-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .noticia-card-body {
-        padding: 20px;
-    }
-    .noticia-tipo-badge {
-        display: inline-block;
-        background: #e8f7ff;
-        color: #0984e3;
-        font-size: 12px;
-        font-weight: 600;
-        padding: 4px 12px;
-        border-radius: 20px;
-        margin-bottom: 10px;
-    }
-    .noticia-data {
-        font-size: 13px;
-        color: #999;
-    }
-    </style>
+<div class="wrap list">
 
-    <!-- Header Start -->
-    <div class="container-fluid bg-breadcrumb">
-        <div class="container text-center py-5" style="max-width: 900px;">
-            <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">NOTICIAS</h4>
+  <form class="bar" method="get" role="search">
+    <input type="search" name="q" value="{{ q }}" placeholder="{% translate 'Pesquisar notícia...' %}" aria-label="{% translate 'Pesquisar' %}">
+    {% if tipos %}
+    <select name="tipo" aria-label="{% translate 'Tipo' %}" onchange="this.form.submit()">
+      <option value="">{% translate "Todos os tipos" %}</option>
+      {% for t in tipos %}<option value="{{ t }}" {% if t == tipo %}selected{% endif %}>{{ t }}</option>{% endfor %}
+    </select>
+    {% endif %}
+    <button type="submit">{% translate "Pesquisar" %}</button>
+    {% if q or tipo %}<a class="reset" href="?">{% translate "Limpar filtros" %}</a>{% endif %}
+  </form>
+
+  {% if page_obj.paginator.count %}
+  <p class="count">
+    {% translate "Mostrando" %} {{ page_obj.start_index }}–{{ page_obj.end_index }}
+    {% translate "de" %} {{ page_obj.paginator.count }}
+  </p>
+
+  <div class="bento">
+    {% for t in page_obj %}
+    <a class="tile{% if not t.imagen %} txt{% endif %}" href="{% url 'noticia_detalho' t.pk %}">
+      {% if t.imagen %}<img src="/{{ t.imagen }}" alt="" loading="lazy"><div class="shade"></div>{% endif %}
+      <div class="in">
+        <div class="meta">
+          {% if t.tipo_noticia %}<span class="tag">{{ t.tipo_noticia }}</span>{% endif %}
+          <span>{{ t.data_publicacao|date:"d/m/Y" }}</span>
         </div>
-    </div>
-    <!-- Header End -->
+        <h2 class="ttl">{{ t.nome_noticia }}</h2>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
 
-<!-- Noticias Start -->
-<div class="container-fluid team py-5">
-    <div class="container py-5">
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-            <h4 class="text-primary">Notícias</h4>
-            <h1 class="display-5 mb-4"> Todas Notícias</h1>
-        </div>
-        <div class="row g-4">
+  {% if page_obj.has_other_pages %}
+  <nav class="pager" aria-label="{% translate 'Paginação' %}">
+    {% if page_obj.has_previous %}
+      <a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page_obj.previous_page_number }}">← {% translate "Anterior" %}</a>
+    {% endif %}
 
-            {% for t in t_noticias %}
-            <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
-                <a href="{% url 'home' %}" class="text-decoration-none text-dark">
-                    <div class="noticia-card">
-                       <div class="noticia-card-img">
-                        <img src="/{{ t.imagen }}" class="img-fluid">
-                    </div>
-                        <div class="noticia-card-body">
-                            {% if t.tipo_selecionado %}
-                                <span class="noticia-tipo-badge">{{ t.tipo_selecionado }}</span>
-                            {% endif %}
-                            <h4 class="mb-2">{{ t.nome_noticia }}</h4>
-                            <p class="noticia-data mb-0">
-                                <i class="fa fa-calendar"></i>
-                                {{ t.data_publicacao|date:"d/m/Y" }}
-                            </p>
-                             <a href="{% url 'noticia_detalho' t.pk %}">Detalhes da Notícia</a>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            {% empty %}
-            <div class="col-12 text-center">
-                <p>Nenhuma notícia encontrada.</p>
-            </div>
-            {% endfor %}
-             
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span class="cur" aria-current="page">{{ num }}</span>
+      {% elif num == 1 or num == page_obj.paginator.num_pages or num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a href="?{% if qs %}{{ qs }}&{% endif %}page={{ num }}">{{ num }}</a>
+      {% elif num == page_obj.number|add:'-3' or num == page_obj.number|add:'3' %}
+        <span class="gap">…</span>
+      {% endif %}
+    {% endfor %}
 
-        </div>
+    {% if page_obj.has_next %}
+      <a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page_obj.next_page_number }}">{% translate "Próxima" %} →</a>
+    {% endif %}
+  </nav>
+  {% endif %}
 
-    </div>
+  {% else %}
+  <p class="empty">
+    {% translate "Nenhuma notícia encontrada." %}
+    {% if q or tipo %}<a href="?">{% translate "Limpar filtros" %}</a>{% endif %}
+  </p>
+  {% endif %}
+
 </div>
-<!-- Noticias End -->
-<!-- Noticias Recentes End -->
-
 {% endblock %}

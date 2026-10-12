@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{% translate "Notícias" %} — Comissão da Função Pública{% endblock %}
+{% block title %}Comissão da Função Pública{% endblock %}
 
 {% block extra_head %}
 <style>
-.hero{background:var(--indigo);color:#fff}
+.hero{background:var(--pattern-bg);color:#fff}
 .hero .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:48px;align-items:end;padding-top:88px;padding-bottom:80px}
 .hero h1{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:96px;line-height:.95;letter-spacing:-.03em}
 .hero p{margin:28px 0 0;max-width:46ch;font-size:18px;line-height:1.6;color:#D9D2EC}
@@ -37,7 +37,7 @@
 .t-img .ttl{font-size:21px;margin-top:6px}
 .tag{display:inline-block;font-size:13px;font-weight:500;color:var(--indigo);background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 12px;margin-top:12px}
 .t-big .tag{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);color:#fff}
-.t-docs{background:var(--indigo);color:#fff;padding:28px}
+.t-docs{background:var(--pattern-bg);color:#fff;padding:28px}
 .t-docs h3{margin:0 0 12px;font-family:'Newsreader',serif;font-size:24px;font-weight:500}
 .t-docs a{display:block;padding:11px 0;border-top:1px solid rgba(255,255,255,.25)}
 .more{display:inline-block;margin-top:32px;padding:14px 28px;border:1.5px solid var(--indigo);border-radius:999px;color:var(--indigo);font-weight:500}
@@ -73,7 +73,7 @@
 
 {% block content %}
 <div class="wrap news">
-  <h2>{% translate "Notícias Mais Recentes" %}</h2>
+  <h2>{% translate "Notícias" %}</h2>
 
   <div class="bento">
     {% for n in noticias_recentes|slice:"1:" %}

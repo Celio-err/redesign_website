@@ -7,6 +7,7 @@ from documentos_publicos.models import DocumentosPublicos
 from django.http import HttpResponse
 from .decorators import logout_required
 from django.utils.translation import gettext as _
+from django.core.paginator import Paginator
 
 
 
@@ -71,12 +72,37 @@ def noticia_detalho(request, pk):
 
 @logout_required(redirect_to='index')
 def todas_noticias(request):
-    t_noticias = NoticiasView.objects.all()
+    q = request.GET.get('q', '').strip()
+    tipo = request.GET.get('tipo', '').strip()
+
+    t_noticias = NoticiasView.objects.all().order_by('-data_publicacao')
+    if q:
+        t_noticias = t_noticias.filter(nome_noticia__icontains=q)
+    if tipo:
+        t_noticias = t_noticias.filter(tipo_noticia=tipo)
+
+    tipos = (
+        NoticiasView.objects
+        .exclude(tipo_noticia__isnull=True)
+        .exclude(tipo_noticia='')
+        .values_list('tipo_noticia', flat=True)
+        .distinct()
+        .order_by('tipo_noticia')
+    )
+
+    paginator = Paginator(t_noticias, 5)
+    page_obj = paginator.get_page(request.GET.get('page'))
+
+    params = request.GET.copy()
+    params.pop('page', None)
 
     return render(request, 'todas_noticias.html', {
-            't_noticias': t_noticias,
-        })
-
+        'page_obj': page_obj,
+        'q': q,
+        'tipo': tipo,
+        'tipos': tipos,
+        'qs': params.urlencode(),
+    })
 @logout_required(redirect_to='index')
 def dddo_publico_list(request):
     documentos = DDDO.objects.all().select_related('id_tipo_dddo')

@@ -1,13 +1,18 @@
-{% load static %}
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!doctype html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}Comissão da Função Pública{% endblock %}</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&display=swap">
 <style>
-:root{--indigo:#2A2160;--gold:#B8862B;--ink:#1B1830;--line:#E4E0EE;--paper:#FBFAFD;--muted:#6A6580}
+:root{
+--indigo:#2A2160;--gold:#B8862B;--ink:#1B1830;--line:#E4E0EE;--paper:#FBFAFD;--muted:#6A6580;
+  /* Latar ungu bermotif: lapisan indigo transparan di atas gambar pattern */
+--pattern-bg:linear-gradient(rgba(42,33,96,.5),rgba(42,33,96,.5)),url("{% static 'front_end/img/presence-iii.png' %}") 0 0/400px auto,#2A2160;
+}
 body{margin:0;font-family:'Public Sans',sans-serif;color:var(--ink);background:var(--paper)}
 a{color:inherit;text-decoration:none}
 a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
@@ -38,11 +43,11 @@ a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
       <img src="{% static 'back_end/images/logo/logo_comicao.png' %}" alt="Logo Comissão da Função Pública">
       <span>Comissão da Função Pública</span>
     </a>
-<!-- Butaun Lingua (Tetum, Português, English) -->
+    <!-- Butaun Lingua (Tetum, Português, English) -->
     <div class="lang">
-      <a href="javascript:void(0)" onclick="changeLanguage('tet')" class="nav-item nav-link px-2" title="Tetum">Tetun</a>
-      <a href="javascript:void(0)" onclick="changeLanguage('pt')" class="nav-item nav-link px-2" title="Português">Português</a>
-      <a href="javascript:void(0)" onclick="changeLanguage('en')" class="nav-item nav-link px-2" title="English" class="active">English</a>
+      <a href="javascript:void(0)" onclick="changeLanguage('tet')" title="Tetum" {% if LANGUAGE_CODE == 'tet' %}class="active"{% endif %}>Tetun</a>
+      <a href="javascript:void(0)" onclick="changeLanguage('pt')" title="Português" {% if LANGUAGE_CODE == 'pt' %}class="active"{% endif %}>Português</a>
+      <a href="javascript:void(0)" onclick="changeLanguage('en')" title="English" {% if LANGUAGE_CODE == 'en' %}class="active"{% endif %}>English</a>
     </div>
   </div>
   <nav class="wrap nav" aria-label="Main">
@@ -64,17 +69,24 @@ a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 
 <footer class="site-footer">
   <div class="wrap">
-    <div class="name">Comissão da Função Pública</div>
-    <div>[Alamat kantor], Dili, Timor-Leste<br>[Email] &nbsp; [Telepon]</div>
+    <div class="name">Copyright © 2026 Comissão da Função Pública</div>
+    <div>Rua Estrada de Balide, Dili, Timor-Leste<br>[Email] &nbsp; [Telepon]</div>
   </div>
 </footer>
 
-{% block extra_js %}
+<!-- Form bahasa (dipakai changeLanguage) -->
+<form id="language-form" action="{% url 'set_language' %}" method="post" style="display:none">
+  {% csrf_token %}
+  <input type="hidden" name="language" id="selected-language">
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+</form>
 <script>
 function changeLanguage(langCode) {
-    document.getElementById('selected-language').value = langCode;
-    document.getElementById('language-form').submit();
+  document.getElementById('selected-language').value = langCode;
+  document.getElementById('language-form').submit();
 }
-{% endblock %}
+</script>
+
+{% block extra_js %}{% endblock %}
 </body>
 </html>

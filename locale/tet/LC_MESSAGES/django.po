@@ -26,10 +26,6 @@ msgstr "DOKUMENTU PUBLIKU"
 msgid "Documentos"
 msgstr "Dokumentu Sira"
 
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:63
-msgid "Documentos Publicos"
-msgstr "Dokumentu Publiku"
-
 #: .\main_front_end\templates\documentos_publicos_publico_list.html:98
 msgid "Visualizar"
 msgstr "Vizualiza"
@@ -40,7 +36,7 @@ msgstr "NOTISIA SIRA"
 
 #: .\main_front_end\templates\home.html:60
 msgid "Notícias"
-msgstr "Notisia Sira"
+msgstr "Notísia Sira"
 
 #: .\main_front_end\templates\home.html:61
 msgid "Notícias Mais Recentes"
@@ -55,28 +51,24 @@ msgid "Ver Todas as Notícias"
 msgstr "Haree Notisia hotu"
 
 #: .\main_front_end\templates\layout_fron_end\navbar.html:19
-msgid "INICIOS"
-msgstr "HAHU"
-
-#: .\main_front_end\templates\layout_fron_end\navbar.html:38
-msgid "DOCUMENTOS PÚBLICOS"
-msgstr "DOKUMENTU PUBLIKU"
+msgid "Inicio"
+msgstr "Hahu"
 
 #: .\main_front_end\templates\layout_fron_end\navbar.html:46
 msgid "LEGISLAÇÃO"
 msgstr "LEJISLASAUN"
 
 #: .\main_front_end\templates\layout_fron_end\navbar.html:63
-msgid "SOBRE A CFP"
-msgstr "KONA-BA CFP"
+msgid "Sobre a CFP"
+msgstr "Kona-ba CFP"
 
 #: .\main_front_end\templates\layout_fron_end\navbar.html:80
-msgid "SISTEMAS"
-msgstr "SISTEMA SIRA"
+msgid "Sistemas"
+msgstr "Sistema Sira"
 
 #: .\main_front_end\templates\layout_fron_end\navbar.html:126
-msgid "CONTATO"
-msgstr "KONTAKTU"
+msgid "Contacto"
+msgstr "Kontaktu"
 
 #: .\main_front_end\templates\home.html:88
 msgid "Nenhuma notícia encontrada."
@@ -112,3 +104,98 @@ msgstr "Publikasaun Deliberasaun, Desizaun, Despaxu no Orientasaun"
 msgid "Nenhum documento DDDO encontrado."
 msgstr "La iha dokumentu DDDO ne'ebe publika"
 
+msgid "Anúncios, avisos e informações oficiais da Comissão da Função Pública de Timor-Leste."
+msgstr "Anúnsiu sira, avizu no informasaun ofisial Komisaun Funsaun Publika Timor-Leste nian."
+
+msgid "Mais recente"
+msgstr "Notísia atual"
+
+msgid "Encontrar documentos"
+msgstr "Buka dokumentu Sira"
+
+msgid "Documentos públicos"
+msgstr "Dokumentu públiku sira"
+
+msgid "Documentos Públicos"
+msgstr "Dokumentu Públiku sira"
+
+msgid "Dados da Função Pública"
+msgstr "Dadus Funsaun Públika nian"
+
+msgid "Portal Vagas da Função Pública"
+msgstr "Portal Vaga Funsaun Públika nian"
+
+#: .\main_front_end\templates\mandato_list.html:62
+msgid "membros"
+msgstr "membru sira"
+
+#: .\main_front_end\templates\mandato_list.html:82
+msgid "Membros"
+msgstr "Memberu sira"
+
+#: .\main_front_end\templates\mandato_list.html:94
+msgid "Detalho"
+msgstr "Detallu"
+
+#: .\main_front_end\templates\mandato_list.html:116
+msgid "Nenhum membro encontrado para este tipo de mandato."
+msgstr "Laiha membru ne'ebe hetan iha tipu mandatu refere."
+
+#: .\main_front_end\templates\noticia_detalho.html:94
+#: .\main_front_end\templates\noticia_detalho.html:95
+msgid "Outras notícias"
+msgstr "Notísia seluk"
+
+#: .\main_front_end\templates\noticias_publico_lista.html:85
+#, fuzzy
+msgid "Detalhes da Noticias"
+msgstr "Detallu notísia"
+
+#: .\main_front_end\templates\todas_noticias.html:4
+msgid "Todas Notícias"
+msgstr "Notísia sira hotu"
+
+#: .\main_front_end\templates\todas_noticias.html:72
+msgid "notícias publicadas"
+msgstr "notísia publikada"
+
+#: .\main_front_end\templates\todas_noticias.html:81
+msgid "Pesquisar notícia..."
+msgstr "Buka notísia"
+
+#: .\main_front_end\templates\todas_noticias.html:84
+msgid "Todos os tipos"
+msgstr "Tipu hotu-hotu"
+
+#: .\main_front_end\templates\todas_noticias.html:89
+#: .\main_front_end\templates\todas_noticias.html:138
+msgid "Limpar filtros"
+msgstr "Hamoos filtrajem"
+
+#: .\main_front_end\templates\todas_noticias.html:94
+msgid "Mostrando"
+msgstr "Hatudu"
+
+#: .\main_front_end\templates\todas_noticias.html:95
+msgid "de"
+msgstr "husi"
+
+#: .\main_front_end\views.py:151
+msgid "Outros"
+msgstr "Seluk"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:66
+msgid "Pesquisar documento..."
+msgstr "Buka dokumentu..."
+
+#: .\main_front_end\templates\todas_noticias.html:88
+msgid "Pesquisar"
+msgstr "Buka"
+
+#: .\main_front_end\templates\todas_noticias.html:130
+msgid "Próxima"
+msgstr "Tuirmai"
+
+#: .\main_front_end\templates\todas_noticias.html:116
+msgid "Anterior"
+msgstr "Antes nian"

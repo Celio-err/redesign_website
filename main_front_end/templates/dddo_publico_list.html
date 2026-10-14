@@ -1,114 +1,137 @@
-{% extends 'master_front_end/base_home.html' %}
-{% load static %}
+{% extends 'base.html' %}
 {% load i18n %}
 
-{% block content %}
+{% block title %}{{ tipo_selecionado.tipo_dddo|default:_("Legislação") }} — Comissão da Função Pública{% endblock %}
+
+{% block extra_head %}
 <style>
-.dddo-simple-list {
-    max-width: 900px;
-    margin: 0 auto;
-}
+.l-hero{background:var(--pattern-bg);color:#fff}
+.l-hero .wrap{padding-top:64px;padding-bottom:56px}
+.crumb{font-size:14px;color:#D9D2EC;margin-bottom:24px}
+.l-hero h1{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:52px;line-height:1.08;letter-spacing:-.025em;max-width:22ch}
+.l-hero p{margin:18px 0 0;font-size:17px;color:#D9D2EC}
 
-.dddo-simple-item {
-    padding: 12px 0;
-    opacity: 0;
-    animation: docFadeIn 0.5s ease forwards;
-}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;padding-top:32px}
+.tabs a{font-size:14px;font-weight:500;color:var(--indigo);background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 18px}
+.tabs a:hover{border-color:var(--indigo)}
+.tabs a.on{background:var(--indigo);border-color:var(--indigo);color:#fff}
 
-.dddo-simple-link,
-.dddo-simple-link:hover,
-.dddo-simple-link:focus,
-.dddo-simple-link:active {
-    color: #2d3436;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: none;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    outline: none;
-    transform: none;
-}
+.list{max-width:960px;margin-left:0;padding-top:32px;padding-bottom:96px}
+.search{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:620px;margin-bottom:12px}
+.search input{flex:1 1 260px;min-width:0;box-sizing:border-box;font:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:6px;padding:11px 14px}
+.search input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.search button{font:inherit;font-size:15px;font-weight:500;color:#fff;background:var(--indigo);border:0;border-radius:6px;padding:11px 22px;cursor:pointer}
+.search .reset{font-size:14px;color:var(--muted);border-bottom:1px solid var(--line)}
+.count{font-size:14px;color:var(--muted);margin:0 0 16px}
 
-.dddo-bullet {
-    font-size: 28px;
-    line-height: 1;
-    color: #0f0f0f;
-    flex-shrink: 0;
-}
+.rows{list-style:none;margin:0;padding:0;border-top:3px solid var(--gold)}
+.rows li{border-bottom:1px solid var(--line)}
+.row{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:baseline;padding:12px 8px}
+a.row:hover{background:#F3F0FA}
+a.row:hover .nm{color:var(--indigo);text-decoration:underline;text-underline-offset:3px}
+.no{font-size:13px;color:var(--gold);font-weight:600;font-variant-numeric:tabular-nums}
+.nm{font-size:15.5px;line-height:1.45;color:var(--ink)}
+.tipo{display:inline-block;margin-top:4px;font-size:12px;font-weight:500;color:var(--indigo);background:#ECE8F6;border-radius:999px;padding:1px 10px}
+.act{font-size:13px;font-weight:500;color:var(--indigo);white-space:nowrap}
+.act.off{color:var(--muted);font-weight:400;font-size:12px}
+.empty{padding:48px 8px;color:var(--muted)}
 
-.dddo-desc {
-    display: block;
-    font-size: 13px;
-    color: #b2bec3;
-    margin-top: 2px;
-}
+.pgbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:24px}
+.rng{font-size:14px;color:var(--muted)}
+.pg{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.pg a,.pg span{min-width:36px;height:36px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;border-radius:6px;font-size:14px}
+.pg a{color:var(--indigo);border:1px solid var(--line);background:#fff;font-weight:500}
+.pg a:hover{border-color:var(--indigo)}
+.pg .cur{background:var(--indigo);color:#fff;font-weight:600}
+.pg .gap{color:var(--muted);min-width:20px;padding:0}
 
-@keyframes docFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+@media(max-width:600px){
+  .l-hero h1{font-size:34px}
+  .row{grid-template-columns:34px 1fr}
+  .act{grid-column:2}
 }
 </style>
+{% endblock %}
 
-<!-- Header Start -->
-<div class="container-fluid bg-breadcrumb">
-    <div class="container text-center py-5" style="max-width: 900px;">
-        <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">
-            {% translate "Deliberação, Decisão, Despacho e Orientação" %}</h4>
-    </div>
-</div>
-<!-- Header End -->
+{% block hero %}
+<section class="l-hero">
+  <div class="wrap">
+    <div class="crumb">{% translate "Legislação" %}</div>
+    <h1>{{ tipo_selecionado.tipo_dddo|default:_("Deliberação, Decisão, Despacho e Orientação") }}</h1>
+    <p>{{ page_obj.paginator.count }} {% translate "documentos publicados" %}</p>
+  </div>
+</section>
+{% endblock %}
 
-<!-- DDDO Start -->
-<div class="container-fluid doc-section py-5">
-    <div class="container py-5">
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-            <h4 class="text-primary">{% translate "Legislação" %}</h4>
-            <h1 class="display-5 mb-4">{% translate "Publicações Deliberação, Decisão, Despacho e Orientação" %}</h1>
+{% block content %}
+<div class="wrap">
+
+  {% if tipos_dddo_menu %}
+  <nav class="tabs" aria-label="{% translate 'Tipos' %}">
+    {% for tipo in tipos_dddo_menu %}
+      <a href="{% url 'dddo_list_by_tipo' tipo.pk %}" {% if tipo.pk == tipo_selecionado.pk %}class="on" aria-current="page"{% endif %}>{{ tipo.tipo_dddo }}</a>
+    {% endfor %}
+  </nav>
+  {% endif %}
+
+  <div class="list">
+    <form class="search" method="get" role="search">
+      <input type="search" name="q" value="{{ q }}" placeholder="{% translate 'Pesquisar documento...' %}" aria-label="{% translate 'Pesquisar' %}" autocomplete="off">
+      <button type="submit">{% translate "Pesquisar" %}</button>
+      {% if q %}<a class="reset" href="?">{% translate "Limpar" %}</a>{% endif %}
+    </form>
+
+    {% if page_obj.paginator.count %}
+    <p class="count">{% translate "Mostrando" %} {{ page_obj.start_index }}–{{ page_obj.end_index }} {% translate "de" %} {{ page_obj.paginator.count }}</p>
+
+    <ul class="rows">
+      {% for documento in page_obj %}
+      <li>
+        {% if documento.tem_ficheiro %}
+        <a class="row" href="{% url 'documentos_dddo_review' documento.pk %}" target="_blank" rel="noopener">
+          <span class="no">{{ page_obj.start_index|add:forloop.counter0 }}</span>
+          <span>
+            <span class="nm">{{ documento.nome_dddo }}</span>
+            {% if not tipo_selecionado and documento.id_tipo_dddo %}<br><span class="tipo">{{ documento.id_tipo_dddo }}</span>{% endif %}
+          </span>
+          <span class="act">{% translate "Ver" %} ↗</span>
+        </a>
+        {% else %}
+        <div class="row">
+          <span class="no">{{ page_obj.start_index|add:forloop.counter0 }}</span>
+          <span>
+            <span class="nm">{{ documento.nome_dddo }}</span>
+            {% if not tipo_selecionado and documento.id_tipo_dddo %}<br><span class="tipo">{{ documento.id_tipo_dddo }}</span>{% endif %}
+          </span>
+          <span class="act off">{% translate "Indisponível" %}</span>
         </div>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
 
-        <div class="dddo-simple-list">
-            {% for documento in documentos %}
-            <div class="dddo-simple-item">
-                {% if documento.documentos_dddo %}
-                    <a href="{% url 'documentos_dddo_download' documento.pk %}" class="dddo-simple-link">
-                        <span class="dddo-bullet">&bull;</span>
-                        <span>
-                            {{ documento.nome_dddo }}
-                            {% comment %} {% if documento.descricao %}
-                                <span class="dddo-desc">{{ documento.descricao }}</span>
-                            {% endif %} {% endcomment %}
-                        </span>
-                    </a>
-                {% else %}
-                    <span class="dddo-simple-link" style="cursor: default;">
-                        <span class="dddo-bullet">&bull;</span>
-                        <span>
-                            {{ documento.nome_dddo }}
-                            {% comment %} {% if documento.descricao %}
-                                <span class="dddo-desc">{{ documento.descricao }}</span>
-                            {% endif %} {% endcomment %}
-                        </span>
-                    </span>
-                {% endif %}
-            </div>
-            {% empty %}
-            <div class="text-center py-4">
-                <p class="text-muted">{% translate "Nenhum documento DDDO encontrado." %}</p>
-            </div>
-            {% endfor %}
-        </div>
-
+    {% if page_obj.has_other_pages %}
+    <div class="pgbar">
+      <span class="rng">{% translate "Página" %} {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+      <nav class="pg" aria-label="{% translate 'Paginação' %}">
+        {% if page_obj.has_previous %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page_obj.previous_page_number }}">← {% translate "Anterior" %}</a>{% endif %}
+        {% for num in page_obj.paginator.page_range %}
+          {% if num == page_obj.number %}
+            <span class="cur" aria-current="page">{{ num }}</span>
+          {% elif num == 1 or num == page_obj.paginator.num_pages or num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a href="?{% if qs %}{{ qs }}&{% endif %}page={{ num }}">{{ num }}</a>
+          {% elif num == page_obj.number|add:'-3' or num == page_obj.number|add:'3' %}
+            <span class="gap">…</span>
+          {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page_obj.next_page_number }}">{% translate "Próxima" %} →</a>{% endif %}
+      </nav>
     </div>
-</div>
-<!-- DDDO End -->
+    {% endif %}
 
+    {% else %}
+    <p class="empty">{% translate "Nenhum documento DDDO encontrado." %} {% if q %}<a href="?" style="color:var(--indigo);border-bottom:1px solid var(--indigo)">{% translate "Limpar" %}</a>{% endif %}</p>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

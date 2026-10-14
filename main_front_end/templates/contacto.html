@@ -1,132 +1,190 @@
-{% extends 'master_front_end/base_home.html' %}
+{% extends 'base.html' %}
 {% load i18n %}
-{% block content %}
+
+{% block title %}{% translate "Contacto" %} — Comissão da Função Pública{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="">
 <style>
-    .contact-info-card {
-        background: #fff;
-        border-radius: 12px;
-        padding: 24px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        height: 100%;
-        transition: transform 0.25s ease;
-    }
-    .contact-info-card:hover {
-        transform: translateY(-3px);
-    }
-    .contact-icon {
-        width: 50px;
-        height: 50px;
-        background: #e8f7ff;
-        color: #0984e3;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        margin-bottom: 15px;
-    }
-    .map-container {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    height: 450px;
-    }
+/* ---------- Banner ---------- */
+.c-hero{background:var(--pattern-bg);color:#fff;overflow:hidden}
+.c-hero .wrap{padding-top:72px;padding-bottom:64px}
+.c-hero h1{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:72px;line-height:1;letter-spacing:-.03em;animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+.c-hero h1::after{content:"";display:block;height:4px;background:var(--gold);margin-top:18px;width:0;animation:grow .9s .45s cubic-bezier(.2,.7,.2,1) forwards}
+.c-hero p{margin:22px 0 0;font-size:18px;color:#D9D2EC;animation:rise .8s .2s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes grow{to{width:72px}}
 
+/* ---------- Layout ---------- */
+.contact{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:48px;align-items:start;padding-top:64px;padding-bottom:96px}
+.info h2{margin:0 0 28px;font-family:'Newsreader',serif;font-size:38px;line-height:1.1;font-weight:500;letter-spacing:-.02em;color:var(--indigo)}
+.info h2::after{content:"";display:block;width:48px;height:4px;background:var(--gold);margin-top:14px}
+
+/* ---------- Baris kontak ---------- */
+.ci{display:grid;grid-template-columns:48px 1fr auto;gap:16px;align-items:start;padding:20px 0;border-top:1px solid var(--line);position:relative}
+.ci:last-of-type{border-bottom:1px solid var(--line)}
+.ci::before{content:"";position:absolute;left:0;top:-1px;height:2px;width:0;background:var(--gold);transition:width .45s ease}
+.ci:hover::before{width:100%}
+.ico{width:48px;height:48px;border-radius:50%;background:#ECE8F6;color:var(--indigo);display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s,transform .3s}
+.ci:hover .ico{background:var(--indigo);color:#fff;transform:rotate(-8deg) scale(1.06)}
+.ci .lb{font-size:13px;color:var(--muted);margin:0 0 4px}
+.ci .vl{display:block;font-size:16px;line-height:1.5;color:var(--ink)}
+a.vl:hover{color:var(--indigo);text-decoration:underline;text-underline-offset:3px}
+.cp{font:inherit;font-size:12px;font-weight:500;color:var(--indigo);background:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:border-color .2s,background .2s}
+.cp:hover{border-color:var(--indigo);background:#F3F0FA}
+
+/* ---------- Peta ---------- */
+.mapcard{position:relative;height:540px;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:#ECE8F6}
+#map{width:100%;height:100%}
+.leaflet-tile-pane{filter:saturate(.75) contrast(1.02)}
+.dir{position:absolute;right:14px;top:14px;z-index:1000;display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--indigo);font-size:14px;font-weight:500;padding:10px 16px;border-radius:999px;box-shadow:0 6px 20px rgba(27,24,48,.18);transition:transform .2s,background .2s,color .2s}
+.dir:hover{background:var(--indigo);color:#fff;transform:translateY(-2px)}
+
+/* Penanda berdenyut */
+.pin{position:relative;width:22px;height:22px}
+.pin i{position:absolute;inset:0;border-radius:50%;background:var(--gold);opacity:.55;animation:pulse 2.2s ease-out infinite}
+.pin i:nth-child(2){animation-delay:1.1s}
+.pin b{position:absolute;inset:4px;border-radius:50%;background:var(--indigo);border:3px solid #fff;box-shadow:0 2px 8px rgba(27,24,48,.45);box-sizing:border-box}
+@keyframes pulse{0%{transform:scale(.6);opacity:.6}100%{transform:scale(3);opacity:0}}
+
+/* ---------- Animasi muncul saat scroll ---------- */
+.js .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.js .reveal.fade{transform:none}
+.js .reveal.in{opacity:1;transform:none}
+
+/* Toast "Copiado" */
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--ink);color:#fff;font-size:14px;padding:11px 20px;border-radius:999px;opacity:0;pointer-events:none;transition:.3s;z-index:2000}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:900px){
+  .contact{grid-template-columns:1fr;gap:40px;padding-top:48px}
+  .mapcard{height:400px}
+}
+@media(max-width:600px){
+  .c-hero h1{font-size:48px}
+  .ci{grid-template-columns:44px 1fr}
+  .ci .cp{grid-column:2;justify-self:start}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .c-hero h1::after{width:72px}
+  .js .reveal{opacity:1;transform:none}
+}
 </style>
+{% endblock %}
 
-<!-- Header Start -->
-<div class="container-fluid bg-breadcrumb">
-    <div class="container text-center py-5" style="max-width: 900px;">
-        <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">{% translate "CONTACTO" %}</h4>
+{% block hero %}
+<section class="c-hero">
+  <div class="wrap">
+    <h1>{% translate "Contacto" %}</h1>
+    <p>{% translate "Fala Connosco" %}</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<script>document.documentElement.classList.add('js')</script>
+
+<div class="wrap contact">
+
+  <section class="info" aria-labelledby="h-info">
+    <h2 id="h-info" class="reveal">{% translate "Fala Connosco" %}</h2>
+
+    <div class="ci reveal" style="--d:.1s">
+      <span class="ico" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      </span>
+      <div>
+        <p class="lb">{% translate "Endereço" %}</p>
+        <span class="vl">Rua de Moçambique, Comoro, Dili, Timor-Leste</span>
+      </div>
     </div>
-</div>
-<!-- Header End -->
 
-<!-- Contact Section Start -->
-<div class="container-fluid py-5">
-    <div class="container py-5">
-        
-        <!-- Section Title -->
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
-            <h4 class="text-primary">{% translate "CONTACTO" %}</h4>
-            <h1 class="display-5 mb-4">{% translate "Fala Connosco" %}</h1>
-        </div>
-
-        <!-- Info Cards Row -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
-                <div class="contact-info-card border-top border-4 border-primary">
-                    <div class="contact-icon">
-                        <i class="fa fa-map-marker-alt"></i>
-                    </div>
-                    <h5 class="fw-bold mb-2">{% translate "Endereço" %}</h5>
-                    <p class="text-muted mb-0">Rua de Moçambique, Comoro, Dili, Timor-Leste</p>
-                </div>
-            </div>
-
-            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="contact-info-card border-top border-4 border-primary">
-                    <div class="contact-icon">
-                        <i class="fa fa-phone-alt"></i>
-                    </div>
-                    <h5 class="fw-bold mb-2">{% translate "Telefone" %}</h5>
-                    <p class="text-muted mb-1">+670 331 0000</p>
-                    <p class="text-muted mb-0">+670 7700 0000</p>
-                </div>
-            </div>
-
-            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.4s">
-                <div class="contact-info-card border-top border-4 border-primary">
-                    <div class="contact-icon">
-                        <i class="fa fa-envelope"></i>
-                    </div>
-                    <h5 class="fw-bold mb-2">Email</h5>
-                    <p class="text-muted mb-1">info@cfp.gov.tl</p>
-                    <p class="text-muted mb-0">suporte@cfp.gov.tl</p>
-                </div>
-            </div>
-        </div>
-        <!-- Full Width Google Map Section -->
-        
-<!-- Full Width Leaflet Map Section -->
-<div class="row wow fadeInUp" data-wow-delay="0.2s">
-    <div class="col-12">
-        <div class="map-container">
-            <div id="map" style="width: 100%; height: 100%;"></div>
-        </div>
+    <div class="ci reveal" style="--d:.2s">
+      <span class="ico" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+      </span>
+      <div>
+        <p class="lb">{% translate "Telefone" %}</p>
+        <a class="vl" href="tel:+6703310000">+670 331 0000</a>
+        <a class="vl" href="tel:+67077000000">+670 7700 0000</a>
+      </div>
     </div>
-</div>
 
+    <div class="ci reveal" style="--d:.3s">
+      <span class="ico" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      </span>
+      <div>
+        <p class="lb">Email</p>
+        <a class="vl" href="mailto:info@cfp.gov.tl">info@cfp.gov.tl</a>
+        <a class="vl" href="mailto:suporte@cfp.gov.tl">suporte@cfp.gov.tl</a>
+      </div>
+      <button type="button" class="cp" data-copy="info@cfp.gov.tl" aria-label="{% translate 'Copiar email' %}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+        {% translate "Copiar" %}
+      </button>
     </div>
-</div>
-<!-- Contact Section End -->
+  </section>
 
-<!-- Leaflet JS -->
+  <div class="mapcard reveal fade" style="--d:.2s">
+    <a class="dir" href="https://www.google.com/maps/dir/?api=1&destination=-8.56209538684203,125.56832667588387" target="_blank" rel="noopener">
+      {% translate "Obter direções" %} ↗
+    </a>
+    <div id="map" role="region" aria-label="{% translate 'Mapa' %}"></div>
+    
+  </div>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">{% translate "Copiado" %}</div>
+{% endblock %}
+
+{% block extra_js %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Koordinat lokasi
-        var lat = -8.56209538684203;
-        var lng = 125.56832667588387;
+document.addEventListener("DOMContentLoaded", function () {
+  /* ---- Muncul saat di-scroll ---- */
+  var items = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: .15 });
+    items.forEach(function (el) { io.observe(el); });
+  } else {
+    items.forEach(function (el) { el.classList.add('in'); });
+  }
 
-        // Inisialisasi map
-        var map = L.map('map').setView([lat, lng], 16);
-
-        // Tile layer dari OpenStreetMap (gratis, tanpa API key)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // Tambahkan marker
-        var marker = L.marker([lat, lng]).addTo(map);
-
-        // Popup saat marker diklik
-        marker.bindPopup("<b>Comissão da Função Pública</b><br>Rua de Moçambique, Comoro, Dili, Timor-Leste").openPopup();
+  /* ---- Salin email ---- */
+  var toast = document.getElementById('toast'), t;
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      navigator.clipboard.writeText(b.dataset.copy).then(function () {
+        toast.classList.add('show'); clearTimeout(t);
+        t = setTimeout(function () { toast.classList.remove('show'); }, 1600);
+      });
     });
-</script>
+  });
 
+  /* ---- Peta ---- */
+  var lat = -8.562103379379066, lng = 125.57163640455003;
+  var map = L.map('map', { scrollWheelZoom: false }).setView([lat, lng], 16);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  L.marker([lat, lng]).addTo(map)
+  .bindPopup("<b>Comissão da Função Pública</b><br>Rua de Moçambique, Comoro, Dili, Timor-Leste")
+  .openPopup();
+  map.on('click', function () { map.scrollWheelZoom.enable(); });      // zoom dengan scroll setelah diklik
+  window.addEventListener('load', function () { map.invalidateSize(); });
+});
+</script>
 {% endblock %}

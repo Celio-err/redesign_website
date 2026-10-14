@@ -1,96 +1,126 @@
-{% extends 'master_front_end/base_home.html' %}
-{% load static %}
+{% extends 'base.html' %}
 {% load i18n %}
 
-{% block content %}
+{% block title %}{% translate "Documentos Publicos" %} — Comissão da Função Pública{% endblock %}
+
+{% block extra_head %}
 <style>
-.doc-simple-list {
-    max-width: 900px;
-    margin: 0 auto;
-}
+.d-hero{background:var(--pattern-bg);color:#fff}
+.d-hero .wrap{padding-top:64px;padding-bottom:56px}
+.d-hero h1{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:64px;line-height:1;letter-spacing:-.03em}
+.d-hero p{margin:18px 0 0;font-size:17px;color:#D9D2EC}
 
-.doc-simple-item {
-    padding: 12px 0;
-    opacity: 0;
-    animation: docFadeIn 0.5s ease forwards;
-}
+.docs{padding-top:40px;padding-bottom:96px}
+.search{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:620px;margin-bottom:36px}
+.search input{flex:1 1 260px;min-width:0;box-sizing:border-box;font:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:6px;padding:11px 14px}
+.search input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.search button{font:inherit;font-size:15px;font-weight:500;color:#fff;background:var(--indigo);border:0;border-radius:6px;padding:11px 22px;cursor:pointer}
+.search .reset{font-size:14px;color:var(--muted);border-bottom:1px solid var(--line)}
 
-.doc-simple-link,
-.doc-simple-link:hover,
-.doc-simple-link:focus,
-.doc-simple-link:active {
-    color: #2d3436;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: none;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    outline: none;
-    transform: none;
-}
+/* Dua kolom; tipe tambahan otomatis turun ke baris berikutnya */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.col{min-width:0;scroll-margin-top:16px}
+.col h2{margin:0;padding-bottom:12px;border-bottom:3px solid var(--gold);display:flex;align-items:baseline;justify-content:space-between;gap:16px;font-family:'Newsreader',serif;font-size:26px;font-weight:500;color:var(--indigo)}
+.col h2 .n{font-family:'Public Sans',sans-serif;font-size:13px;font-weight:400;color:var(--muted);white-space:nowrap}
 
-.doc-bullet {
-    font-size: 28px;
-    line-height: 1;
-    color: #0f0f0f;
-    flex-shrink: 0;
-}
+/* Baris ringkas */
+.rows{list-style:none;margin:0;padding:0}
+.rows li{border-bottom:1px solid var(--line)}
+.row{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:baseline;padding:9px 6px}
+a.row:hover{background:#F3F0FA}
+a.row:hover .nm{color:var(--indigo);text-decoration:underline;text-underline-offset:3px}
+.no{font-size:13px;color:var(--gold);font-weight:600;font-variant-numeric:tabular-nums}
+.nm{font-size:14.5px;line-height:1.4;color:var(--ink)}
+.act{font-size:13px;font-weight:500;color:var(--indigo);white-space:nowrap}
+.act.off{color:var(--muted);font-weight:400;font-size:12px}
+.empty{padding:24px 6px;color:var(--muted);font-size:14px;margin:0}
 
-@keyframes docFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* Paginator per tipe */
+.pgbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:14px}
+.rng{font-size:13px;color:var(--muted)}
+.pg{display:flex;gap:4px;align-items:center}
+.pg a,.pg span{min-width:32px;height:32px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;border-radius:5px;font-size:14px}
+.pg a{color:var(--indigo);border:1px solid var(--line);background:#fff;font-weight:500}
+.pg a:hover{border-color:var(--indigo)}
+.pg .cur{background:var(--indigo);color:#fff;font-weight:600}
+.pg .gap{color:var(--muted);min-width:18px;padding:0}
+
+@media(max-width:900px){.cols{grid-template-columns:1fr;gap:44px}}
+@media(max-width:600px){.d-hero h1{font-size:44px}}
 </style>
+{% endblock %}
 
-<!-- Header Start -->
-<div class="container-fluid bg-breadcrumb">
-    <div class="container text-center py-5" style="max-width: 900px;">
-        <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">{% translate "DOCUMENTOS" %}</h4>
-    </div>
+{% block hero %}
+<section class="d-hero">
+  <div class="wrap">
+    <h1>{% translate "Documentos Publicos" %}</h1>
+    <p>{% translate "Relatórios e documentos oficiais disponíveis para consulta." %}</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="wrap docs">
+
+  <form class="search" method="get" role="search">
+    <input type="search" name="q" value="{{ q }}" placeholder="{% translate 'Pesquisar documento...' %}" aria-label="{% translate 'Pesquisar' %}" autocomplete="off">
+    <button type="submit">{% translate "Pesquisar" %}</button>
+    {% if q %}<a class="reset" href="?">{% translate "Limpar" %}</a>{% endif %}
+  </form>
+
+  <div class="cols">
+    {% for g in grupos %}
+    {% with p=g.page_obj %}
+    <section class="col" id="c-{{ g.key }}" aria-labelledby="h-{{ g.key }}">
+      <h2 id="h-{{ g.key }}">{{ g.nome }} <span class="n">{{ p.paginator.count }}</span></h2>
+
+      {% if p.paginator.count %}
+      <ul class="rows">
+        {% for r in p %}
+        <li>
+          {% if r.tem_ficheiro %}
+          <a class="row" href="{% url 'documentos_publicos_review' r.pk %}" target="_blank" rel="noopener" title="{% translate 'Abrir' %}">
+            <span class="no">{{ p.start_index|add:forloop.counter0 }}</span>
+            <span class="nm">{{ r.nome_documentos_publicos }}</span>
+            <span class="act" aria-hidden="true">↗</span>
+          </a>
+          {% else %}
+          <div class="row">
+            <span class="no">{{ p.start_index|add:forloop.counter0 }}</span>
+            <span class="nm">{{ r.nome_documentos_publicos }}</span>
+            <span class="act off">{% translate "Indisponível" %}</span>
+          </div>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+
+      <div class="pgbar">
+        <span class="rng">{{ p.start_index }}–{{ p.end_index }} / {{ p.paginator.count }}</span>
+        {% if p.has_other_pages %}
+        <nav class="pg" aria-label="{% translate 'Paginação' %}">
+          {% if p.has_previous %}<a href="?{% if g.qs %}{{ g.qs }}&{% endif %}{{ g.key }}={{ p.previous_page_number }}#c-{{ g.key }}" aria-label="{% translate 'Anterior' %}">‹</a>{% endif %}
+          {% for num in p.paginator.page_range %}
+            {% if num == p.number %}
+              <span class="cur" aria-current="page">{{ num }}</span>
+            {% elif num == 1 or num == p.paginator.num_pages or num > p.number|add:'-2' and num < p.number|add:'2' %}
+              <a href="?{% if g.qs %}{{ g.qs }}&{% endif %}{{ g.key }}={{ num }}#c-{{ g.key }}">{{ num }}</a>
+            {% elif num == p.number|add:'-2' or num == p.number|add:'2' %}
+              <span class="gap">…</span>
+            {% endif %}
+          {% endfor %}
+          {% if p.has_next %}<a href="?{% if g.qs %}{{ g.qs }}&{% endif %}{{ g.key }}={{ p.next_page_number }}#c-{{ g.key }}" aria-label="{% translate 'Próxima' %}">›</a>{% endif %}
+        </nav>
+        {% endif %}
+      </div>
+      {% else %}
+      <p class="empty">{% translate "Nenhum documento encontrado." %}</p>
+      {% endif %}
+    </section>
+    {% endwith %}
+    {% empty %}
+    <p class="empty" style="grid-column:1/-1">{% translate "Nenhum documento encontrado." %}</p>
+    {% endfor %}
+  </div>
 </div>
-<!-- Header End -->
-
-<!-- Documento Start -->
-<div class="container-fluid doc-section py-5">
-    <div class="container py-5">
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-            <h4 class="text-primary">{% translate "Documentos" %}</h4>
-            <h1 class="display-5 mb-4">{% translate "Documentos Publicos" %}</h1>
-        </div>
-
-        <div class="doc-simple-list">
-            {% for r in relatorios %}
-            <div class="doc-simple-item">
-                {% if r.documentos_publicos %}
-                    <a href="{% url 'documentos_publicos_review' r.pk %}" class="doc-simple-link" target="_blank">
-                        <span class="doc-bullet">&bull;</span>
-                        {{ r.nome_documentos_publicos }}
-                    </a>
-                {% else %}
-                    <span class="doc-simple-link" style="cursor: default;">
-                        <span class="doc-bullet">&bull;</span>
-                        {{ r.nome_documentos_publicos }}
-                    </span>
-                {% endif %}
-            </div>
-            {% empty %}
-            <div class="text-center py-4">
-                <p class="text-muted">{% translate "Nenhum documento encontrado." %}</p>
-            </div>
-            {% endfor %}
-        </div>
-
-    </div>
-</div>
-<!-- Documentos Publicos End -->
-
 {% endblock %}

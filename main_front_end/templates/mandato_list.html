@@ -1,71 +1,120 @@
-{% extends 'master_front_end/base_home.html' %}
+{% extends 'base.html' %}
+{% load i18n %}
 
-{% block content %}
+{% block title %}{{ tipo_selecionado.tipo_mandato|default:"Mandatos" }} — Comissão da Função Pública{% endblock %}
+
+{% block extra_head %}
 <style>
-.team-item .team-img.team-img-square {
-    border-radius: 8px;
-    margin-top: 0;
-    transform: none;
-    margin-bottom: 0;
-}
-.team-item .team-img.team-img-square img {
-    border-radius: 6px;
+.m-hero{background:var(--pattern-bg);color:#fff}
+.m-hero .wrap{padding-top:64px;padding-bottom:56px}
+.crumb{font-size:14px;color:#D9D2EC;margin-bottom:24px}
+.m-hero h1{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:72px;line-height:1;letter-spacing:-.03em}
+.m-hero p{margin:18px 0 0;font-size:17px;color:#D9D2EC}
+
+/* Pindah antar mandato */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;padding-top:32px}
+.tabs a{font-size:14px;font-weight:500;color:var(--indigo);background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 18px}
+.tabs a:hover{border-color:var(--indigo)}
+.tabs a.on{background:var(--indigo);border-color:var(--indigo);color:#fff}
+
+.group{padding-top:56px}
+.group:last-child{padding-bottom:96px}
+.group h2{margin:0 0 28px;padding-bottom:12px;border-bottom:3px solid var(--gold);display:flex;align-items:baseline;justify-content:space-between;gap:16px;font-family:'Newsreader',serif;font-size:30px;font-weight:500;color:var(--indigo)}
+.group h2 .n{font-family:'Public Sans',sans-serif;font-size:13px;font-weight:400;color:var(--muted)}
+
+/* Kartu potret */
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:32px 24px}
+.person{display:block}
+.photo{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:6px;background:#ECE8F6}
+.photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+.photo .ini{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Newsreader',serif;font-size:96px;color:var(--indigo);opacity:.35}
+.photo .go{position:absolute;right:12px;bottom:12px;width:40px;height:40px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;opacity:0;transform:translateY(8px);transition:.25s}
+.person:hover .photo img{transform:scale(1.05)}
+.person:hover .go,.person:focus-visible .go{opacity:1;transform:none}
+.person .nm{margin:14px 0 0;font-family:'Newsreader',serif;font-size:21px;line-height:1.25;font-weight:500;color:var(--ink)}
+.person:hover .nm{color:var(--indigo);text-decoration:underline;text-underline-offset:4px}
+.person .fn{margin:4px 0 0;font-size:14px;color:var(--muted)}
+
+/* Satu orang dalam grup (mis. Presidente): tampil besar */
+.lead{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:48px;align-items:center;background:#ECE8F6;border-left:4px solid var(--gold);border-radius:6px;padding:32px}
+.lead .photo{aspect-ratio:4/5}
+.lead .nm{font-family:'Newsreader',serif;font-size:44px;line-height:1.1;letter-spacing:-.02em;font-weight:500;color:var(--indigo);margin:0}
+.lead .fn{margin:12px 0 0;font-size:17px;color:#4A4560}
+.lead .btn{display:inline-block;margin-top:28px;padding:12px 26px;border:1.5px solid var(--indigo);border-radius:999px;color:var(--indigo);font-weight:500;font-size:15px}
+.lead:hover .btn{background:var(--indigo);color:#fff}
+
+.empty{padding:64px 0 96px;text-align:center;color:var(--muted)}
+
+@media(max-width:760px){
+  .m-hero h1{font-size:46px}
+  .lead{grid-template-columns:1fr;gap:24px;padding:20px}
+  .lead .nm{font-size:34px}
+  .lead .photo{max-width:320px}
 }
 </style>
+{% endblock %}
 
- <!-- Header Start -->
-            <div class="container-fluid bg-breadcrumb">
-                <div class="container text-center py-5" style="max-width: 900px;">
-                    <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">SOBRE A CFP</h4>
-                </div>
+{% block hero %}
+<section class="m-hero">
+  <div class="wrap">
+    <div class="crumb">{% translate "Sobre a CFP" %} / {% translate "Mandatos" %}</div>
+    <h1>{{ tipo_selecionado.tipo_mandato|default:"Membros do Mandato" }}</h1>
+    <p>{{ mandatos|length }} {% translate "membros" %}</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="wrap">
+
+  {% if tipos_mandato_menu %}
+  <nav class="tabs" aria-label="{% translate 'Mandatos' %}">
+    {% for tipo in tipos_mandato_menu %}
+      <a href="{% url 'mandato_list_by_tipo' tipo.pk %}" {% if tipo.pk == tipo_selecionado.pk %}class="on" aria-current="page"{% endif %}>{{ tipo.tipo_mandato }}</a>
+    {% endfor %}
+  </nav>
+  {% endif %}
+
+  {% if mandatos %}
+    {% regroup mandatos by id_funcao_mandato as funcoes %}
+    {% for g in funcoes %}
+    <section class="group">
+      <h2>{{ g.grouper|default:_("Membros") }} <span class="n">{{ g.list|length }}</span></h2>
+
+      {% if g.list|length == 1 %}
+        {% with m=g.list.0 %}
+        <a class="lead" href="{% url 'detail_mandatu' m.pk %}">
+          <div class="photo">
+            {% if m.imagen %}<img src="{{ m.imagen.url }}" alt="{{ m.nome_pessoa }}">
+            {% else %}<span class="ini">{{ m.nome_pessoa|slice:":1" }}</span>{% endif %}
+          </div>
+          <div>
+            <h3 class="nm">{{ m.nome_pessoa }}</h3>
+            <p class="fn">{{ m.id_funcao_mandato }}</p>
+            <span class="btn">{% translate "Detalho" %} →</span>
+          </div>
+        </a>
+        {% endwith %}
+      {% else %}
+        <div class="people">
+          {% for m in g.list %}
+          <a class="person" href="{% url 'detail_mandatu' m.pk %}">
+            <div class="photo">
+              {% if m.imagen %}<img src="{{ m.imagen.url }}" alt="{{ m.nome_pessoa }}" loading="lazy">
+              {% else %}<span class="ini">{{ m.nome_pessoa|slice:":1" }}</span>{% endif %}
+              <span class="go" aria-hidden="true">→</span>
             </div>
-            <!-- Header End -->
+            <h3 class="nm">{{ m.nome_pessoa }}</h3>
+            <p class="fn">{{ m.id_funcao_mandato }}</p>
+          </a>
+          {% endfor %}
         </div>
-        <!-- Navbar & Hero End -->
+      {% endif %}
+    </section>
+    {% endfor %}
+  {% else %}
+    <p class="empty">{% translate "Nenhum membro encontrado para este tipo de mandato." %}</p>
+  {% endif %}
 
-<!-- Team Start -->
-<div class="container-fluid team py-5">
-    <div class="container py-5">
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-            <h4 class="text-primary">Mandatos</h4>
-            <h1 class="display-5 mb-4">{{ tipo_selecionado.tipo_mandato|default:"Membros do Mandato" }}</h1>
-        </div>
-        <div class="row g-4">
-
-            {% for m in mandatos %}
-            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
-                <div class="team-item">
-                   <div class="team-img team-img-square">
-                        {% if m.imagen %}
-                            <img src="{{ m.imagen.url }}" class="img-fluid w-100" style="aspect-ratio: 1/1; object-fit: cover;" alt="{{ m.nome_pessoa }}">
-                        {% else %}
-                            <img src="https://via.placeholder.com/300" class="img-fluid w-100" style="aspect-ratio: 1/1; object-fit: cover;" alt="{{ m.nome_pessoa }}">
-                        {% endif %}
-                    </div>
-                    <div class="team-title">
-                        <h4 class="mb-0">{{ m.nome_pessoa }}</h4>
-                        <p class="mb-0">{{ m.id_funcao_mandato }}</p>
-                    </div>
-                    <center>
-                    <a href="{% url 'detail_mandatu' m.pk %}" style="color: rgb(3, 3, 3)">Detalho</a>
-                    </center>
-                    <div class="team-icon">
-                        
-                    </div>
-                </div>
-                
-            </div>
-            {% empty %}
-            <div class="col-12 text-center">
-                <p>Nenhum membro encontrado para este tipo de mandato.</p>
-            </div>
-            
-            {% endfor %}
-            
-
-        </div>
-    </div>
 </div>
-<!-- Team End -->
-
 {% endblock %}

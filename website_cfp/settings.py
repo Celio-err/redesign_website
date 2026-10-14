@@ -85,6 +85,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'website_cfp.wsgi.application'
 
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases

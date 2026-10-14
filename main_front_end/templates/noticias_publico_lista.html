@@ -1,101 +1,158 @@
-{% extends 'master_front_end/base_home.html' %}
-{% load static %}
+{% extends 'base.html' %}
 {% load i18n %}
-{% block content %}
+
+{% block title %}CSC &amp; ASEAN — Comissão da Função Pública{% endblock %}
+
+{% block extra_head %}
 <style>
-.noticia-card {
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    height: 100%;
+html{scroll-behavior:smooth}
+
+/* Banner */
+.list-hero{background:var(--pattern-bg);color:#fff}
+.list-hero .wrap{padding-top:64px;padding-bottom:48px}
+.list-hero h1{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:64px;line-height:1;letter-spacing:-.03em}
+.list-hero p{margin:18px 0 0;font-size:17px;color:#D9D2EC}
+.jump{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.jump a{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:#fff;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:9px 20px;background:rgba(255,255,255,.08)}
+.jump a:hover{background:#fff;color:var(--indigo)}
+.jump .c{font-size:13px;font-weight:400;opacity:.8}
+
+/* Pencarian */
+.tools{padding-top:32px;padding-bottom:8px}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;max-width:620px}
+.bar input[type=search]{flex:1 1 260px;min-width:0;font:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:6px;padding:11px 14px}
+.bar input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.bar button{font:inherit;font-size:15px;font-weight:500;color:#fff;background:var(--indigo);border:0;border-radius:6px;padding:11px 22px;cursor:pointer}
+.bar .reset{font-size:14px;color:var(--muted);border-bottom:1px solid var(--line)}
+
+/* Dua bagian terpisah: CSC dan ASEAN */
+.sec{padding-top:56px;padding-bottom:64px}
+.sec.alt{background:#F3F0FA;margin-top:24px;padding-bottom:88px}
+.sec:last-of-type{padding-bottom:96px}
+.sh{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;margin-bottom:24px}
+.sh h2{margin:0;font-family:'Newsreader',serif;font-size:48px;line-height:1;font-weight:500;letter-spacing:-.025em;color:var(--indigo)}
+.sh h2::after{content:"";display:block;width:56px;height:4px;background:var(--gold);margin-top:14px}
+.sh .n{font-size:14px;color:var(--muted)}
+
+/* Bento: 5 tile per halaman (1 besar 2x2 + 4 kecil), ukuran diperkecil */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:156px;grid-auto-flow:dense;gap:12px}
+.tile{position:relative;overflow:hidden;border-radius:6px;display:flex;flex-direction:column;justify-content:flex-end;box-sizing:border-box;color:#fff;background:var(--indigo)}
+.tile:nth-child(5n+1){grid-column:span 2;grid-row:span 2}
+.tile>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.tile:hover>img{transform:scale(1.04)}
+.tile .shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(27,24,48,.9),rgba(27,24,48,.25) 60%,rgba(27,24,48,0))}
+.tile .in{position:relative;padding:14px 16px}
+.tile .meta{font-size:12px;color:#E4DEF5;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tile .tag{font-size:11.5px;font-weight:500;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:1px 9px}
+.tile .ttl{margin:6px 0 0;font-family:'Newsreader',serif;font-size:16.5px;line-height:1.25;font-weight:500;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tile:nth-child(5n+1) .ttl{font-size:25px;line-height:1.15;-webkit-line-clamp:3}
+.tile:nth-child(5n+1) .in{padding:22px 24px}
+.tile:hover .ttl{text-decoration:underline;text-underline-offset:3px}
+/* Tile teks (tanpa foto) */
+.tile.txt{background:#ECE8F6;color:var(--ink);justify-content:space-between}
+.alt .tile.txt{background:#fff;border:1px solid var(--line)}
+.tile.txt .in{padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;height:100%;box-sizing:border-box}
+.tile.txt .meta{color:#5A5475}
+.tile.txt .tag{border-color:rgba(42,33,96,.3);color:var(--indigo)}
+.tile.txt .ttl{color:var(--indigo)}
+
+/* Paginator per bagian */
+.pgbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:24px}
+.rng{font-size:14px;color:var(--muted)}
+.pg{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.pg a,.pg span{min-width:36px;height:36px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;border-radius:6px;font-size:14px}
+.pg a{color:var(--indigo);border:1px solid var(--line);background:#fff;font-weight:500}
+.pg a:hover{border-color:var(--indigo)}
+.pg .cur{background:var(--indigo);color:#fff;font-weight:600}
+.pg .gap{color:var(--muted);min-width:20px;padding:0}
+.empty{padding:40px 0;color:var(--muted);margin:0}
+
+@media(max-width:960px){
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .tile:nth-child(5n+1){grid-column:span 2;grid-row:span 1;min-height:220px}
 }
-.noticia-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-.noticia-card-img {
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-    background: #f1f2f6;
-}
-.noticia-card-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.noticia-card-body {
-    padding: 20px;
-}
-.noticia-tipo-badge {
-    display: inline-block;
-    background: #e8f7ff;
-    color: #0984e3;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-}
-.noticia-data {
-    font-size: 13px;
-    color: #999;
+@media(max-width:600px){
+  .list-hero h1{font-size:44px}
+  .sh h2{font-size:38px}
+  .bento{grid-template-columns:1fr}
+  .tile:nth-child(5n+1){grid-column:span 1}
 }
 </style>
+{% endblock %}
 
-<!-- Header Start -->
-    <div class="container-fluid bg-breadcrumb">
-        <div class="container text-center py-5" style="max-width: 900px;">
-            <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">{% translate "NOTICIAS" %}</h4>
-        </div>
-    </div>
-    <!-- Header End -->
+{% block hero %}
+<section class="list-hero">
+  <div class="wrap">
+    <h1>CSC &amp; ASEAN</h1>
+    <p>{% translate "Notícias e atividades" %}</p>
+    <nav class="jump" aria-label="{% translate 'Seções' %}">
+      {% for g in grupos %}
+        <a href="#s-{{ g.slug }}">{{ g.tag }} <span class="c">{{ g.page_obj.paginator.count }}</span></a>
+      {% endfor %}
+    </nav>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="wrap tools">
+  <form class="bar" method="get" role="search">
+    <input type="search" name="q" value="{{ q }}" placeholder="{% translate 'Pesquisar notícia...' %}" aria-label="{% translate 'Pesquisar' %}">
+    <button type="submit">{% translate "Pesquisar" %}</button>
+    {% if q %}<a class="reset" href="?">{% translate "Limpar" %}</a>{% endif %}
+  </form>
 </div>
-<!-- Navbar & Hero End -->
 
-<!-- Noticias Start -->
-<div class="container-fluid team py-5">
-    <div class="container py-5">
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-            <h4 class="text-primary">{% translate "Notícias" %}</h4>
-            <h1 class="display-5 mb-4">{{tipo_selecionado}}</h1>
+{% for g in grupos %}
+{% with p=g.page_obj %}
+<section class="sec {% cycle 'plain' 'alt' %}" id="s-{{ g.slug }}" aria-labelledby="h-{{ g.slug }}">
+  <div class="wrap">
+
+    <header class="sh">
+      <h2 id="h-{{ g.slug }}">{{ g.tag }}</h2>
+      <span class="n">{{ p.paginator.count }} {% translate "notícias" %}</span>
+    </header>
+
+    {% if p.paginator.count %}
+    <div class="bento">
+      {% for t in p %}
+      <a class="tile{% if not t.imagen %} txt{% endif %}" href="{% url 'noticia_detalho' t.pk %}">
+        {% if t.imagen %}<img src="/{{ t.imagen }}" alt="" loading="lazy"><div class="shade"></div>{% endif %}
+        <div class="in">
+          <div class="meta">
+            {% if t.tipo_noticia %}<span class="tag">{{ t.tipo_noticia }}</span>{% endif %}
+            <span>{{ t.data_publicacao|date:"d/m/Y" }}</span>
+          </div>
+          <h3 class="ttl">{{ t.nome_noticia }}</h3>
         </div>
-        <div class="row g-4">
-
-            {% for n in noticias %}
-            <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
-                <a href="" class="text-decoration-none text-dark">
-                    <div class="noticia-card">
-                       <div class="noticia-card-img">
-             
-                        <img src="/{{ n.imagen }}" class="img-fluid">
-                    
-                    </div>
-                        <div class="noticia-card-body">
-                            {% if n.tipo_noticia %}
-                                <span class="noticia-tipo-badge">{{ n.tipo_noticia }}</span>
-                            {% endif %}
-                            <h4 class="mb-2">{{ n.nome_noticia }}</h4>
-                            <p class="noticia-data mb-0">
-                                <i class="fa fa-calendar"></i>
-                                {{ n.data_publicacao|date:"d/m/Y" }}
-                            </p>
-                             <a href="{% url 'noticia_detalho' n.pk %}">{% translate "Detalhes da Noticias" %}</a>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            {% empty %}
-            <div class="col-12 text-center">
-                <p>{% translate "Nenhuma notícia encontrada." %}</p>
-            </div>
-            {% endfor %}
-
-        </div>
+      </a>
+      {% endfor %}
     </div>
-</div>
-<!-- Noticias End -->
 
+    <div class="pgbar">
+      <span class="rng">{{ p.start_index }}–{{ p.end_index }} / {{ p.paginator.count }}</span>
+      {% if p.has_other_pages %}
+      <nav class="pg" aria-label="{% translate 'Paginação' %} {{ g.tag }}">
+        {% if p.has_previous %}<a href="?{% if g.qs %}{{ g.qs }}&{% endif %}{{ g.key }}={{ p.previous_page_number }}#s-{{ g.slug }}">← {% translate "Anterior" %}</a>{% endif %}
+        {% for num in p.paginator.page_range %}
+          {% if num == p.number %}
+            <span class="cur" aria-current="page">{{ num }}</span>
+          {% elif num == 1 or num == p.paginator.num_pages or num > p.number|add:'-2' and num < p.number|add:'2' %}
+            <a href="?{% if g.qs %}{{ g.qs }}&{% endif %}{{ g.key }}={{ num }}#s-{{ g.slug }}">{{ num }}</a>
+          {% elif num == p.number|add:'-2' or num == p.number|add:'2' %}
+            <span class="gap">…</span>
+          {% endif %}
+        {% endfor %}
+        {% if p.has_next %}<a href="?{% if g.qs %}{{ g.qs }}&{% endif %}{{ g.key }}={{ p.next_page_number }}#s-{{ g.slug }}">{% translate "Próxima" %} →</a>{% endif %}
+      </nav>
+      {% endif %}
+    </div>
+    {% else %}
+    <p class="empty">{% translate "Nenhuma notícia encontrada." %}</p>
+    {% endif %}
+
+  </div>
+</section>
+{% endwith %}
+{% endfor %}
 {% endblock %}

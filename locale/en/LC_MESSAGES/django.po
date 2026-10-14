@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-27 16:32+0900\n"
+"POT-Creation-Date: 2026-10-13 11:19+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,96 +18,220 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:53
-msgid "DOCUMENTOS"
-msgstr "PUBLIC DOCUMENTS"
+#: .\main_front_end\templates\base.html:74
+msgid "Inicio"
+msgstr "Home"
 
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:62
-msgid "Documentos"
-msgstr "Documents"
-
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:63
-msgid "Documentos Publicos"
+#: .\main_front_end\templates\base.html:76
+msgid "Documentos Públicos"
 msgstr "Public Documents"
-
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:98
-msgid "Visualizar"
-msgstr "View"
-
-#: .\main_front_end\templates\home.html:51
-msgid "NOTICIAS"
-msgstr "NEWS"
-
-#: .\main_front_end\templates\home.html:60
-msgid "Notícias"
-msgstr "News"
-
-#: .\main_front_end\templates\home.html:61
-msgid "Notícias Mais Recentes"
-msgstr "Recent News"
-
-#: .\main_front_end\templates\home.html:81
-msgid "Detalhes da Notícia"
-msgstr "Detail News"
 
 #: .\main_front_end\templates\home.html:97
 msgid "Ver Todas as Notícias"
-msgstr "See all"
+msgstr "See all news"
 
-#: .\main_front_end\templates\layout_fron_end\navbar.html:19
-msgid "INICIOS"
-msgstr "HOME"
-
-#: .\main_front_end\templates\layout_fron_end\navbar.html:38
-msgid "DOCUMENTOS PÚBLICOS"
-msgstr "PUBLIC DOCUMENTS"
-
-#: .\main_front_end\templates\layout_fron_end\navbar.html:46
-msgid "LEGISLAÇÃO"
-msgstr "LEGISLATION"
-
-#: .\main_front_end\templates\layout_fron_end\navbar.html:63
-msgid "SOBRE A CFP"
-msgstr "ABOUT CFP"
-
-#: .\main_front_end\templates\layout_fron_end\navbar.html:80
-msgid "SISTEMAS"
-msgstr "SYSTEMS"
-
-#: .\main_front_end\templates\layout_fron_end\navbar.html:126
-msgid "CONTATO"
-msgstr "CONTACT"
-
-#: .\main_front_end\templates\contacto.html:39
-msgid "CONTACTO"
-msgstr "CONTACT"
-
-msgid "Fala Connosco"
-msgstr "Talk with us"
-
-msgid "Endereço"
-msgstr "Address"
-
-msgid "Telefone"
-msgstr "Phone"
-
-msgid "Nenhum documento encontrado."
-msgstr "No documents here"
-
-#MENU NOTICIAS NIAN
-
-msgid "Nenhuma notícia encontrada."
-msgstr "No news found."
-
-#MENU LEJISLASAUN
-msgid "Deliberação, Decisão, Despacho e Orientação"
-msgstr "Deliberation, Decision, Order, and Guidance"
-
+#: .\main_front_end\templates\base.html:80
+#: .\main_front_end\templates\dddo_publico_list.html:74
 msgid "Legislação"
 msgstr "Legislation"
 
-msgid "Publicações Deliberação, Decisão, Despacho e Orientação"
-msgstr "Publications Deliberation, Decision, Order, and Guideline"
+#: .\main_front_end\templates\base.html:95
+#: .\main_front_end\templates\detail_mandatu.html:50
+#: .\main_front_end\templates\mandato_list.html:60
+msgid "Sobre a CFP"
+msgstr "About CFP"
 
+#: .\main_front_end\templates\base.html:110
+msgid "Sistemas"
+msgstr "Systems"
+
+#: .\main_front_end\templates\base.html:126
+msgid "Contacto"
+msgstr "Contact"
+
+#: .\main_front_end\templates\dddo_publico_list.html:107
 msgid "Nenhum documento DDDO encontrado."
 msgstr "No DDDO document found."
+
+#: .\main_front_end\templates\detail_mandatu.html:52
+msgid "Mandatos"
+msgstr ""
+
+#: .\main_front_end\templates\detail_mandatu.html:78
+msgid "Função"
+msgstr ""
+
+#: .\main_front_end\templates\detail_mandatu.html:81
+msgid "Mandato"
+msgstr ""
+
+#: .\main_front_end\templates\detail_mandatu.html:84
+msgid "Período"
+msgstr "Period"
+
+#: .\main_front_end\templates\detail_mandatu.html:96
+msgid "Conteúdo não disponível."
+msgstr "Content isn't avaliable"
+
+#: .\main_front_end\templates\detail_mandatu.html:101
+msgid "Voltar"
+msgstr "Back"
+
+#: .\main_front_end\templates\detail_mandatu.html:103
+msgid "Ver todos os membros"
+msgstr "See all members"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:57
+msgid "Relatórios e documentos oficiais disponíveis para consulta."
+msgstr "Official reports and documents available for consultation."
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:66
+msgid "Pesquisar documento..."
+msgstr "Search document..."
+
+#: .\main_front_end\templates\todas_noticias.html:88
+msgid "Pesquisar"
+msgstr "Search"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:68
+msgid "Limpar"
+msgstr "Clear"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:82
+msgid "Abrir"
+msgstr "Open"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:91
+msgid "Indisponível"
+msgstr "Unavailable"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:101
+#: .\main_front_end\templates\todas_noticias.html:114
+#, fuzzy
+#| msgid "Legislação"
+msgid "Paginação"
+msgstr "Legislation"
+
+#: .\main_front_end\templates\todas_noticias.html:116
+msgid "Anterior"
+msgstr "Previous"
+
+#: .\main_front_end\templates\todas_noticias.html:130
+msgid "Próxima"
+msgstr "Next"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:122
+msgid "Nenhum documento encontrado."
+msgstr "No documents found."
+
+#: .\main_front_end\templates\home.html:54
+msgid "Notícias"
+msgstr "News"
+
+#: .\main_front_end\templates\home.html:55
+msgid "Anúncios, avisos e informações oficiais da Comissão da Função Pública de Timor-Leste."
+msgstr "Announcements, notices, and official information from the Comissão da Função Pública of Timor-Leste."
+
+#: .\main_front_end\templates\home.html:63
+msgid "Mais recente"
+msgstr "Recent news"
+
+# MENU NOTICIAS NIAN
+msgid "Nenhuma notícia encontrada."
+msgstr "No news found."
+
+#: .\main_front_end\templates\home.html:121
+msgid "Encontrar documentos"
+msgstr "Find documents"
+
+#: .\main_front_end\templates\home.html:122
+msgid "Documentos públicos"
+msgstr "Public documents"
+
+#: .\main_front_end\templates\home.html:123
+msgid "Dados da Função Pública"
+msgstr "Civil Service data"
+
+#: .\main_front_end\templates\home.html:124
+msgid "Portal Vagas da Função Pública"
+msgstr "Public Service Job Portal"
+
+#: .\main_front_end\templates\mandato_list.html:62
+msgid "membros"
+msgstr "members"
+
+#: .\main_front_end\templates\mandato_list.html:82
+msgid "Membros"
+msgstr "Members"
+
+#: .\main_front_end\templates\mandato_list.html:94
+msgid "Detalho"
+msgstr "Detail"
+
+#: .\main_front_end\templates\mandato_list.html:116
+msgid "Nenhum membro encontrado para este tipo de mandato."
+msgstr "No member found for this type of mandate."
+
+#: .\main_front_end\templates\noticia_detalho.html:94
+#: .\main_front_end\templates\noticia_detalho.html:95
+#, fuzzy
+#| msgid "Notícias"
+msgid "Outras notícias"
+msgstr "Other news"
+
+#: .\main_front_end\templates\noticias_publico_lista.html:51
+msgid "NOTICIAS"
+msgstr "NEWS"
+
+#: .\main_front_end\templates\noticias_publico_lista.html:85
+#, fuzzy
+msgid "Detalhes da Noticias"
+msgstr "Detail News"
+
+#: .\main_front_end\templates\todas_noticias.html:4
+msgid "Todas Notícias"
+msgstr "All News"
+
+#: .\main_front_end\templates\todas_noticias.html:72
+msgid "notícias publicadas"
+msgstr "Publish news"
+
+#: .\main_front_end\templates\todas_noticias.html:81
+msgid "Pesquisar notícia..."
+msgstr "Search news"
+
+#: .\main_front_end\templates\todas_noticias.html:84
+msgid "Todos os tipos"
+msgstr "All types"
+
+#: .\main_front_end\templates\todas_noticias.html:89
+#: .\main_front_end\templates\todas_noticias.html:138
+msgid "Limpar filtros"
+msgstr "Clear filter"
+
+#: .\main_front_end\templates\todas_noticias.html:94
+msgid "Mostrando"
+msgstr "Show"
+
+#: .\main_front_end\templates\todas_noticias.html:95
+msgid "de"
+msgstr "of"
+
+#: .\main_front_end\views.py:151
+msgid "Outros"
+msgstr "Others"
+
+#~ msgid "Documentos"
+#~ msgstr "Documents"
+
+#~ msgid "Visualizar"
+#~ msgstr "View"
+
+#~ msgid "Notícias Mais Recentes"
+#~ msgstr "Recent News"
+
+#~ msgid "DOCUMENTOS PÚBLICOS"
+#~ msgstr "PUBLIC DOCUMENTS"
+
+#~ msgid "LEGISLAÇÃO"
+#~ msgstr "LEGISLATION"

@@ -52,7 +52,7 @@
   <div class="wrap">
     <div>
       <h1>{% translate "Notícias" %}</h1>
-      <p>{% translate "Anúncios, avisos de recrutamento e informações oficiais da Comissão da Função Pública de Timor-Leste." %}</p>
+      <p>{% translate "Anúncios, avisos e informações oficiais da Comissão da Função Pública de Timor-Leste." %}</p>
     </div>
 
     {% with n=noticias_recentes.0 %}
@@ -119,9 +119,9 @@
 
     <div class="t s2 t-docs">
       <h3>{% translate "Encontrar documentos" %}</h3>
-      <a href="#">{% translate "Documentos públicos" %}</a>
-      <a href="#">{% translate "Legislação" %}</a>
-      <a href="#">{% translate "Sistemas de recrutamento" %}</a>
+      <a href="{% url 'documentos_publicos_publico_list' %}">{% translate "Documentos públicos" %}</a>
+      <a href="https://bipublic.cfp.gov.tl/public/dashboard/c0121995-9855-4190-98b3-ad463f38bf91">{% translate "Dados da Função Pública" %}</a>
+      <a href="https://vagas.cfp.gov.tl/">{% translate "Portal Vagas da Função Pública" %}</a>
     </div>
   </div>
 

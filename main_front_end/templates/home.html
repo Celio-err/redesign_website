@@ -81,7 +81,7 @@
       {% if forloop.first %}
       {# Tile besar #}
       <a class="t s4 t-big" href="{% url 'noticia_detalho' n.pk %}">
-        {% if n.imagen %}<img src="/{{ n.imagen }}" alt="">{% endif %}
+        {% if n.imagen %}<img src="/{{ n.imagen }}" alt="Notícia">{% endif %}
         <div class="shade"></div>
         <div class="in">
           <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
@@ -93,7 +93,7 @@
       {% elif forloop.counter0 == 1 or forloop.counter0 == 4 %}
       {# Tile teks #}
       <a class="t s2 t-text" href="{% url 'noticia_detalho' n.pk %}">
-      {% if n.imagen %}<img src="/{{ n.imagen }}" alt="">{% endif %}
+      {% if n.imagen %}<img src="/{{ n.imagen }}" alt="Notícia Detallu">{% endif %}
         <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
         <div>
           <div class="ttl">{{ n.nome_noticia }}</div>
@@ -104,7 +104,7 @@
       {% else %}
       {# Tile dengan foto #}
       <a class="t s2 t-img" href="{% url 'noticia_detalho' n.pk %}">
-        <div class="pic">{% if n.imagen %}<img src="/{{ n.imagen }}" alt="">{% endif %}</div>
+        <div class="pic">{% if n.imagen %}<img src="/{{ n.imagen }}" alt="Notícia">{% endif %}</div>
         <div class="in">
           <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
           <div class="ttl">{{ n.nome_noticia }}</div>

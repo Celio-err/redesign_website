@@ -98,7 +98,7 @@
   <div class="bento">
     {% for t in page_obj %}
     <a class="tile{% if not t.imagen %} txt{% endif %}" href="{% url 'noticia_detalho' t.pk %}">
-      {% if t.imagen %}<img src="/{{ t.imagen }}" alt="" loading="lazy"><div class="shade"></div>{% endif %}
+      {% if t.imagen %}<img src="/{{ t.imagen }}" alt="Imagem da notícia" loading="lazy"><div class="shade"></div>{% endif %}
       <div class="in">
         <div class="meta">
           {% if t.tipo_noticia %}<span class="tag">{{ t.tipo_noticia }}</span>{% endif %}

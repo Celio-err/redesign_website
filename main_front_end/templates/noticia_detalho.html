@@ -97,7 +97,7 @@
       {% for n in outras_noticias %}
       <li>
         <a class="item" href="{% url 'noticia_detalho' n.pk %}">
-          <div class="pic">{% if n.imagen %}<img src="/{{ n.imagen }}" alt="">{% endif %}</div>
+          <div class="pic">{% if n.imagen %}<img src="/{{ n.imagen }}" alt="Notícia Detalho">{% endif %}</div>
           <div>
             <div class="d">{{ n.data_publicacao|date:"d/m/Y" }}{% if n.tipo_noticia %} · {{ n.tipo_noticia }}{% endif %}</div>
             <div class="t">{{ n.nome_noticia }}</div>

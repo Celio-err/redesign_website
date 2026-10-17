@@ -12,31 +12,55 @@
 <style>
 :root{
 --indigo:#2A2160;--gold:#B8862B;--ink:#1B1830;--line:#E4E0EE;--paper:#FBFAFD;--muted:#6A6580;
-  /* Latar ungu bermotif: lapisan indigo transparan di atas gambar pattern */
+  /* Latar ungu bermotif: lapisan gelap transparan di atas gambar pattern */
 --pattern-bg:linear-gradient(to bottom,rgba(27,24,48,.75),rgba(27,24,48,.82)),url("{% static 'front_end/img/presence-iii.png' %}") 0 0/260px auto
 }
 body{margin:0;font-family:'Public Sans',sans-serif;color:var(--ink);background:var(--paper)}
 a{color:inherit;text-decoration:none}
 a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .wrap{max-width:1200px;margin:0 auto;padding-left:32px;padding-right:32px}
-.site-header{background:#fff;border-bottom:1px solid var(--line);position:relative;z-index:50}
-.site-header .top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding-top:18px;padding-bottom:18px}
-.brand{display:flex;align-items:center;gap:14px}
-.brand img{height:50px;width:auto}
-.brand span{font-family:'Newsreader',serif;font-size:26px;font-weight:500;letter-spacing:-0.01em}
-.lang{display:flex;gap:22px;font-size:14px;font-weight:500}
-.lang a{color:var(--muted)}
-.lang a.active{color:var(--indigo);border-bottom:2px solid var(--gold);padding-bottom:2px}
-.nav{display:flex;flex-wrap:wrap;gap:6px 34px;font-size:15px;font-weight:500}
+
+/* Lompat ke konten (aksesibilitas keyboard) */
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--indigo);color:#fff;padding:10px 16px;border-radius:0 0 6px 6px;font-size:14px}
+.skip:focus{top:0}
+
+/* Garis tipis warna bendera Timor-Leste */
+.flagbar{height:5px;background:linear-gradient(to right,#DC241F 0 34%,#FFC72C 34% 67%,#1B1830 67%)}
+
+/* ---------- Header ---------- */
+.site-header{background:#fff}
+.site-header .top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:20px;padding-bottom:20px}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.brand img{height:54px;width:auto}
+.brand span{font-family:'Newsreader',serif;font-size:27px;font-weight:500;letter-spacing:-0.01em;line-height:1.15}
+
+/* Pemilih bahasa: segmen */
+.lang{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:13.5px;font-weight:500}
+.lang a{color:var(--muted);padding:6px 14px;border-radius:999px}
+.lang a:hover{color:var(--indigo)}
+.lang a.active{background:var(--indigo);color:#fff}
+.lang-m{display:none}
+
+/* Tombol menu (ponsel) */
+.menu-btn{display:none;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--indigo);cursor:pointer}
+.menu-btn .x{display:none}
+.menu-btn[aria-expanded="true"] .ham{display:none}
+.menu-btn[aria-expanded="true"] .x{display:block}
+
+/* ---------- Bilah menu (menempel di atas saat di-scroll) ---------- */
+.site-nav{position:sticky;top:0;z-index:50;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.site-nav.stuck{box-shadow:0 8px 24px rgba(27,24,48,.09)}
+.nav{display:flex;flex-wrap:wrap;gap:0 34px;font-size:15px;font-weight:500}
 .nav a{padding:14px 0}
+.nav>a,.dd-btn{border-bottom:3px solid transparent;margin-bottom:-1px}
 .nav a:hover{color:var(--gold)}
 .nav a.active{color:var(--indigo);border-bottom:3px solid var(--gold);margin-bottom:-1px}
 
 /* Dropdown menu (Legislação, Sobre a CFP, Sistemas) */
 .nav .dd{position:relative}
-.dd-btn{font:inherit;font-weight:500;color:inherit;background:none;border:0;padding:14px 0;cursor:pointer;display:inline-flex;align-items:center;gap:6px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.dd-btn{font:inherit;font-weight:500;color:inherit;background:none;border-top:0;border-left:0;border-right:0;padding:14px 0;cursor:pointer;display:inline-flex;align-items:center;gap:6px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .dd-btn svg{transition:transform .2s}
-.dd-menu{display:none;position:absolute;left:-14px;top:100%;min-width:240px;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 12px 30px rgba(27,24,48,.12);padding:8px;z-index:60}
+.dd-menu{display:none;position:absolute;left:-14px;top:100%;min-width:240px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:0 0 6px 6px;box-shadow:0 14px 34px rgba(27,24,48,.14);padding:8px;z-index:60}
 /* Dibuka lewat klik/ketuk (semua perangkat) */
 .dd.open .dd-btn{color:var(--gold)}
 .dd.open .dd-btn svg{transform:rotate(180deg)}
@@ -47,8 +71,11 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   .dd:hover .dd-btn svg{transform:rotate(180deg)}
   .dd:hover .dd-menu{display:block}
 }
+@media (min-width:761px) and (hover:hover){
+  .nav>a:hover,.dd:hover .dd-btn{border-bottom-color:rgba(184,134,43,.45)}
+}
 .dd.active .dd-btn{color:var(--indigo);border-bottom:3px solid var(--gold);margin-bottom:-1px}
-.nav .dd-menu a{display:block;padding:10px 12px;border-radius:4px;font-size:14.5px;font-weight:400;color:var(--ink)}
+.nav .dd-menu a{display:block;padding:10px 12px;border-radius:4px;font-size:14.5px;font-weight:400;color:var(--ink);border:0;margin:0}
 .nav .dd-menu a:hover{background:#F3F0FA;color:var(--indigo)}
 .dd-menu.end{left:auto;right:-14px}
 .dd-menu.wide{min-width:380px}
@@ -57,23 +84,56 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 .nav .dd-menu a.ext:hover .x{color:var(--indigo)}
 .dd-empty{display:block;padding:10px 12px;font-size:14px;color:var(--muted)}
 
-/* Ponsel & tablet kecil: menu jadi daftar vertikal, dropdown jadi akordeon */
+/* ---------- Footer ---------- */
+.site-footer{background:var(--pattern-bg);color:#CFCADF}
+.foot{display:grid;grid-template-columns:1.5fr 1fr 1.1fr 1fr;gap:40px;padding-top:60px;padding-bottom:52px}
+.f-brand img{height:60px;width:auto;display:block}
+.f-brand .nm{margin:16px 0 10px;font-family:'Newsreader',serif;font-size:25px;line-height:1.2;color:#fff;font-weight:500}
+.f-brand p{margin:0;font-size:14px;line-height:1.7;max-width:34ch}
+.f-col h4{margin:0 0 18px;font-family:'Newsreader',serif;font-size:19px;font-weight:500;color:#fff}
+.f-col h4::after{content:"";display:block;width:32px;height:3px;background:var(--gold);margin-top:10px}
+.f-col ul{list-style:none;margin:0;padding:0}
+.f-col li+li{margin-top:10px}
+.f-col a{font-size:14.5px;color:#CFCADF}
+.f-col a:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.f-col address{font-style:normal;font-size:14.5px;line-height:1.7}
+.f-bottom{border-top:1px solid rgba(255,255,255,.14);font-size:13px;color:#B9B3CF}
+.f-bottom .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;padding-top:18px;padding-bottom:18px}
+
+/* Tombol kembali ke atas */
+.totop{position:fixed;right:20px;bottom:20px;z-index:40;width:44px;height:44px;border:0;border-radius:50%;background:var(--indigo);color:#fff;font-size:20px;line-height:1;cursor:pointer;box-shadow:0 8px 22px rgba(27,24,48,.3)}
+.totop:hover{background:var(--gold)}
+.totop[hidden]{display:none}
+
+@media(max-width:900px){
+  .foot{grid-template-columns:1fr 1fr;gap:36px}
+}
+
+/* Ponsel & tablet kecil: menu disembunyikan di balik tombol, dropdown jadi akordeon */
 @media(max-width:760px){
+  .site-header .top{padding-top:12px;padding-bottom:12px}
+  .brand img{height:42px}
+  .brand span{font-size:19px}
+  .top>.lang{display:none}
+  .menu-btn{display:inline-flex;flex-shrink:0}
+  .site-nav{display:none;position:static}
+  .site-nav.open{display:block}
   .nav{flex-direction:column;flex-wrap:nowrap;gap:0;padding-bottom:6px}
   .nav>a,.dd-btn{display:flex;width:100%;box-sizing:border-box;padding:13px 4px;border-bottom:1px solid var(--line);margin-bottom:0}
   .dd-btn{justify-content:space-between}
   .nav a.active,.dd.active .dd-btn{border-bottom:1px solid var(--line);margin-bottom:0;box-shadow:inset 3px 0 0 var(--gold);padding-left:14px}
   .dd-menu,.dd-menu.wide,.dd-menu.end{position:static;left:auto;right:auto;min-width:0;box-shadow:none;border:0;border-radius:0;background:transparent;padding:0 0 8px 12px}
   .nav .dd-menu a{padding:11px 8px}
+  .lang-m{display:flex;align-self:flex-start;margin:16px 0 10px}
+  .foot{grid-template-columns:1fr;padding-top:44px}
 }
-
-.site-footer{background:var(--ink);color:#CFCADF}
-.site-footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;padding-top:40px;padding-bottom:40px;font-size:14px;line-height:1.7}
-.site-footer .name{font-family:'Newsreader',serif;font-size:20px;color:#fff}
 </style>
 {% block extra_head %}{% endblock %}
 </head>
 <body>
+
+<a class="skip" href="#main">{% translate "Saltar para o conteúdo" %}</a>
+<div class="flagbar" aria-hidden="true"></div>
 
 <header class="site-header">
   <div class="wrap top">
@@ -87,7 +147,16 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
       <a href="javascript:void(0)" onclick="changeLanguage('pt')" title="Português" {% if LANGUAGE_CODE == 'pt' %}class="active"{% endif %}>Português</a>
       <a href="javascript:void(0)" onclick="changeLanguage('en')" title="English" {% if LANGUAGE_CODE == 'en' %}class="active"{% endif %}>English</a>
     </div>
+    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <g class="ham"><path d="M4 7h16M4 12h16M4 17h16"/></g>
+        <g class="x"><path d="M6 6l12 12M18 6L6 18"/></g>
+      </svg>
+    </button>
   </div>
+</header>
+
+<div class="site-nav" id="siteNav">
   <nav class="wrap nav" aria-label="Main">
     <a href="{% url 'home'%}" {% if active_menu == 'home' %}class="active"{% endif %}>{% translate "Inicio" %}</a>
     <a href="{% url 'noticias_csc_asean' %}" {% if active_menu == 'csc' %}class="active"{% endif %}>CSC &amp; ASEAN</a>
@@ -142,21 +211,66 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
       </div>
     </div>
     <a href="{% url 'kontaktu' %}" {% if active_menu == 'contact' %}class="active"{% endif %}>{% translate "Contacto" %}</a>
+
+    <!-- Pemilih bahasa untuk ponsel (di dalam menu) -->
+    <div class="lang lang-m">
+      <a href="javascript:void(0)" onclick="changeLanguage('tet')" {% if LANGUAGE_CODE == 'tet' %}class="active"{% endif %}>Tetun</a>
+      <a href="javascript:void(0)" onclick="changeLanguage('pt')" {% if LANGUAGE_CODE == 'pt' %}class="active"{% endif %}>Português</a>
+      <a href="javascript:void(0)" onclick="changeLanguage('en')" {% if LANGUAGE_CODE == 'en' %}class="active"{% endif %}>English</a>
+    </div>
   </nav>
-</header>
+</div>
 
 {% block hero %}{% endblock %}
 
-<main>
+<main id="main">
   {% block content %}{% endblock %}
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">
-    <div class="name">Copyright © 2026 Comissão da Função Pública</div>
-    <div>Rua Estrada de Balide, Dili, Timor-Leste<br>Website Desenvolvimento ©2026 Comissão da Função Pública : RDTL</div>
+  <div class="wrap foot">
+    <div class="f-brand">
+      <img src="{% static 'back_end/images/logo/logo_comicao.webp' %}" alt="">
+      <div class="nm">Comissão da Função Pública</div>
+      <p>Website Portal ba publikasaun atividade husi Comissão da Função Pública</p>
+    </div>
+
+    <div class="f-col">
+      <h4>{% translate "Ligações" %}</h4>
+      <ul>
+        <li><a href="{% url 'home' %}">{% translate "Inicio" %}</a></li>
+        <li><a href="{% url 'noticias_csc_asean' %}">CSC &amp; ASEAN</a></li>
+        <li><a href="{% url 'documentos_publicos_publico_list' %}">{% translate "Documentos Públicos" %}</a></li>
+        <li><a href="{% url 'kontaktu' %}">{% translate "Contacto" %}</a></li>
+      </ul>
+    </div>
+
+    <div class="f-col">
+      <h4>{% translate "Sistemas" %}</h4>
+      <ul>
+        <li><a href="https://atendimento.cfp.gov.tl/" target="_blank" rel="noopener noreferrer">Atendimento Digital</a></li>
+        <li><a href="https://sigapnet.cfp.gov.tl/" target="_blank" rel="noopener noreferrer">SIGAPNET</a></li>
+        <li><a href="https://vagas.cfp.gov.tl/" target="_blank" rel="noopener noreferrer">Portal de Vagas</a></li>
+        <li><a href="https://correio.cfp.gov.tl" target="_blank" rel="noopener noreferrer">Webmail</a></li>
+      </ul>
+    </div>
+
+    <div class="f-col">
+      <h4>{% translate "Contacto" %}</h4>
+      <address>Rua Estrada de Balide,<br>Dili, Timor-Leste</address>
+    </div>
   </div>
+
+  <div class="f-bottom">
+    <div class="wrap">
+      <span>Copyright © 2026 Comissão da Função Pública</span>
+      <span>Website Desenvolvimento ©2026 Comissão da Função Pública : RDTL</span>
+    </div>
+  </div>
+  <div class="flagbar" aria-hidden="true"></div>
 </footer>
+
+<button type="button" class="totop" id="toTop" hidden aria-label="{% translate 'Voltar ao topo' %}">↑</button>
 
 <!-- Form bahasa (dipakai changeLanguage) -->
 <form id="language-form" action="{% url 'set_language' %}" method="post" style="display:none">
@@ -170,8 +284,8 @@ function changeLanguage(langCode) {
   document.getElementById('language-form').submit();
 }
 
-// Dropdown menu (Legislação, Sobre a CFP, Sistemas)
 (function () {
+  /* ---- Dropdown menu (Legislação, Sobre a CFP, Sistemas) ---- */
   document.querySelectorAll('.dd').forEach(function (dd) {
     var btn = dd.querySelector('.dd-btn');
     btn.addEventListener('click', function (e) {
@@ -190,7 +304,33 @@ function changeLanguage(langCode) {
     });
   }
   document.addEventListener('click', closeAll);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+
+  /* ---- Tombol menu (ponsel) ---- */
+  var menuBtn = document.getElementById('menuBtn');
+  var siteNav = document.getElementById('siteNav');
+  function setMenu(open) {
+    siteNav.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', open);
+  }
+  menuBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    setMenu(!siteNav.classList.contains('open'));
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeAll(); setMenu(false); }
+  });
+
+  /* ---- Bayangan bilah menu saat menempel + tombol ke atas ---- */
+  var header = document.querySelector('.site-header');
+  var toTop = document.getElementById('toTop');
+  function onScroll() {
+    var y = window.scrollY || document.documentElement.scrollTop;
+    siteNav.classList.toggle('stuck', y > header.offsetTop + header.offsetHeight);
+    toTop.hidden = y < 700;
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 })();
 </script>
 

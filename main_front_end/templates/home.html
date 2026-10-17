@@ -16,34 +16,89 @@
 .latest .ttl{font-family:'Newsreader',serif;font-size:28px;line-height:1.25;margin:10px 0 0;font-weight:500}
 .news{padding-top:72px;padding-bottom:96px}
 .news h2{margin:0 0 24px;font-family:'Newsreader',serif;font-size:32px;font-weight:500}
-.bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(230px,auto);gap:16px}
+.tag{display:inline-block;font-size:13px;font-weight:500;color:var(--indigo);background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 12px;margin-top:12px}
+
+/* ---------- Bento: ukuran diperkecil, baris 2 berbeda dari baris 1 ----------
+   Baris 1-2 : tile besar (8x2) + 2 tile kecil bertumpuk di kanan
+   Baris 3   : tile lebar (5) + tile teks (4) + kotak dokumen (3)           */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:164px 164px 190px;grid-auto-rows:164px;gap:14px}
 .t{position:relative;overflow:hidden;border-radius:6px;display:flex;flex-direction:column;box-sizing:border-box}
-.s4{grid-column:span 4;grid-row:span 2}.s2{grid-column:span 2}
+.c8x2{grid-column:span 8;grid-row:span 2}
+.c5{grid-column:span 5}.c4{grid-column:span 4}.c3{grid-column:span 3}
 .t:hover .ttl{text-decoration:underline;text-underline-offset:4px}
 .t .ttl{font-family:'Newsreader',serif;font-weight:500;line-height:1.25;color:var(--indigo)}
+.t .tag{font-size:11.5px;padding:2px 10px;margin-top:8px}
+.clamp{display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+
+/* Tile besar (pertama) */
 .t-big{color:#fff;background:var(--indigo);justify-content:flex-end}
 .t-big>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .t-big .shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(27,24,48,.92),rgba(27,24,48,.35) 55%,rgba(27,24,48,0))}
-.t-big .in{position:relative;padding:36px}
+.t-big .in{position:relative;padding:28px 30px}
 .t-big .meta{color:#E4DEF5}
-.t-big .ttl{color:#fff;font-size:38px;line-height:1.15;margin:10px 0 0;max-width:20ch}
-.t-text{background:#ECE8F6;padding:28px;justify-content:space-between}
-.t-text .meta{color:#5A5475}
-.t-text .ttl{font-size:24px}
-.t-img{background:#fff;border:1px solid var(--line)}
-.t-img .pic{height:120px;overflow:hidden;background:var(--line)}
-.t-img .pic img{width:100%;height:100%;object-fit:cover;display:block}
-.t-img .in{padding:20px 24px 24px}
-.t-img .ttl{font-size:21px;margin-top:6px}
-.tag{display:inline-block;font-size:13px;font-weight:500;color:var(--indigo);background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 12px;margin-top:12px}
-.t-big .tag{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);color:#fff}
-.t-docs{background:var(--pattern-bg);color:#fff;padding:28px}
-.t-docs h3{margin:0 0 12px;font-family:'Newsreader',serif;font-size:24px;font-weight:500}
-.t-docs a{display:block;padding:11px 0;border-top:1px solid rgba(255,255,255,.25)}
+.t-big .ttl{color:#fff;font-size:32px;line-height:1.15;margin:8px 0 0;max-width:22ch;-webkit-line-clamp:3}
+.t-big .tag{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);color:#fff;font-size:12.5px;margin-top:12px}
+
+/* Tile kecil: foto penuh (atau teks bila tanpa foto) */
+.t-ov{color:#fff;background:var(--indigo);justify-content:flex-end}
+.t-ov>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.t-ov .shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(27,24,48,.9),rgba(27,24,48,.28) 62%,rgba(27,24,48,0))}
+.t-ov .in{position:relative;padding:14px 18px}
+.t-ov .meta{font-size:12px;color:#E4DEF5}
+.t-ov .ttl{color:#fff;font-size:17px;margin:4px 0 0;-webkit-line-clamp:2}
+.t-ov .tag{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);color:#fff}
+.t-ov.txt{background:#ECE8F6;justify-content:stretch}
+.t-ov.txt .in{display:flex;flex-direction:column;justify-content:space-between;height:100%;box-sizing:border-box;width:100%}
+.t-ov.txt .meta{color:#5A5475}
+.t-ov.txt .ttl{color:var(--indigo)}
+.t-ov.txt .tag{background:#fff;border-color:var(--line);color:var(--indigo)}
+
+/* Kartu terang dengan foto kecil di samping */
+.t-lt{background:#fff;border:1px solid var(--line);flex-direction:row;gap:14px;padding:14px 16px}
+.t-lt .tx{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between}
+.t-lt .meta{font-size:12px}
+.t-lt .ttl{font-size:17px;margin:4px 0 0;-webkit-line-clamp:3}
+.t-lt .th{width:84px;flex-shrink:0;border-radius:4px;overflow:hidden;background:#ECE8F6}
+.t-lt .th img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Baris 3: tile lebar, foto di kiri */
+.t-wide{background:#fff;border:1px solid var(--line);flex-direction:row}
+.t-wide .pic{width:42%;flex-shrink:0;background:var(--line);overflow:hidden}
+.t-wide .pic img{width:100%;height:100%;object-fit:cover;display:block}
+.t-wide .tx{flex:1;min-width:0;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between}
+.t-wide .meta{font-size:12px}
+.t-wide .ttl{font-size:20px;margin:6px 0 0;-webkit-line-clamp:4}
+
+/* Baris 3: tile teks */
+.t-text{background:#ECE8F6;padding:18px 20px;justify-content:space-between}
+.t-text .meta{color:#5A5475;font-size:12px}
+.t-text .ttl{font-size:20px;margin:6px 0 0;-webkit-line-clamp:4}
+
+/* Kotak dokumen */
+.t-docs{background:var(--pattern-bg);color:#fff;padding:20px 22px;justify-content:center}
+.t-docs h3{margin:0 0 8px;font-family:'Newsreader',serif;font-size:20px;font-weight:500}
+.t-docs a{display:block;padding:8px 0;border-top:1px solid rgba(255,255,255,.25);font-size:14px}
+.t-docs a:hover{text-decoration:underline;text-underline-offset:3px}
+
 .more{display:inline-block;margin-top:32px;padding:14px 28px;border:1.5px solid var(--indigo);border-radius:999px;color:var(--indigo);font-weight:500}
 .more:hover{background:var(--indigo);color:#fff}
-@media(max-width:960px){.bento{grid-template-columns:repeat(2,1fr)}.s4{grid-column:span 2;grid-row:span 1;min-height:360px}}
-@media(max-width:600px){.bento{grid-template-columns:1fr}.s4,.s2{grid-column:span 1}.hero h1{font-size:64px}}
+
+@media(max-width:960px){
+  .bento{grid-template-columns:repeat(2,1fr);grid-template-rows:none;grid-auto-rows:auto}
+  .c8x2,.c5{grid-column:span 2;grid-row:auto}
+  .c8x2{min-height:320px}
+  .c4,.c3{grid-column:span 1;min-height:168px}
+  .c5{min-height:170px}
+  .t-docs{grid-column:span 2}
+}
+@media(max-width:600px){
+  .hero h1{font-size:64px}
+  .bento{grid-template-columns:1fr}
+  .c8x2,.c5,.c4,.c3,.t-docs{grid-column:span 1}
+  .t-big .ttl{font-size:26px}
+  .t-wide{flex-direction:column}
+  .t-wide .pic{width:100%;height:150px}
+}
 </style>
 {% endblock %}
 
@@ -79,49 +134,87 @@
     {% for n in noticias_recentes|slice:"1:" %}
 
       {% if forloop.first %}
-      {# Tile besar #}
-      <a class="t s4 t-big" href="{% url 'noticia_detalho' n.pk %}">
-        {% if n.imagen %}<img src="/{{ n.imagen }}" alt="Notícia">{% endif %}
+      {# Baris 1-2: tile besar #}
+      <a class="t c8x2 t-big" href="{% url 'noticia_detalho' n.pk %}">
+        {% if n.imagen %}<img src="/{{ n.imagen }}" alt="">{% endif %}
         <div class="shade"></div>
         <div class="in">
           <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
-          <div class="ttl">{{ n.nome_noticia }}</div>
+          <div class="ttl clamp">{{ n.nome_noticia }}</div>
           {% if n.tipo_noticia %}<span class="tag">{{ n.tipo_noticia }}</span>{% endif %}
         </div>
       </a>
 
-      {% elif forloop.counter0 == 1 or forloop.counter0 == 4 %}
-      {# Tile teks #}
-      <a class="t s2 t-text" href="{% url 'noticia_detalho' n.pk %}">
-      {% if n.imagen %}<img src="/{{ n.imagen }}" alt="Notícia Detallu">{% endif %}
-        <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
-        <div>
-          <div class="ttl">{{ n.nome_noticia }}</div>
+      {% elif forloop.counter0 == 1 %}
+      {# Kanan atas: foto penuh #}
+      <a class="t c4 t-ov{% if not n.imagen %} txt{% endif %}" href="{% url 'noticia_detalho' n.pk %}">
+        {% if n.imagen %}<img src="/{{ n.imagen }}" alt="" loading="lazy"><div class="shade"></div>{% endif %}
+        <div class="in">
+          <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
+          <div class="ttl clamp">{{ n.nome_noticia }}</div>
           {% if n.tipo_noticia %}<span class="tag">{{ n.tipo_noticia }}</span>{% endif %}
         </div>
+      </a>
+
+      {% elif forloop.counter0 == 2 %}
+      {# Kanan bawah: kartu terang dengan foto kecil #}
+      <a class="t c4 t-lt" href="{% url 'noticia_detalho' n.pk %}">
+        <div class="tx">
+          <div>
+            <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
+            <div class="ttl clamp">{{ n.nome_noticia }}</div>
+          </div>
+          {% if n.tipo_noticia %}<span class="tag" style="align-self:flex-start">{{ n.tipo_noticia }}</span>{% endif %}
+        </div>
+        {% if n.imagen %}<div class="th"><img src="/{{ n.imagen }}" alt="" loading="lazy"></div>{% endif %}
+      </a>
+
+      {% elif forloop.counter0 == 3 %}
+      {# Baris 3: tile lebar, foto di kiri #}
+      <a class="t c5 t-wide" href="{% url 'noticia_detalho' n.pk %}">
+        {% if n.imagen %}<div class="pic"><img src="/{{ n.imagen }}" alt="" loading="lazy"></div>{% endif %}
+        <div class="tx">
+          <div>
+            <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
+            <div class="ttl clamp">{{ n.nome_noticia }}</div>
+          </div>
+          {% if n.tipo_noticia %}<span class="tag" style="align-self:flex-start">{{ n.tipo_noticia }}</span>{% endif %}
+        </div>
+      </a>
+
+      {% elif forloop.counter0 == 4 %}
+      {# Baris 3: tile teks #}
+      <a class="t c4 t-text" href="{% url 'noticia_detalho' n.pk %}">
+        <div>
+          <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
+          <div class="ttl clamp">{{ n.nome_noticia }}</div>
+        </div>
+        {% if n.tipo_noticia %}<span class="tag" style="align-self:flex-start">{{ n.tipo_noticia }}</span>{% endif %}
       </a>
 
       {% else %}
-      {# Tile dengan foto #}
-      <a class="t s2 t-img" href="{% url 'noticia_detalho' n.pk %}">
-        <div class="pic">{% if n.imagen %}<img src="/{{ n.imagen }}" alt="Notícia">{% endif %}</div>
-        <div class="in">
-          <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
-          <div class="ttl">{{ n.nome_noticia }}</div>
-          {% if n.tipo_noticia %}<span class="tag">{{ n.tipo_noticia }}</span>{% endif %}
+      {# Berita tambahan (jika lebih dari 6): kartu terang #}
+      <a class="t c4 t-lt" href="{% url 'noticia_detalho' n.pk %}">
+        <div class="tx">
+          <div>
+            <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
+            <div class="ttl clamp">{{ n.nome_noticia }}</div>
+          </div>
+          {% if n.tipo_noticia %}<span class="tag" style="align-self:flex-start">{{ n.tipo_noticia }}</span>{% endif %}
         </div>
-    </a>
+        {% if n.imagen %}<div class="th"><img src="/{{ n.imagen }}" alt="" loading="lazy"></div>{% endif %}
+      </a>
       {% endif %}
 
     {% empty %}
       <p style="grid-column:1/-1">{% translate "Nenhuma notícia encontrada." %}</p>
     {% endfor %}
 
-    <div class="t s2 t-docs">
+    <div class="t c3 t-docs">
       <h3>{% translate "Encontrar documentos" %}</h3>
       <a href="{% url 'documentos_publicos_publico_list' %}">{% translate "Documentos públicos" %}</a>
-      <a href="https://bipublic.cfp.gov.tl/public/dashboard/c0121995-9855-4190-98b3-ad463f38bf91">{% translate "Dados da Função Pública" %}</a>
-      <a href="https://vagas.cfp.gov.tl/">{% translate "Portal Vagas da Função Pública" %}</a>
+      <a href="https://bipublic.cfp.gov.tl/public/dashboard/c0121995-9855-4190-98b3-ad463f38bf91" target="_blank" rel="noopener noreferrer">{% translate "Dados da Função Pública" %}</a>
+      <a href="https://vagas.cfp.gov.tl/" target="_blank" rel="noopener noreferrer">{% translate "Portal Vagas da Função Pública" %}</a>
     </div>
   </div>
 

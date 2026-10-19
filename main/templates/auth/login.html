@@ -1,158 +1,327 @@
 {% load static %}
-
 <!DOCTYPE html>
-<html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Login - CFP</title>
+<html lang="pt">
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="color-scheme" content="light">
+   <title>Login - CFP</title>
 
-      <link rel="stylesheet" href="{% static 'back_end/css/bootstrap.min.css' %}" />
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-      <style>
-         body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #4facfe 0%, #6d0681 100%);
-            font-family: 'Segoe UI', Arial, sans-serif;
-         }
+   <style>
+      :root {
+         --page: #eef1f5;
+         --card: #ffffff;
+         --navy: #14264a;
+         --navy-hover: #0d1b37;
+         --gold: #b08d4a;
+         --ink: #1a2433;
+         --muted: #62707f;
+         --line: #d5dce4;
+         --line-hover: #aab6c3;
+         --focus: #2d5aa8;
+         --focus-ring: rgba(45, 90, 168, 0.18);
+         --warn: #8a5a00;
+         --serif: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+         --sans: "Inter", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      }
 
-         .login-card {
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            padding: 45px 40px;
-            width: 100%;
-            max-width: 380px;
-         }
+      *, *::before, *::after { box-sizing: border-box; }
 
-         .login-logo {
-            text-align: center;
-            margin-bottom: 25px;
-         }
+      body {
+         margin: 0;
+         min-height: 100vh;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         padding: 40px 20px;
+         font-family: var(--sans);
+         color: var(--ink);
+         background: var(--page);
+         -webkit-font-smoothing: antialiased;
+      }
 
-         .login-logo img {
-            max-width: 140px;
-            height: auto;
-         }
+      .card {
+         width: 100%;
+         max-width: 420px;
+         background: var(--card);
+         border: 1px solid var(--line);
+         border-radius: 6px;
+         box-shadow: 0 1px 2px rgba(20, 38, 74, 0.06), 0 12px 32px -12px rgba(20, 38, 74, 0.18);
+      }
 
-         .login-title {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 600;
-            color: #2d3436;
-            margin-bottom: 30px;
-         }
+      /* Pita biru di bagian atas kartu */
+      .banner {
+         height: 92px;
+         background: var(--navy);
+         border-top: 3px solid var(--gold);
+         border-radius: 5px 5px 0 0;
+      }
 
-         .form-group-custom {
-            margin-bottom: 20px;
-         }
+      .body { padding: 0 44px 44px; }
 
-         .form-group-custom label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #636e72;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-         }
+      .head { text-align: center; }
 
-         .form-group-custom input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1.5px solid #dfe6e9;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            box-sizing: border-box;
-         }
+      .medallion {
+         position: relative;
+         width: 96px;
+         height: 96px;
+         margin: -48px auto 24px;
+         padding: 14px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         background: #fff;
+         border-radius: 50%;
+         box-shadow: 0 0 0 4px var(--card), 0 0 0 5px var(--gold);
+      }
 
-         .form-group-custom input:focus {
-            outline: none;
-            border-color: #4facfe;
-            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.15);
-         }
+      .medallion img {
+         display: block;
+         max-width: 100%;
+         max-height: 100%;
+         object-fit: contain;
+      }
 
-         .btn-login {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: opacity 0.2s ease, transform 0.15s ease;
-         }
+      .head h1 {
+         margin: 0;
+         font-family: var(--serif);
+         font-size: 36px;
+         font-weight: 700;
+         line-height: 1.1;
+         color: var(--navy);
+      }
 
-         .btn-login:hover {
-            opacity: 0.92;
-            transform: translateY(-1px);
-         }
+      .head .rule {
+         width: 40px;
+         height: 2px;
+         margin: 16px auto 14px;
+         background: var(--gold);
+      }
 
-         .alert-custom {
-            padding: 12px 15px;
-            border-radius: 8px;
-            font-size: 14px;
-            margin-bottom: 20px;
-         }
+      .head p {
+         margin: 0;
+         font-size: 14px;
+         line-height: 1.5;
+         color: var(--muted);
+      }
 
-         .alert-custom.alert-error {
-            background: #fff0f0;
-            color: #d63031;
-            border: 1px solid #ffd6d6;
-         }
+      form { margin-top: 32px; }
 
-         .alert-custom.alert-success {
-            background: #f0fff4;
-            color: #00b894;
-            border: 1px solid #b2f2d7;
-         }
-      </style>
-   </head>
-   <body>
+      .alert {
+         margin-bottom: 22px;
+         padding: 11px 14px;
+         font-size: 13.5px;
+         line-height: 1.45;
+         border: 1px solid;
+         border-radius: 4px;
+      }
 
-      <div class="login-card">
+      .alert-error   { color: #9c2a1c; background: #fdf0ee; border-color: #efc4bd; }
+      .alert-success { color: #1f6b3a; background: #eef7f1; border-color: #bcdbc7; }
 
-         <div class="login-logo">
-            <img src="{% static 'back_end/images/logo/logo_comicao.webp' %}" alt="Logo" />
-         </div>
+      .field { margin-bottom: 20px; }
 
-         <div class="login-title">Acesso ao Sistema</div>
+      .field label {
+         display: block;
+         margin-bottom: 7px;
+         font-size: 14px;
+         font-weight: 600;
+         color: var(--ink);
+      }
 
-         {% if messages %}
-            {% for message in messages %}
-               <div class="alert-custom alert-{% if message.tags == 'error' %}error{% else %}success{% endif %}">
-                  {{ message }}
-               </div>
-            {% endfor %}
-         {% endif %}
+      .control { position: relative; }
 
-         <form method="post">
+      .control input {
+         display: block;
+         width: 100%;
+         height: 48px;
+         padding: 0 14px;
+         font: inherit;
+         font-size: 15px;
+         color: var(--ink);
+         background: #fff;
+         border: 1px solid var(--line);
+         border-radius: 4px;
+         transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .control input:hover { border-color: var(--line-hover); }
+
+      .control input:focus {
+         outline: none;
+         border-color: var(--focus);
+         box-shadow: 0 0 0 3px var(--focus-ring);
+      }
+
+      .control.has-toggle input { padding-right: 82px; }
+
+      .toggle {
+         position: absolute;
+         top: 50%;
+         right: 6px;
+         transform: translateY(-50%);
+         height: 36px;
+         padding: 0 12px;
+         font: inherit;
+         font-size: 13px;
+         font-weight: 600;
+         color: var(--navy);
+         background: transparent;
+         border: 0;
+         border-radius: 4px;
+         cursor: pointer;
+      }
+
+      .toggle:hover { background: #eef1f5; }
+
+      .hint {
+         margin: 7px 0 0;
+         font-size: 12.5px;
+         color: var(--warn);
+      }
+
+      .hint[hidden] { display: none; }
+
+      .submit {
+         display: block;
+         width: 100%;
+         height: 50px;
+         margin-top: 28px;
+         font: inherit;
+         font-size: 15px;
+         font-weight: 600;
+         letter-spacing: 0.02em;
+         color: #fff;
+         background: var(--navy);
+         border: 0;
+         border-radius: 4px;
+         cursor: pointer;
+         transition: background-color 0.15s ease;
+      }
+
+      .submit:hover { background: var(--navy-hover); }
+
+      .submit:disabled {
+         cursor: progress;
+         opacity: 0.75;
+      }
+
+      .toggle:focus-visible,
+      .submit:focus-visible {
+         outline: 2px solid var(--focus);
+         outline-offset: 2px;
+      }
+
+      .foot {
+         margin-top: 24px;
+         font-size: 12.5px;
+         color: var(--muted);
+         text-align: center;
+      }
+
+      @media (max-width: 480px) {
+         body { padding: 24px 16px; }
+         .body { padding: 0 24px 32px; }
+         .head h1 { font-size: 32px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+         * { transition: none !important; }
+      }
+   </style>
+</head>
+<body>
+
+   <main class="card">
+      <div class="banner"></div>
+
+      <div class="body">
+         <header class="head">
+            <div class="medallion">
+               <img src="{% static 'back_end/images/logo/logo_comicao.webp' %}" alt="Logo CFP">
+            </div>
+            <h1>Acesso ao Sistema</h1>
+            <div class="rule"></div>
+            <p>Entre com o seu usuário e senha.</p>
+         </header>
+
+         <form method="post" id="loginForm">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.GET.next }}">
 
-            <div class="form-group-custom">
-               <label>USUÁRIO </label>
-               <input type="text" name="username" autocomplete="off" required>
+            {% if messages %}
+               {% for message in messages %}
+                  <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif %}" role="alert">
+                     {{ message }}
+                  </div>
+               {% endfor %}
+            {% endif %}
+
+            <div class="field">
+               <label for="username">Usuário</label>
+               <div class="control">
+                  <input type="text" id="username" name="username" autocomplete="off" autofocus required>
+               </div>
             </div>
 
-            <div class="form-group-custom">
-               <label>SENHA</label>
-               <input type="password" name="password" autocomplete="new-password" required>
+            <div class="field">
+               <label for="password">Senha</label>
+               <div class="control has-toggle">
+                  <input type="password" id="password" name="password" autocomplete="new-password" aria-describedby="capsHint" required>
+                  <button type="button" class="toggle" id="togglePassword" aria-controls="password" aria-pressed="false">Mostrar</button>
+               </div>
+               <p class="hint" id="capsHint" role="status" hidden>Caps Lock está ativado.</p>
             </div>
 
-            <button type="submit" class="btn-login">Entrar</button>
+            <button type="submit" class="submit" id="submitBtn">Entrar</button>
          </form>
-
       </div>
+   </main>
 
-   </body>
+   <div class="foot">&copy; {% now "Y" %} CFP</div>
+
+   <script>
+      (function () {
+         var form = document.getElementById('loginForm');
+         var input = document.getElementById('password');
+         var toggle = document.getElementById('togglePassword');
+         var caps = document.getElementById('capsHint');
+         var submit = document.getElementById('submitBtn');
+
+         toggle.addEventListener('click', function () {
+            var show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            toggle.textContent = show ? 'Ocultar' : 'Mostrar';
+            toggle.setAttribute('aria-pressed', show ? 'true' : 'false');
+         });
+
+         function checkCaps(e) {
+            if (typeof e.getModifierState !== 'function') return;
+            caps.hidden = !e.getModifierState('CapsLock');
+         }
+         input.addEventListener('keydown', checkCaps);
+         input.addEventListener('keyup', checkCaps);
+         input.addEventListener('blur', function () { caps.hidden = true; });
+
+         form.addEventListener('submit', function () {
+            submit.disabled = true;
+            submit.textContent = 'Entrando…';
+         });
+
+         window.addEventListener('pageshow', function (e) {
+            if (e.persisted) {
+               submit.disabled = false;
+               submit.textContent = 'Entrar';
+            }
+         });
+      })();
+   </script>
+
+</body>
 </html>

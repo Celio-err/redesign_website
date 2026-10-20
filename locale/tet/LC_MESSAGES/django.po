@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-27 16:32+0900\n"
+"POT-Creation-Date: 2026-10-20 14:44+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,112 +18,216 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:53
-msgid "DOCUMENTOS"
-msgstr "DOKUMENTU PUBLIKU"
+#: .\main_front_end\templates\base.html:135
+msgid "Saltar para o conteúdo"
+msgstr "Muda ba konteúdu"
 
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:62
-msgid "Documentos"
-msgstr "Dokumentu Sira"
-
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:98
-msgid "Visualizar"
-msgstr "Vizualiza"
-
-#: .\main_front_end\templates\home.html:51
-msgid "NOTICIAS"
-msgstr "NOTISIA SIRA"
-
-#: .\main_front_end\templates\home.html:60
-msgid "Notícias"
-msgstr "Notísia Sira"
-
-#: .\main_front_end\templates\home.html:61
-msgid "Notícias Mais Recentes"
-msgstr "Notisia Foun"
-
-#: .\main_front_end\templates\home.html:81
-msgid "Detalhes da Notícia"
-msgstr "Notisia Detallu"
-
-#: .\main_front_end\templates\home.html:97
-msgid "Ver Todas as Notícias"
-msgstr "Haree Notisia hotu"
-
-#: .\main_front_end\templates\layout_fron_end\navbar.html:19
+#: .\main_front_end\templates\base.html:241
 msgid "Inicio"
-msgstr "Hahu"
+msgstr "Hahú"
 
-#: .\main_front_end\templates\layout_fron_end\navbar.html:46
-msgid "LEGISLAÇÃO"
-msgstr "LEJISLASAUN"
-
-#: .\main_front_end\templates\layout_fron_end\navbar.html:63
-msgid "Sobre a CFP"
-msgstr "Kona-ba CFP"
-
-#: .\main_front_end\templates\layout_fron_end\navbar.html:80
-msgid "Sistemas"
-msgstr "Sistema Sira"
-
-#: .\main_front_end\templates\layout_fron_end\navbar.html:126
-msgid "Contacto"
-msgstr "Kontaktu"
-
-#: .\main_front_end\templates\home.html:88
-msgid "Nenhuma notícia encontrada."
-msgstr "La iha notisia ne'ebe disponivel."
-
-#: .\main_front_end\templates\contacto.html:39
-msgid "CONTACTO"
-msgstr "KONTAKTU"
-
-msgid "Fala Connosco"
-msgstr "Kontaktu ami"
-
-msgid "Endereço"
-msgstr "Enderesu"
-
-msgid "Telefone"
-msgstr "Telemovel"
-
-msgid "Nenhum documento encontrado."
-msgstr "Laiha dokumentu ne'ebe hetan"
-
-#MENU NOTISIA NIAN
-#MENU LEJISLASAUN
-msgid "Deliberação, Decisão, Despacho e Orientação"
-msgstr "Deliberasaun, Desizaun, Despaxu no Orientasaun"
-
-msgid "Legislação"
-msgstr "Lejislasaun"
-
-msgid "Publicações Deliberação, Decisão, Despacho e Orientação"
-msgstr "Publikasaun Deliberasaun, Desizaun, Despaxu no Orientasaun"
-
-msgid "Nenhum documento DDDO encontrado."
-msgstr "La iha dokumentu DDDO ne'ebe publika"
-
-msgid "Anúncios, avisos e informações oficiais da Comissão da Função Pública de Timor-Leste."
-msgstr "Anúnsiu sira, avizu no informasaun ofisial Komisaun Funsaun Publika Timor-Leste nian."
-
-msgid "Mais recente"
-msgstr "Notísia atual"
-
-msgid "Encontrar documentos"
-msgstr "Buka dokumentu Sira"
-
-msgid "Documentos públicos"
-msgstr "Dokumentu públiku sira"
-
+#: .\main_front_end\templates\base.html:243
 msgid "Documentos Públicos"
 msgstr "Dokumentu Públiku sira"
 
+#: .\main_front_end\templates\dddo_publico_list.html:59
+msgid "Legislação"
+msgstr "Lejislasaun"
+
+#: .\main_front_end\templates\mandato_list.html:60
+msgid "Sobre a CFP"
+msgstr "Kona-ba CFP"
+
+#: .\main_front_end\templates\base.html:249
+msgid "Sistemas"
+msgstr "Sistema Sira"
+
+#: .\main_front_end\templates\contacto.html:60
+msgid "Contacto"
+msgstr "Kontaktu"
+
+#: .\main_front_end\templates\base.html:239
+msgid "Ligações"
+msgstr "Ligasaun sira"
+
+#: .\main_front_end\templates\base.html:273
+msgid "Voltar ao topo"
+msgstr "Fila ba leten"
+
+#: .\main_front_end\templates\contacto.html:61
+#: .\main_front_end\templates\contacto.html:70
+msgid "Fala Connosco"
+msgstr "Kontaktu ami"
+
+#: .\main_front_end\templates\contacto.html:77
+msgid "Endereço"
+msgstr "Enderesu"
+
+#: .\main_front_end\templates\contacto.html:87
+msgid "Telefone"
+msgstr "Telemovel"
+
+#: .\main_front_end\templates\contacto.html:102
+msgid "Copiar Email"
+msgstr "Kopia Email"
+
+#: .\main_front_end\templates\contacto.html:104
+msgid "Copiar"
+msgstr "kopia"
+
+#: .\main_front_end\templates\contacto.html:111
+msgid "Obter direções"
+msgstr "Hetan diresaun"
+
+#: .\main_front_end\templates\contacto.html:113
+msgid "Mapa"
+msgstr "Mapa"
+
+#: .\main_front_end\templates\contacto.html:119
+msgid "Copiado"
+msgstr "Kopia ona"
+
+# MENU LEJISLASAUN
+#: .\main_front_end\templates\dddo_publico_list.html:60
+msgid "Deliberação, Decisão, Despacho e Orientação"
+msgstr "Deliberasaun, Desizaun, Despaxu no Orientasaun"
+
+#: .\main_front_end\templates\dddo_publico_list.html:61
+
+msgid "documentos publicados"
+msgstr "dokumentu publikadu"
+
+#: .\main_front_end\templates\dddo_publico_list.html:70
+msgid "Tipos"
+msgstr "Tipu sira"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:66
+msgid "Pesquisar documento..."
+msgstr "Buka dokumentu..."
+
+#: .\main_front_end\templates\todas_noticias.html:88
+msgid "Pesquisar"
+msgstr "Buka"
+
+#: .\main_front_end\templates\noticias_publico_lista.html:102
+msgid "Limpar"
+msgstr "Hamoos"
+
+#: .\main_front_end\templates\todas_noticias.html:94
+msgid "Mostrando"
+msgstr "Hatudu"
+
+#: .\main_front_end\templates\dddo_publico_list.html:85
+#: .\main_front_end\templates\todas_noticias.html:95
+msgid "de"
+msgstr "husi"
+
+#: .\main_front_end\templates\dddo_publico_list.html:97
+msgid "Ver"
+msgstr "Haree"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:91
+msgid "Indisponível"
+msgstr "La disponível"
+
+#: .\main_front_end\templates\dddo_publico_list.html:115
+msgid "Página"
+msgstr "Página"
+
+#: .\main_front_end\templates\dddo_publico_list.html:116
+msgid "Paginação"
+msgstr "Pajinasaun"
+
+#: .\main_front_end\templates\todas_noticias.html:116
+msgid "Anterior"
+msgstr "Antes nian"
+
+#: .\main_front_end\templates\todas_noticias.html:130
+msgid "Próxima"
+msgstr "Tuirmai"
+
+#: .\main_front_end\templates\dddo_publico_list.html:133
+msgid "Nenhum documento DDDO encontrado."
+msgstr "La iha dokumentu DDDO ne'ebe publika"
+
+#: .\main_front_end\templates\mandato_list.html:71
+msgid "Mandatos"
+msgstr "Mandatu sira"
+
+#: .\main_front_end\templates\detail_mandatu.html:78
+msgid "Função"
+msgstr "Funsaun"
+
+#: .\main_front_end\templates\detail_mandatu.html:81
+msgid "Mandato"
+msgstr "Mandatu"
+
+#: .\main_front_end\templates\detail_mandatu.html:84
+msgid "Período"
+msgstr "Períodu"
+
+#: .\main_front_end\templates\detail_mandatu.html:91
+msgid "Sobre"
+msgstr "Kona-ba"
+
+#: .\main_front_end\templates\noticia_detalho.html:84
+msgid "Conteúdo não disponível."
+msgstr "Konteúdo la disponível."
+#: .\main_front_end\templates\noticia_detalho.html:89
+msgid "Voltar"
+msgstr "Fila"
+
+#: .\main_front_end\templates\detail_mandatu.html:103
+msgid "Ver todos os membros"
+msgstr "Haree membru hotu"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:57
+msgid "Relatórios e documentos oficiais disponíveis para consulta."
+msgstr "Relatóriu no dokumentu ofisial sira disponível atu konsulta."
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:82
+msgid "Abrir"
+msgstr "Loke"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:122
+msgid "Nenhum documento encontrado."
+msgstr "Laiha dokumentu ne'ebe hetan"
+
+#: .\main_front_end\templates\noticia_detalho.html:56
+msgid "Notícias"
+msgstr "Notísia Sira"
+
+#: .\main_front_end\templates\home.html:110
+msgid "Anúncios, avisos e informações oficiais da Comissão da Função Pública de Timor-Leste."
+msgstr "Anúnsiu sira, avizu no informasaun ofisial Komisaun Funsaun Publika Timor-Leste nian."
+
+#: .\main_front_end\templates\home.html:118
+msgid "Mais recente"
+msgstr "Notísia foun"
+
+#: .\main_front_end\templates\todas_noticias.html:137
+msgid "Nenhuma notícia encontrada."
+msgstr "La iha notisia ne'ebe disponivel."
+
+#: .\main_front_end\templates\home.html:214
+msgid "Encontrar documentos"
+msgstr "Buka dokumentu Sira"
+
+#: .\main_front_end\templates\home.html:215
+msgid "Documentos públicos"
+msgstr "Dokumentu públiku sira"
+
+#: .\main_front_end\templates\home.html:216
 msgid "Dados da Função Pública"
 msgstr "Dadus Funsaun Públika nian"
 
+#: .\main_front_end\templates\home.html:217
 msgid "Portal Vagas da Função Pública"
 msgstr "Portal Vaga Funsaun Públika nian"
+
+#: .\main_front_end\templates\noticia_detalho.html:109
+msgid "Ver Todas as Notícias"
+msgstr "Haree Notisia hotu"
 
 #: .\main_front_end\templates\mandato_list.html:62
 msgid "membros"
@@ -141,17 +245,27 @@ msgstr "Detallu"
 msgid "Nenhum membro encontrado para este tipo de mandato."
 msgstr "Laiha membru ne'ebe hetan iha tipu mandatu refere."
 
-#: .\main_front_end\templates\noticia_detalho.html:94
 #: .\main_front_end\templates\noticia_detalho.html:95
 msgid "Outras notícias"
 msgstr "Notísia seluk"
 
-#: .\main_front_end\templates\noticias_publico_lista.html:85
-#, fuzzy
-msgid "Detalhes da Noticias"
-msgstr "Detallu notísia"
+#: .\main_front_end\templates\noticias_publico_lista.html:87
+msgid "Notícias e atividades"
+msgstr "Notísia no atividade sira"
 
-#: .\main_front_end\templates\todas_noticias.html:4
+#: .\main_front_end\templates\noticias_publico_lista.html:88
+msgid "Seções"
+msgstr "Sesaun sira"
+
+#: .\main_front_end\templates\todas_noticias.html:81
+msgid "Pesquisar notícia..."
+msgstr "Buka notísia"
+
+#: .\main_front_end\templates\noticias_publico_lista.html:113
+msgid "notícias"
+msgstr "notísia Sira"
+
+#: .\main_front_end\templates\todas_noticias.html:71
 msgid "Todas Notícias"
 msgstr "Notísia sira hotu"
 
@@ -159,43 +273,45 @@ msgstr "Notísia sira hotu"
 msgid "notícias publicadas"
 msgstr "notísia publikada"
 
-#: .\main_front_end\templates\todas_noticias.html:81
-msgid "Pesquisar notícia..."
-msgstr "Buka notísia"
+#: .\main_front_end\templates\todas_noticias.html:83
+msgid "Tipo"
+msgstr "Tipu"
 
 #: .\main_front_end\templates\todas_noticias.html:84
 msgid "Todos os tipos"
 msgstr "Tipu hotu-hotu"
 
-#: .\main_front_end\templates\todas_noticias.html:89
 #: .\main_front_end\templates\todas_noticias.html:138
 msgid "Limpar filtros"
 msgstr "Hamoos filtrajem"
 
-#: .\main_front_end\templates\todas_noticias.html:94
-msgid "Mostrando"
-msgstr "Hatudu"
-
-#: .\main_front_end\templates\todas_noticias.html:95
-msgid "de"
-msgstr "husi"
-
-#: .\main_front_end\views.py:151
+#: .\main_front_end\views.py:250
 msgid "Outros"
 msgstr "Seluk"
 
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:66
-msgid "Pesquisar documento..."
-msgstr "Buka dokumentu..."
+#~ msgid "DOCUMENTOS"
+#~ msgstr "DOKUMENTU PUBLIKU"
 
-#: .\main_front_end\templates\todas_noticias.html:88
-msgid "Pesquisar"
-msgstr "Buka"
+#~ msgid "Documentos"
+#~ msgstr "Dokumentu Sira"
 
-#: .\main_front_end\templates\todas_noticias.html:130
-msgid "Próxima"
-msgstr "Tuirmai"
+#~ msgid "Visualizar"
+#~ msgstr "Vizualiza"
 
-#: .\main_front_end\templates\todas_noticias.html:116
-msgid "Anterior"
-msgstr "Antes nian"
+#~ msgid "NOTICIAS"
+#~ msgstr "NOTISIA SIRA"
+
+#~ msgid "Detalhes da Notícia"
+#~ msgstr "Notisia Detallu"
+
+#~ msgid "LEGISLAÇÃO"
+#~ msgstr "LEJISLASAUN"
+
+#~ msgid "CONTACTO"
+#~ msgstr "KONTAKTU"
+
+#~ msgid "Publicações Deliberação, Decisão, Despacho e Orientação"
+#~ msgstr "Publikasaun Deliberasaun, Desizaun, Despaxu no Orientasaun"
+
+msgid "Website Portal para a publicação de atividades da Comissão da Função Pública"
+msgstr "Website Portal ba publikasaun atividade husi Comissão da Função Pública"

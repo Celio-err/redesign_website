@@ -1,17 +1,8 @@
 {% extends 'master/base.html' %}
-
+{% block page_title %}Excluir Tipo de Mandato{% endblock %}
 {% block content %}
 
 <div class="container-fluid">
-
-    <div class="row column_title">
-        <div class="col-md-12">
-            <div class="page_title">
-                <h2>Excluir Tipo de Mandato</h2>
-            </div>
-        </div>
-    </div>
-
     <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
 
@@ -36,7 +27,7 @@
                         <i class="fa fa-trash"></i> Sim, Excluir
                     </button>
 
-                    <a href="{% url 'tipo_mandato_detail' tipo.pk %}" class="btn btn-secondary">
+                    <a href="{% url 'tipo_mandato_list' %}" class="btn btn-secondary">
                         <i class="fa fa-arrow-left"></i> Cancelar
                     </a>
                 </form>

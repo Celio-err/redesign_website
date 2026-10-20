@@ -47,8 +47,6 @@ INSTALLED_APPS = [
     'dddo',
     'main_front_end',
     'settings',
-    'contacto',
-    
 ]
 
 MIDDLEWARE = [
@@ -169,4 +167,4 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'
 
-SESSION_IDLE_TIMEOUT = 120
+SESSION_IDLE_TIMEOUT = 1800  # 30 minutes in seconds

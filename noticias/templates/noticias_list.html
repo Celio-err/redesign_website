@@ -192,7 +192,7 @@
 
                             <!-- User -->
                             <td style="padding:14px 15px;vertical-align:middle;color:#636e72;">
-                                {{ noticia.inserido_por }}
+                                {{ noticia.inserido_por|default:user.get_full_name|default:user.username }}
                             </td>
 
                             <!-- Actions -->

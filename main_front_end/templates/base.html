@@ -9,6 +9,7 @@
 <meta name="description"
           content="Website Portal ba publikasaun atividade husi Comissão da Função Pública">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&display=swap">
+<link rel="icon" href="{% static 'back_end/images/logo/logo_comicao.webp' %}" type="image/webp" />
 <style>
 :root{
 --indigo:#2A2160;--gold:#B8862B;--ink:#1B1830;--line:#E4E0EE;--paper:#FBFAFD;--muted:#6A6580;
@@ -232,7 +233,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     <div class="f-brand">
       <img src="{% static 'back_end/images/logo/logo_comicao.webp' %}" alt="">
       <div class="nm">Comissão da Função Pública</div>
-      <p>Website Portal ba publikasaun atividade husi Comissão da Função Pública</p>
+      <p>{% translate "Website Portal para a publicação de atividades da Comissão da Função Pública" %}</p>
     </div>
 
     <div class="f-col">

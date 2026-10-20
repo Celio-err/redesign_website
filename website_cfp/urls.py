@@ -33,7 +33,6 @@ urlpatterns = [
     path('noticias/', include('noticias.urls')),
     path('documentos_publicos/', include('documentos_publicos.urls')),
     path('configuracao/', include('settings.urls')),
-    path('contacto/', include('contacto.urls')),
 ]
 
 if settings.DEBUG:

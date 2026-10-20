@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 11:19+0900\n"
+"POT-Creation-Date: 2026-10-20 14:44+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,42 +18,136 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\main_front_end\templates\base.html:74
+#: .\main_front_end\templates\base.html:135
+msgid "Saltar para o conteúdo"
+msgstr "Next to content"
+
+#: .\main_front_end\templates\base.html:241
 msgid "Inicio"
 msgstr "Home"
 
-#: .\main_front_end\templates\base.html:76
+#: .\main_front_end\templates\base.html:243
 msgid "Documentos Públicos"
 msgstr "Public Documents"
 
-#: .\main_front_end\templates\home.html:97
-msgid "Ver Todas as Notícias"
-msgstr "See all news"
-
-#: .\main_front_end\templates\base.html:80
-#: .\main_front_end\templates\dddo_publico_list.html:74
+#: .\main_front_end\templates\dddo_publico_list.html:59
 msgid "Legislação"
 msgstr "Legislation"
 
-#: .\main_front_end\templates\base.html:95
-#: .\main_front_end\templates\detail_mandatu.html:50
 #: .\main_front_end\templates\mandato_list.html:60
 msgid "Sobre a CFP"
 msgstr "About CFP"
 
-#: .\main_front_end\templates\base.html:110
+#: .\main_front_end\templates\base.html:249
 msgid "Sistemas"
 msgstr "Systems"
 
-#: .\main_front_end\templates\base.html:126
+#: .\main_front_end\templates\contacto.html:60
 msgid "Contacto"
 msgstr "Contact"
 
-#: .\main_front_end\templates\dddo_publico_list.html:107
+#: .\main_front_end\templates\base.html:239
+msgid "Ligações"
+msgstr ""
+
+#: .\main_front_end\templates\base.html:273
+msgid "Voltar ao topo"
+msgstr "Back to top"
+
+#: .\main_front_end\templates\contacto.html:70
+msgid "Fala Connosco"
+msgstr "Talk with Us"
+
+#: .\main_front_end\templates\contacto.html:77
+msgid "Endereço"
+msgstr "Address"
+
+#: .\main_front_end\templates\contacto.html:87
+msgid "Telefone"
+msgstr "Phone"
+
+#: .\main_front_end\templates\contacto.html:102
+msgid "Copiar Email"
+msgstr "Copy Email"
+
+#: .\main_front_end\templates\contacto.html:104
+msgid "Copiar"
+msgstr "Copy"
+
+#: .\main_front_end\templates\contacto.html:111
+msgid "Obter direções"
+msgstr "Get direction"
+
+#: .\main_front_end\templates\contacto.html:113
+msgid "Mapa"
+msgstr "Map"
+
+#: .\main_front_end\templates\contacto.html:119
+msgid "Copiado"
+msgstr "Copied"
+
+#: .\main_front_end\templates\dddo_publico_list.html:60
+msgid "Deliberação, Decisão, Despacho e Orientação"
+msgstr ""
+
+#: .\main_front_end\templates\dddo_publico_list.html:61
+msgid "documentos publicados"
+msgstr "puclicate document"
+
+#: .\main_front_end\templates\dddo_publico_list.html:70
+msgid "Tipos"
+msgstr "Types"
+
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:66
+msgid "Pesquisar documento..."
+msgstr "Search document..."
+
+#: .\main_front_end\templates\todas_noticias.html:88
+msgid "Pesquisar"
+msgstr "Search"
+
+#: .\main_front_end\templates\noticias_publico_lista.html:102
+msgid "Limpar"
+msgstr "Clear"
+
+#: .\main_front_end\templates\todas_noticias.html:94
+msgid "Mostrando"
+msgstr "Show"
+
+#: .\main_front_end\templates\todas_noticias.html:95
+msgid "de"
+msgstr "of"
+
+#: .\main_front_end\templates\dddo_publico_list.html:97
+msgid "Ver"
+msgstr "View"
+
+#: .\main_front_end\templates\dddo_publico_list.html:106
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:91
+msgid "Indisponível"
+msgstr "Unavailable"
+
+#: .\main_front_end\templates\dddo_publico_list.html:115
+msgid "Página"
+msgstr "Page"
+
+#: .\main_front_end\templates\todas_noticias.html:114
+msgid "Paginação"
+msgstr "Legislation"
+
+#: .\main_front_end\templates\todas_noticias.html:116
+msgid "Anterior"
+msgstr "Previous"
+
+#: .\main_front_end\templates\todas_noticias.html:130
+msgid "Próxima"
+msgstr "Next"
+
+#: .\main_front_end\templates\dddo_publico_list.html:133
 msgid "Nenhum documento DDDO encontrado."
 msgstr "No DDDO document found."
 
-#: .\main_front_end\templates\detail_mandatu.html:52
+#: .\main_front_end\templates\mandato_list.html:71
 msgid "Mandatos"
 msgstr ""
 
@@ -69,11 +163,16 @@ msgstr ""
 msgid "Período"
 msgstr "Period"
 
-#: .\main_front_end\templates\detail_mandatu.html:96
+#: .\main_front_end\templates\detail_mandatu.html:91
+msgid "Sobre"
+msgstr "About"
+
+#: .\main_front_end\templates\noticia_detalho.html:84
 msgid "Conteúdo não disponível."
 msgstr "Content isn't avaliable"
 
 #: .\main_front_end\templates\detail_mandatu.html:101
+#: .\main_front_end\templates\noticia_detalho.html:89
 msgid "Voltar"
 msgstr "Back"
 
@@ -85,76 +184,52 @@ msgstr "See all members"
 msgid "Relatórios e documentos oficiais disponíveis para consulta."
 msgstr "Official reports and documents available for consultation."
 
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:66
-msgid "Pesquisar documento..."
-msgstr "Search document..."
-
-#: .\main_front_end\templates\todas_noticias.html:88
-msgid "Pesquisar"
-msgstr "Search"
-
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:68
-msgid "Limpar"
-msgstr "Clear"
-
 #: .\main_front_end\templates\documentos_publicos_publico_list.html:82
 msgid "Abrir"
 msgstr "Open"
 
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:91
-msgid "Indisponível"
-msgstr "Unavailable"
-
-#: .\main_front_end\templates\documentos_publicos_publico_list.html:101
-#: .\main_front_end\templates\todas_noticias.html:114
-#, fuzzy
-#| msgid "Legislação"
-msgid "Paginação"
-msgstr "Legislation"
-
-#: .\main_front_end\templates\todas_noticias.html:116
-msgid "Anterior"
-msgstr "Previous"
-
-#: .\main_front_end\templates\todas_noticias.html:130
-msgid "Próxima"
-msgstr "Next"
-
+#: .\main_front_end\templates\documentos_publicos_publico_list.html:117
 #: .\main_front_end\templates\documentos_publicos_publico_list.html:122
 msgid "Nenhum documento encontrado."
 msgstr "No documents found."
 
-#: .\main_front_end\templates\home.html:54
+#: .\main_front_end\templates\noticia_detalho.html:56
 msgid "Notícias"
 msgstr "News"
 
-#: .\main_front_end\templates\home.html:55
+#: .\main_front_end\templates\home.html:110
 msgid "Anúncios, avisos e informações oficiais da Comissão da Função Pública de Timor-Leste."
 msgstr "Announcements, notices, and official information from the Comissão da Função Pública of Timor-Leste."
 
-#: .\main_front_end\templates\home.html:63
+#: .\main_front_end\templates\home.html:118
 msgid "Mais recente"
 msgstr "Recent news"
 
 # MENU NOTICIAS NIAN
+#: .\main_front_end\templates\todas_noticias.html:137
 msgid "Nenhuma notícia encontrada."
 msgstr "No news found."
 
-#: .\main_front_end\templates\home.html:121
+#: .\main_front_end\templates\home.html:214
 msgid "Encontrar documentos"
 msgstr "Find documents"
 
-#: .\main_front_end\templates\home.html:122
+#: .\main_front_end\templates\home.html:215
 msgid "Documentos públicos"
 msgstr "Public documents"
 
-#: .\main_front_end\templates\home.html:123
+#: .\main_front_end\templates\home.html:216
 msgid "Dados da Função Pública"
 msgstr "Civil Service data"
 
-#: .\main_front_end\templates\home.html:124
+#: .\main_front_end\templates\home.html:217
 msgid "Portal Vagas da Função Pública"
 msgstr "Public Service Job Portal"
+
+#: .\main_front_end\templates\home.html:221
+#: .\main_front_end\templates\noticia_detalho.html:109
+msgid "Ver Todas as Notícias"
+msgstr "See all news"
 
 #: .\main_front_end\templates\mandato_list.html:62
 msgid "membros"
@@ -173,65 +248,50 @@ msgid "Nenhum membro encontrado para este tipo de mandato."
 msgstr "No member found for this type of mandate."
 
 #: .\main_front_end\templates\noticia_detalho.html:94
-#: .\main_front_end\templates\noticia_detalho.html:95
-#, fuzzy
-#| msgid "Notícias"
 msgid "Outras notícias"
 msgstr "Other news"
 
-#: .\main_front_end\templates\noticias_publico_lista.html:51
-msgid "NOTICIAS"
-msgstr "NEWS"
+#: .\main_front_end\templates\noticias_publico_lista.html:87
+msgid "Notícias e atividades"
+msgstr "News & activities"
 
-#: .\main_front_end\templates\noticias_publico_lista.html:85
-#, fuzzy
-msgid "Detalhes da Noticias"
-msgstr "Detail News"
+#: .\main_front_end\templates\noticias_publico_lista.html:88
+msgid "Seções"
+msgstr "Sections"
 
-#: .\main_front_end\templates\todas_noticias.html:4
+#: .\main_front_end\templates\todas_noticias.html:81
+msgid "Pesquisar notícia..."
+msgstr "Search news..."
+
+#: .\main_front_end\templates\noticias_publico_lista.html:113
+msgid "notícias"
+msgstr "news"
+
+#: .\main_front_end\templates\todas_noticias.html:71
 msgid "Todas Notícias"
 msgstr "All News"
 
 #: .\main_front_end\templates\todas_noticias.html:72
 msgid "notícias publicadas"
-msgstr "Publish news"
+msgstr "publish news"
 
-#: .\main_front_end\templates\todas_noticias.html:81
-msgid "Pesquisar notícia..."
-msgstr "Search news"
+#: .\main_front_end\templates\todas_noticias.html:83
+msgid "Tipo"
+msgstr "Type"
 
 #: .\main_front_end\templates\todas_noticias.html:84
 msgid "Todos os tipos"
 msgstr "All types"
 
-#: .\main_front_end\templates\todas_noticias.html:89
 #: .\main_front_end\templates\todas_noticias.html:138
 msgid "Limpar filtros"
 msgstr "Clear filter"
 
-#: .\main_front_end\templates\todas_noticias.html:94
-msgid "Mostrando"
-msgstr "Show"
-
-#: .\main_front_end\templates\todas_noticias.html:95
-msgid "de"
-msgstr "of"
-
-#: .\main_front_end\views.py:151
+#: .\main_front_end\views.py:250
 msgid "Outros"
 msgstr "Others"
 
-#~ msgid "Documentos"
-#~ msgstr "Documents"
 
-#~ msgid "Visualizar"
-#~ msgstr "View"
+msgid "Website Portal para a publicação de atividades da Comissão da Função Pública"
+msgstr "Portal Website for publish activities from Civil service Comission of Timor-Leste"
 
-#~ msgid "Notícias Mais Recentes"
-#~ msgstr "Recent News"
-
-#~ msgid "DOCUMENTOS PÚBLICOS"
-#~ msgstr "PUBLIC DOCUMENTS"
-
-#~ msgid "LEGISLAÇÃO"
-#~ msgstr "LEGISLATION"

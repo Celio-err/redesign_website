@@ -1,59 +1,1032 @@
 {% load static %}
-
+{% load role_tags %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
-    {% include 'layout/head.html' %}
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="color-scheme" content="light">
+   <title>{% block title %}Comissão da Função Pública{% endblock %}</title>
+
+   <link rel="icon" href="{% static 'back_end/images/logo/logo_comicao.webp' %}" type="image/webp">
+
+   <!-- fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+   <!-- ikon (Font Awesome 4.7). Hapus baris ini jika ikon sudah dimuat dari CSS proyek -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+   <!-- css proyek -->
+   <link rel="stylesheet" href="{% static 'back_end/css/bootstrap.min.css' %}" />
+   <link rel="stylesheet" href="{% static 'back_end/style.css' %}" />
+   <link rel="stylesheet" href="{% static 'back_end/css/responsive.css' %}" />
+   <link rel="stylesheet" href="{% static 'back_end/css/colors.css' %}" />
+   <link rel="stylesheet" href="{% static 'back_end/css/bootstrap-select.css' %}" />
+   <link rel="stylesheet" href="{% static 'back_end/css/perfect-scrollbar.css' %}" />
+   <link rel="stylesheet" href="{% static 'back_end/css/custom.css' %}" />
+   <link rel="stylesheet" href="{% static 'back_end/js/semantic.min.css' %}" />
+
+   <!-- layout CFP (harus setelah css proyek agar menimpanya) -->
+   <style>
+      :root {
+         --cfp-navy: #14264a;
+         --cfp-navy-deep: #0f1d3a;
+         --cfp-navy-hover: #0d1b37;
+         --cfp-gold: #b08d4a;
+         --cfp-gold-soft: #d9bc7e;
+         --cfp-bg: #f2f4f8;
+         --cfp-surface: #ffffff;
+         --cfp-ink: #1a2433;
+         --cfp-muted: #62707f;
+         --cfp-line: #dde3ea;
+         --cfp-line-soft: #e8edf2;
+         --cfp-focus: #2d5aa8;
+         --cfp-sidebar-w: 268px;
+         --cfp-rail-w: 76px;
+         --cfp-topbar-h: 66px;
+         --cfp-serif: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+         --cfp-sans: "Inter", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      }
+
+      html { scrollbar-color: #c3ccd6 transparent; }
+
+      body.cfp-body {
+         margin: 0;
+         background: var(--cfp-bg);
+         color: var(--cfp-ink);
+         font-family: var(--cfp-sans);
+         font-size: 15px;
+         -webkit-font-smoothing: antialiased;
+      }
+
+      .cfp-body ::selection { background: rgba(176, 141, 74, 0.28); }
+      .cfp-body [hidden] { display: none !important; }
+
+      .cfp-skip {
+         position: absolute;
+         left: -9999px;
+         top: 8px;
+         z-index: 2000;
+         padding: 10px 16px;
+         background: var(--cfp-navy);
+         color: #fff;
+         border-radius: 4px;
+         text-decoration: none;
+      }
+      .cfp-skip:focus { left: 12px; color: #fff; }
+
+      /* ---------- Shell ---------- */
+      .cfp-shell { min-height: 100vh; }
+
+      .cfp-main {
+         margin-left: var(--cfp-sidebar-w);
+         min-height: 100vh;
+         display: flex;
+         flex-direction: column;
+         min-width: 0;
+         transition: margin-left 0.24s ease;
+      }
+      .cfp-body.cfp-no-sidebar .cfp-main { margin-left: 0; }
+
+      /* ---------- Sidebar ---------- */
+      .cfp-sidebar {
+         position: fixed;
+         top: 0;
+         bottom: 0;
+         left: 0;
+         z-index: 1030;
+         width: var(--cfp-sidebar-w);
+         display: flex;
+         flex-direction: column;
+         background: var(--cfp-navy-deep);
+         color: #fff;
+         transition: width 0.24s ease, transform 0.24s ease;
+      }
+
+      .cfp-brand {
+         display: flex;
+         align-items: center;
+         gap: 14px;
+         padding: 22px 22px 20px;
+         color: #fff;
+         text-decoration: none;
+         background: rgba(255, 255, 255, 0.025);
+         border-bottom: 1px solid rgba(217, 188, 126, 0.2);
+      }
+      .cfp-brand:hover { color: #fff; text-decoration: none; }
+
+      .cfp-brand__logo {
+         flex: none;
+         width: 52px;
+         height: 52px;
+         padding: 8px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         background: #fff;
+         border-radius: 50%;
+         box-shadow: 0 0 0 3px var(--cfp-navy-deep), 0 0 0 4px var(--cfp-gold);
+      }
+      .cfp-brand__logo img {
+         display: block;
+         max-width: 100%;
+         max-height: 100%;
+         object-fit: contain;
+      }
+
+      .cfp-brand__text { min-width: 0; }
+      .cfp-brand__text strong {
+         display: block;
+         font-family: var(--cfp-serif);
+         font-size: 20px;
+         font-weight: 700;
+         line-height: 1.1;
+         color: #fff;
+      }
+      .cfp-brand__text small {
+         display: block;
+         margin-top: 5px;
+         font-size: 11px;
+         line-height: 1.3;
+         color: rgba(255, 255, 255, 0.55);
+      }
+
+      .cfp-nav {
+         flex: 1;
+         overflow-y: auto;
+         padding: 22px 14px 24px;
+         scrollbar-width: thin;
+         scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+      }
+      .cfp-nav ul { list-style: none; margin: 0 0 22px; padding: 0; }
+
+      .cfp-nav__label {
+         margin: 0 12px 10px;
+         font-size: 12px;
+         font-weight: 500;
+         letter-spacing: 0.06em;
+         color: rgba(217, 188, 126, 0.75);
+      }
+
+      .cfp-nav__link {
+         position: relative;
+         display: flex;
+         align-items: center;
+         gap: 14px;
+         margin-bottom: 3px;
+         padding: 12px 14px;
+         font-size: 14.5px;
+         font-weight: 500;
+         color: rgba(255, 255, 255, 0.72);
+         text-decoration: none;
+         border-radius: 8px;
+         transition: background-color 0.15s ease, color 0.15s ease;
+      }
+      .cfp-nav__link i {
+         width: 20px;
+         font-size: 16px;
+         text-align: center;
+         color: rgba(255, 255, 255, 0.45);
+         transition: color 0.15s ease;
+      }
+      .cfp-nav__link:hover {
+         color: #fff;
+         text-decoration: none;
+         background: rgba(255, 255, 255, 0.07);
+      }
+      .cfp-nav__link:hover i { color: #fff; }
+
+      .cfp-nav__link.is-active {
+         color: #fff;
+         background: rgba(217, 188, 126, 0.14);
+      }
+      .cfp-nav__link.is-active i { color: var(--cfp-gold-soft); }
+      .cfp-nav__link.is-active::before {
+         content: "";
+         position: absolute;
+         left: -14px;
+         top: 9px;
+         bottom: 9px;
+         width: 3px;
+         background: var(--cfp-gold-soft);
+         border-radius: 0 3px 3px 0;
+      }
+
+      .cfp-nav__link:focus-visible,
+      .cfp-brand:focus-visible {
+         outline: 2px solid var(--cfp-gold-soft);
+         outline-offset: 2px;
+      }
+
+      .cfp-overlay { display: none; }
+
+      /* ---------- Topbar ---------- */
+      .cfp-topbar {
+         position: sticky;
+         top: 0;
+         z-index: 1020;
+         height: var(--cfp-topbar-h);
+         display: flex;
+         align-items: center;
+         gap: 14px;
+         padding: 0 32px;
+         background: var(--cfp-surface);
+         border-bottom: 1px solid var(--cfp-line);
+         transition: box-shadow 0.2s ease;
+      }
+      .cfp-topbar.is-scrolled { box-shadow: 0 10px 24px -18px rgba(20, 38, 74, 0.45); }
+
+      .cfp-topbar__page {
+         margin: 0;
+         padding: 0;
+         font-family: var(--cfp-serif);
+         font-size: 24px;
+         font-weight: 700;
+         line-height: 1;
+         color: var(--cfp-navy);
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+      }
+
+      .cfp-topbar__title {
+         display: none;
+         font-family: var(--cfp-serif);
+         font-size: 19px;
+         font-weight: 700;
+         color: var(--cfp-navy);
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+      }
+      .cfp-topbar__spacer { flex: 1; }
+
+      .cfp-topbar__date {
+         display: inline-flex;
+         align-items: center;
+         gap: 8px;
+         padding: 7px 12px;
+         font-size: 13px;
+         color: var(--cfp-muted);
+         background: var(--cfp-bg);
+         border-radius: 999px;
+      }
+
+      .cfp-iconbtn {
+         width: 40px;
+         height: 40px;
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         font-size: 18px;
+         color: var(--cfp-ink);
+         background: transparent;
+         border: 0;
+         border-radius: 8px;
+         cursor: pointer;
+      }
+      .cfp-iconbtn:hover { background: #eef1f5; }
+
+      .cfp-iconbtn:focus-visible,
+      .cfp-user__btn:focus-visible,
+      .cfp-menu a:focus-visible,
+      .cfp-menu button:focus-visible {
+         outline: 2px solid var(--cfp-focus);
+         outline-offset: 2px;
+      }
+
+      .cfp-user { position: relative; }
+
+      .cfp-user__btn {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         padding: 5px 10px 5px 5px;
+         font: inherit;
+         font-size: 14px;
+         font-weight: 500;
+         color: var(--cfp-ink);
+         background: transparent;
+         border: 0;
+         border-radius: 999px;
+         cursor: pointer;
+      }
+      .cfp-user__btn:hover { background: #eef1f5; }
+      .cfp-user__btn .fa { color: var(--cfp-muted); }
+
+      .cfp-avatar {
+         width: 34px;
+         height: 34px;
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         font-size: 14px;
+         font-weight: 600;
+         color: #fff;
+         background: var(--cfp-navy);
+         border-radius: 50%;
+         box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--cfp-gold);
+      }
+
+      .cfp-user__name {
+         max-width: 180px;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
+      }
+
+      .cfp-menu {
+         position: absolute;
+         top: calc(100% + 10px);
+         right: 0;
+         z-index: 1040;
+         width: 244px;
+         padding: 6px;
+         background: var(--cfp-surface);
+         border: 1px solid var(--cfp-line);
+         border-radius: 10px;
+         box-shadow: 0 16px 40px -12px rgba(20, 38, 74, 0.3);
+      }
+      .cfp-menu__head {
+         padding: 10px 12px 12px;
+         margin-bottom: 6px;
+         border-bottom: 1px solid var(--cfp-line);
+      }
+      .cfp-menu__head small { display: block; font-size: 12px; color: var(--cfp-muted); }
+      .cfp-menu__head strong {
+         display: block;
+         margin-top: 2px;
+         font-size: 14px;
+         font-weight: 600;
+         color: var(--cfp-ink);
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
+      }
+      .cfp-menu form { margin: 0; }
+
+      .cfp-menu a,
+      .cfp-menu button {
+         width: 100%;
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         padding: 10px 12px;
+         font: inherit;
+         font-size: 14px;
+         text-align: left;
+         color: var(--cfp-ink);
+         text-decoration: none;
+         background: transparent;
+         border: 0;
+         border-radius: 6px;
+         cursor: pointer;
+      }
+      .cfp-menu a:hover,
+      .cfp-menu button:hover {
+         color: var(--cfp-ink);
+         text-decoration: none;
+         background: #f1f4f8;
+      }
+      .cfp-menu .fa { width: 16px; text-align: center; color: var(--cfp-muted); }
+
+      /* ---------- Konten ---------- */
+      .cfp-content { flex: 1; padding: 36px 36px 28px; }
+
+      .cfp-content .midde_cont {
+         margin: 0;
+         padding: 0;
+         min-height: 0;
+         background: none;
+      }
+
+      .cfp-content a:focus-visible,
+      .cfp-content button:focus-visible {
+         outline: 2px solid var(--cfp-focus);
+         outline-offset: 2px;
+      }
+
+      /* Header halaman (opsional, lewat block page_header) */
+      .cfp-page-header {
+         display: flex;
+         flex-wrap: wrap;
+         align-items: flex-end;
+         justify-content: space-between;
+         gap: 14px 20px;
+         margin: 0 0 30px;
+      }
+      .cfp-page-header > h1,
+      .cfp-page-header > p { flex: 0 0 100%; }
+
+      .cfp-page-header h1 {
+         margin: 0;
+         font-family: var(--cfp-serif);
+         font-size: 38px;
+         font-weight: 700;
+         line-height: 1.05;
+         color: var(--cfp-navy);
+      }
+      .cfp-page-header h1::after {
+         content: "";
+         display: block;
+         width: 40px;
+         height: 2px;
+         margin-top: 14px;
+         background: var(--cfp-gold);
+      }
+      .cfp-page-header p {
+         margin: 12px 0 0;
+         font-size: 14.5px;
+         line-height: 1.5;
+         color: var(--cfp-muted);
+      }
+      .cfp-page-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+      /* Komponen lama: kartu */
+      .cfp-content .white_shd {
+         background: var(--cfp-surface);
+         border: 1px solid var(--cfp-line);
+         border-radius: 10px;
+         box-shadow: 0 1px 2px rgba(20, 38, 74, 0.05), 0 8px 24px -16px rgba(20, 38, 74, 0.18);
+      }
+      .cfp-content .graph_head {
+         padding: 18px 24px;
+         border-bottom: 1px solid var(--cfp-line);
+      }
+      .cfp-content .heading1 h2 {
+         margin: 0;
+         font-size: 17px;
+         font-weight: 600;
+         color: var(--cfp-navy);
+      }
+
+      /* Tabel */
+      .cfp-content .table { color: var(--cfp-ink); }
+      .cfp-content .table thead th {
+         padding: 13px 16px;
+         font-size: 12.5px;
+         font-weight: 600;
+         letter-spacing: 0.02em;
+         color: var(--cfp-muted);
+         background: #f6f8fa;
+         border-top: 0;
+         border-bottom: 1px solid var(--cfp-line);
+      }
+      .cfp-content .table td {
+         padding: 14px 16px;
+         vertical-align: middle;
+         border-color: var(--cfp-line-soft);
+      }
+      .cfp-content .table tbody tr { transition: background-color 0.12s ease; }
+      .cfp-content .table tbody tr:hover { background: #f8fafc; }
+
+      /* Tombol */
+      .cfp-content .btn {
+         padding: 0.55rem 1.05rem;
+         font-size: 14px;
+         font-weight: 500;
+         border-radius: 6px;
+         transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .cfp-content .btn-sm { padding: 0.35rem 0.7rem; font-size: 13px; }
+      .cfp-content .btn:focus { box-shadow: 0 0 0 3px rgba(45, 90, 168, 0.22); }
+
+      .cfp-content .btn-primary { background: var(--cfp-navy); border-color: var(--cfp-navy); color: #fff; }
+      .cfp-content .btn-primary:hover,
+      .cfp-content .btn-primary:focus { background: var(--cfp-navy-hover); border-color: var(--cfp-navy-hover); }
+
+      .cfp-content .btn-outline-primary { color: var(--cfp-navy); border-color: var(--cfp-navy); background: transparent; }
+      .cfp-content .btn-outline-primary:hover { color: #fff; background: var(--cfp-navy); border-color: var(--cfp-navy); }
+
+      .cfp-content .btn-success { background: #1f7a4a; border-color: #1f7a4a; }
+      .cfp-content .btn-success:hover { background: #196a40; border-color: #196a40; }
+      .cfp-content .btn-danger { background: #b23a2e; border-color: #b23a2e; }
+      .cfp-content .btn-danger:hover { background: #9c3026; border-color: #9c3026; }
+      .cfp-content .btn-warning { background: #c98a1b; border-color: #c98a1b; color: #fff; }
+      .cfp-content .btn-warning:hover { background: #b57b16; border-color: #b57b16; color: #fff; }
+      .cfp-content .btn-secondary { background: #e9edf2; border-color: #e9edf2; color: var(--cfp-ink); }
+      .cfp-content .btn-secondary:hover { background: #dbe1e8; border-color: #dbe1e8; color: var(--cfp-ink); }
+
+      /* Form */
+      .cfp-content label { font-size: 14px; font-weight: 600; color: var(--cfp-ink); }
+      .cfp-content .form-control {
+         min-height: 44px;
+         padding: 0.55rem 0.85rem;
+         font-size: 15px;
+         color: var(--cfp-ink);
+         border-color: var(--cfp-line);
+         border-radius: 6px;
+      }
+      .cfp-content .form-control:hover { border-color: #b7c1cc; }
+      .cfp-content .form-control:focus {
+         border-color: var(--cfp-focus);
+         box-shadow: 0 0 0 3px rgba(45, 90, 168, 0.18);
+      }
+
+      /* Badge, alert, pagination, modal */
+      .cfp-content .badge { padding: 0.4em 0.65em; font-weight: 500; border-radius: 4px; }
+      .cfp-content .alert { border-radius: 8px; }
+
+      .cfp-content .page-link { color: var(--cfp-navy); border-color: var(--cfp-line); }
+      .cfp-content .page-link:hover { color: var(--cfp-navy); background: #eef1f5; }
+      .cfp-content .page-item.active .page-link {
+         color: #fff;
+         background: var(--cfp-navy);
+         border-color: var(--cfp-navy);
+      }
+
+      .cfp-body .modal-content {
+         border: 0;
+         border-radius: 12px;
+         box-shadow: 0 24px 60px -16px rgba(10, 20, 45, 0.45);
+      }
+      .cfp-body .modal-header { padding: 18px 24px; border-bottom: 1px solid var(--cfp-line); }
+      .cfp-body .modal-footer { border-top: 1px solid var(--cfp-line); }
+
+      /* ---------- Komponen bersama untuk halaman daftar ---------- */
+      .cfp-card {
+         overflow: hidden;
+         background: var(--cfp-surface);
+         border: 1px solid var(--cfp-line);
+         border-radius: 12px;
+         box-shadow: 0 1px 2px rgba(20, 38, 74, 0.05), 0 8px 24px -16px rgba(20, 38, 74, 0.18);
+      }
+      .cfp-table-wrap { overflow-x: auto; }
+      .cfp-table { width: 100%; margin: 0; }
+      .cfp-table .col-no { width: 64px; color: var(--cfp-muted); }
+      .cfp-table .col-aksi { width: 150px; text-align: right; }
+
+      .cfp-actions { display: flex; justify-content: flex-end; gap: 8px; }
+      .cfp-iconaction {
+         width: 34px;
+         height: 34px;
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         font-size: 14px;
+         color: var(--cfp-muted);
+         text-decoration: none;
+         background: #fff;
+         border: 1px solid var(--cfp-line);
+         border-radius: 6px;
+         transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+      }
+      .cfp-iconaction:hover { text-decoration: none; }
+      .cfp-iconaction:focus-visible { outline: 2px solid var(--cfp-focus); outline-offset: 2px; }
+      .cfp-iconaction--view:hover   { color: var(--cfp-navy); border-color: var(--cfp-navy); background: #eef2f8; }
+      .cfp-iconaction--edit:hover   { color: #8a5a00; border-color: #c98a1b; background: #fbf3e3; }
+      .cfp-iconaction--delete:hover { color: #b23a2e; border-color: #b23a2e; background: #fdf0ee; }
+
+      .cfp-empty { padding: 48px 20px; text-align: center; color: var(--cfp-muted); }
+      .cfp-empty .fa { display: block; margin-bottom: 12px; font-size: 28px; color: var(--cfp-gold); }
+      .cfp-empty p { margin: 0; font-size: 15px; }
+
+      /* ---------- Komponen bersama untuk formulir ---------- */
+      .cfp-card--form { max-width: 760px; }
+      .cfp-card--sm { max-width: 560px; }
+      .cfp-form { padding: 32px; }
+
+      .cfp-form__alert {
+         margin-bottom: 24px;
+         padding: 11px 14px;
+         font-size: 14px;
+         color: #9c2a1c;
+         background: #fdf0ee;
+         border: 1px solid #efc4bd;
+         border-radius: 6px;
+      }
+
+      .cfp-form__group { margin-bottom: 22px; }
+
+      .cfp-form__group > label {
+         display: block;
+         margin-bottom: 7px;
+         font-size: 14px;
+         font-weight: 600;
+         color: var(--cfp-ink);
+      }
+
+      .cfp-form__req { margin-left: 3px; color: #b23a2e; }
+
+      .cfp-form input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]),
+      .cfp-form select,
+      .cfp-form textarea {
+         display: block;
+         width: 100%;
+         min-height: 44px;
+         padding: 0.55rem 0.85rem;
+         font: inherit;
+         font-size: 15px;
+         color: var(--cfp-ink);
+         background: #fff;
+         border: 1px solid var(--cfp-line);
+         border-radius: 6px;
+         transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .cfp-form textarea { min-height: 120px; }
+
+      .cfp-form input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):hover,
+      .cfp-form select:hover,
+      .cfp-form textarea:hover { border-color: #b7c1cc; }
+
+      .cfp-form input:focus,
+      .cfp-form select:focus,
+      .cfp-form textarea:focus {
+         outline: none;
+         border-color: var(--cfp-focus);
+         box-shadow: 0 0 0 3px rgba(45, 90, 168, 0.18);
+      }
+
+      .cfp-form input[type="file"] { max-width: 100%; font-size: 14px; }
+
+      .cfp-form__group.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+      .cfp-form__group.has-error select,
+      .cfp-form__group.has-error textarea { border-color: #b23a2e; }
+
+      .cfp-form__help { margin: 6px 0 0; font-size: 13px; color: var(--cfp-muted); }
+      .cfp-form__error { margin: 6px 0 0; font-size: 13px; color: #b23a2e; }
+
+      .cfp-form__actions {
+         display: flex;
+         flex-wrap: wrap;
+         gap: 10px;
+         margin-top: 30px;
+         padding-top: 24px;
+         border-top: 1px solid var(--cfp-line);
+      }
+
+      .cfp-photo-preview { margin-bottom: 14px; }
+      .cfp-photo-preview img {
+         display: block;
+         width: 96px;
+         height: 96px;
+         object-fit: cover;
+         border-radius: 50%;
+         box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--cfp-gold-soft);
+      }
+
+      @media (max-width: 575.98px) {
+         .cfp-form { padding: 22px 18px; }
+      }
+
+      /* ---------- Footer ---------- */
+      .cfp-footer {
+         display: flex;
+         flex-wrap: wrap;
+         justify-content: space-between;
+         gap: 4px 20px;
+         padding: 20px 36px;
+         font-size: 13px;
+         color: var(--cfp-muted);
+         border-top: 1px solid var(--cfp-line);
+      }
+      .cfp-footer p { margin: 0; }
+
+      /* ---------- Desktop: sidebar bisa diciutkan menjadi rail ikon ---------- */
+      @media (min-width: 992px) {
+         .cfp-collapsed .cfp-sidebar { width: var(--cfp-rail-w); }
+         .cfp-collapsed .cfp-main { margin-left: var(--cfp-rail-w); }
+         .cfp-body.cfp-collapsed.cfp-no-sidebar .cfp-main { margin-left: 0; }
+
+         .cfp-collapsed .cfp-brand { justify-content: center; padding: 20px 0; }
+         .cfp-collapsed .cfp-brand__text { display: none; }
+
+         .cfp-collapsed .cfp-nav { overflow: visible; padding: 18px 12px; }
+
+         .cfp-collapsed .cfp-nav__label {
+            height: 1px;
+            margin: 16px 14px;
+            font-size: 0;
+            line-height: 0;
+            overflow: hidden;
+            background: rgba(217, 188, 126, 0.25);
+         }
+
+         .cfp-collapsed .cfp-nav__link { justify-content: center; gap: 0; padding: 13px 0; }
+
+         .cfp-collapsed .cfp-nav__link span {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
+         }
+
+         .cfp-collapsed .cfp-nav__link.is-active::before { left: -12px; }
+
+         /* Tooltip nama menu */
+         .cfp-collapsed .cfp-nav__link:hover::after,
+         .cfp-collapsed .cfp-nav__link:focus-visible::after {
+            content: attr(data-label);
+            position: absolute;
+            left: calc(100% + 14px);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            padding: 7px 11px;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            color: #fff;
+            background: #08122a;
+            border-radius: 6px;
+            box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.45);
+         }
+      }
+
+      /* ---------- Tablet / mobile ---------- */
+      @media (max-width: 991.98px) {
+         .cfp-main { margin-left: 0; }
+
+         .cfp-sidebar { transform: translateX(-100%); }
+
+         .cfp-body.cfp-open .cfp-sidebar {
+            transform: none;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+         }
+         .cfp-body.cfp-open { overflow: hidden; }
+         .cfp-body.cfp-open .cfp-overlay {
+            display: block;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1025;
+            background: rgba(10, 16, 32, 0.5);
+         }
+
+         .cfp-topbar { padding: 0 14px; }
+         .cfp-topbar__page { font-size: 21px; }
+         .cfp-topbar__page:empty ~ .cfp-topbar__title { display: block; }
+         .cfp-content { padding: 24px 16px 16px; }
+         .cfp-footer { padding: 16px; }
+         .cfp-page-header h1 { font-size: 32px; }
+      }
+
+      @media (max-width: 767.98px) {
+         .cfp-topbar__date { display: none; }
+      }
+
+      @media (max-width: 575.98px) {
+         .cfp-user__name { display: none; }
+         .cfp-user__btn { padding-right: 6px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+         .cfp-main, .cfp-sidebar, .cfp-nav__link, .cfp-nav__link i,
+         .cfp-topbar, .cfp-content .btn, .cfp-content .table tbody tr { transition: none; }
+      }
+   </style>
+
+   {% block extra_head %}{% endblock %}
 </head>
 
+<body class="cfp-body inner_page widgets{% if not user.is_authenticated %} cfp-no-sidebar{% endif %}">
 
-<body class="inner_page widgets">
+   <script>
+      /* Pulihkan status sidebar sebelum halaman digambar, supaya tidak berkedip */
+      try {
+         if (window.innerWidth > 991 && localStorage.getItem('cfp-sidebar') === 'closed') {
+            document.body.classList.add('cfp-collapsed');
+         }
+      } catch (e) {}
+   </script>
 
-<div class="full_container">
+   <a class="cfp-skip" href="#conteudo">Saltar para o conteúdo</a>
 
-    <div class="inner_container">
+   <div class="cfp-shell">
 
+      {% if user.is_authenticated %}
 
-        <!-- Sidebar -->
-        {% include 'layout/sidebar.html' %}
-        <!-- End Sidebar -->
+      {% url 'index' as url_index %}
+      {% url 'mandato_list' as url_mandato %}
+      {% url 'documentos_dddo_list' as url_legislacao %}
+      {% url 'documentos_publicos_list' as url_publicacoes %}
+      {% url 'noticias_list' as url_noticias %}
+      {% url 'settings' as url_config %}
+      {% url 'perfil' as url_perfil %}
 
+      <!-- Sidebar -->
+      <aside class="cfp-sidebar" id="cfpSidebar" aria-label="Navegação principal">
 
-        <!-- Content -->
-        <div id="content">
+         <a class="cfp-brand" href="{{ url_index }}">
+            <span class="cfp-brand__logo">
+               <img src="{% static 'back_end/images/logo/logo_comicao.webp' %}" alt="Logo da Comissão da Função Pública">
+            </span>
+            <span class="cfp-brand__text">
+               <strong>Comissão da Função Pública</strong>
+               <small>República Democrática de Timor-Leste</small>
+            </span>
+         </a>
 
+         <nav class="cfp-nav">
+            <p class="cfp-nav__label">Menu</p>
+            <ul>
+               <li>
+                  <a class="cfp-nav__link{% if request.path == url_index %} is-active{% endif %}" href="{{ url_index }}" data-label="Início"{% if request.path == url_index %} aria-current="page"{% endif %}>
+                     <i class="fa fa-th-large"></i><span>Início</span>
+                  </a>
+               </li>
+               <li>
+                  <a class="cfp-nav__link{% if url_mandato in request.path %} is-active{% endif %}" href="{{ url_mandato }}" data-label="Mandato"{% if url_mandato in request.path %} aria-current="page"{% endif %}>
+                     <i class="fa fa-clock-o"></i><span>Mandato</span>
+                  </a>
+               </li>
+               <li>
+                  <a class="cfp-nav__link{% if url_legislacao in request.path %} is-active{% endif %}" href="{{ url_legislacao }}" data-label="Legislação"{% if url_legislacao in request.path %} aria-current="page"{% endif %}>
+                     <i class="fa fa-gavel"></i><span>Legislação</span>
+                  </a>
+               </li>
+               <li>
+                  <a class="cfp-nav__link{% if url_publicacoes in request.path %} is-active{% endif %}" href="{{ url_publicacoes }}" data-label="Publicações"{% if url_publicacoes in request.path %} aria-current="page"{% endif %}>
+                     <i class="fa fa-file-text-o"></i><span>Publicações</span>
+                  </a>
+               </li>
+               <li>
+                  <a class="cfp-nav__link{% if url_noticias in request.path %} is-active{% endif %}" href="{{ url_noticias }}" data-label="Notícias"{% if url_noticias in request.path %} aria-current="page"{% endif %}>
+                     <i class="fa fa-newspaper-o"></i><span>Notícias</span>
+                  </a>
+               </li>
+            </ul>
 
-            <!-- Header / Topbar -->
-            {% include 'layout/navbar.html' %}
+            <p class="cfp-nav__label">Conta</p>
+            <ul>
+               {% if user|has_group:"superadmin" %}
+               <li>
+                  <a class="cfp-nav__link{% if url_config in request.path and url_perfil not in request.path %} is-active{% endif %}" href="{{ url_config }}" data-label="Configuração"{% if url_config in request.path and url_perfil not in request.path %} aria-current="page"{% endif %}>
+                     <i class="fa fa-cog"></i><span>Configuração</span>
+                  </a>
+               </li>
+               {% endif %}
+               <li>
+                  <a class="cfp-nav__link{% if url_perfil in request.path %} is-active{% endif %}" href="{{ url_perfil }}" data-label="Perfil"{% if url_perfil in request.path %} aria-current="page"{% endif %}>
+                     <i class="fa fa-user"></i><span>Perfil</span>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </aside>
+      <div class="cfp-overlay" data-cfp-close></div>
 
-          
-            <!-- Main Content -->
+      {% endif %}
+
+      <div class="cfp-main">
+
+         <!-- Topbar -->
+         <header class="cfp-topbar" id="cfpTopbar">
+
+            {% if user.is_authenticated %}
+            <button type="button" class="cfp-iconbtn" id="cfpSidebarToggle" aria-label="Abrir ou fechar o menu" aria-controls="cfpSidebar" aria-expanded="true">
+               <i class="fa fa-bars"></i>
+            </button>
+            {% endif %}
+
+            <h2 class="cfp-topbar__page">{% block page_title %}{% endblock %}</h2>
+            <div class="cfp-topbar__title">Comissão da Função Pública</div>
+            <div class="cfp-topbar__spacer"></div>
+
+            <span class="cfp-topbar__date"><i class="fa fa-calendar-o"></i>{% now "d/m/Y" %}</span>
+
+            {% if user.is_authenticated %}
+            <div class="cfp-user" id="cfpUser">
+               <button type="button" class="cfp-user__btn" aria-haspopup="true" aria-expanded="false" aria-controls="cfpUserMenu">
+                  <span class="cfp-avatar">{{ user.username|slice:":1"|upper }}</span>
+                  <span class="cfp-user__name">{{ user.get_full_name|default:user.username }}</span>
+                  <i class="fa fa-angle-down"></i>
+               </button>
+
+               <div class="cfp-menu" id="cfpUserMenu" hidden>
+                  <div class="cfp-menu__head">
+                     <small>Sessão iniciada como</small>
+                     <strong>{{ user.get_full_name|default:user.username }}</strong>
+                  </div>
+                  <a href="{% url 'perfil' %}"><i class="fa fa-user"></i><span>Perfil</span></a>
+                  <form method="post" action="{% url 'logout' %}">
+                     {% csrf_token %}
+                     <button type="submit"><i class="fa fa-sign-out"></i><span>Sair</span></button>
+                  </form>
+               </div>
+            </div>
+            {% endif %}
+
+         </header>
+
+         <!-- Konten -->
+         <main class="cfp-content" id="conteudo">
             <div class="midde_cont">
 
-                {% block content %}
+               {% block page_header %}{% endblock %}
 
-                {% endblock %}
-
-
-                
-
+               {% block content %}{% endblock %}
 
             </div>
+         </main>
 
+         <!-- Footer -->
+         <footer class="cfp-footer">
+            <p>Website Desenvolvimento &copy; {% now "Y" %} Comissão da Função Pública</p>
+            <p>República Democrática de Timor-Leste</p>
+         </footer>
 
-        </div>
+      </div>
+   </div>
 
+   <!-- Scripts -->
+   <script src="{% static 'back_end/js/jquery.min.js' %}"></script>
+   <script src="{% static 'back_end/js/popper.min.js' %}"></script>
+   <script src="{% static 'back_end/js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'back_end/js/animate.js' %}"></script>
+   <script src="{% static 'back_end/js/bootstrap-select.js' %}"></script>
+   <script src="{% static 'back_end/js/owl.carousel.js' %}"></script>
+   <script src="{% static 'back_end/js/Chart.min.js' %}"></script>
+   <script src="{% static 'back_end/js/Chart.bundle.min.js' %}"></script>
+   <script src="{% static 'back_end/js/utils.js' %}"></script>
+   <script src="{% static 'back_end/js/analyser.js' %}"></script>
+   <script src="{% static 'back_end/js/perfect-scrollbar.min.js' %}"></script>
+   <script src="{% static 'back_end/js/custom.js' %}"></script>
+   <script src="{% static 'back_end/js/semantic.min.js' %}"></script>
 
-    </div>
- 
+   <!-- Toggle sidebar, menu pengguna, bayangan topbar saat scroll -->
+   <script>
+      (function () {
+         var body = document.body;
+         var toggle = document.getElementById('cfpSidebarToggle');
+         var topbar = document.getElementById('cfpTopbar');
+         var mq = window.matchMedia('(max-width: 991.98px)');
 
-</div>
+         function isMobile() { return mq.matches; }
 
-   <!-- Footer -->
-    {% include 'layout/footer.html' %}
+         function syncToggle() {
+            if (!toggle) return;
+            var open = isMobile() ? body.classList.contains('cfp-open') : !body.classList.contains('cfp-collapsed');
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+         }
 
+         if (toggle) {
+            toggle.addEventListener('click', function () {
+               if (isMobile()) {
+                  body.classList.toggle('cfp-open');
+               } else {
+                  var closed = body.classList.toggle('cfp-collapsed');
+                  try { localStorage.setItem('cfp-sidebar', closed ? 'closed' : 'open'); } catch (e) {}
+               }
+               syncToggle();
+            });
+            syncToggle();
+         }
 
+         var overlay = document.querySelector('[data-cfp-close]');
+         if (overlay) {
+            overlay.addEventListener('click', function () {
+               body.classList.remove('cfp-open');
+               syncToggle();
+            });
+         }
+
+         var user = document.getElementById('cfpUser');
+         var menu = document.getElementById('cfpUserMenu');
+         var btn = user ? user.querySelector('.cfp-user__btn') : null;
+
+         function setMenu(open) {
+            if (!menu || !btn) return;
+            menu.hidden = !open;
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+         }
+
+         if (user && menu && btn) {
+            btn.addEventListener('click', function (e) {
+               e.stopPropagation();
+               setMenu(menu.hidden);
+            });
+            document.addEventListener('click', function (e) {
+               if (!user.contains(e.target)) setMenu(false);
+            });
+         }
+
+         document.addEventListener('keydown', function (e) {
+            if (e.key !== 'Escape') return;
+            setMenu(false);
+            body.classList.remove('cfp-open');
+            syncToggle();
+         });
+
+         if (mq.addEventListener) mq.addEventListener('change', syncToggle);
+
+         if (topbar) {
+            function onScroll() { topbar.classList.toggle('is-scrolled', window.scrollY > 2); }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+         }
+      })();
+   </script>
+
+   {% block extra_js %}{% endblock %}
 
 </body>
 </html>

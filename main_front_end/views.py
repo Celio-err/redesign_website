@@ -133,7 +133,7 @@ def todas_noticias(request):
         .distinct()
         .order_by('tipo_noticia')
     )
-    paginator = Paginator(t_noticias, 5)
+    paginator = Paginator(t_noticias, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
     params = request.GET.copy()
     params.pop('page', None)
@@ -146,25 +146,8 @@ def todas_noticias(request):
         'qs': params.urlencode(),
         "active_menu": "home"
     })
-# @logout_required(redirect_to='index')
-# def dddo_publico_list(request):
-#     documentos = DDDO.objects.all().select_related('id_tipo_dddo')
-
-#     return render(request, "dddo_publico_list.html", {
-#         "documentos": documentos
-#     })
-
-# @logout_required(redirect_to='index')
-# def dddo_list_by_tipo(request, pk):
-#     tipo_selecionado = get_object_or_404(TipoDDDO, pk=pk)
-#     documentos = DDDO.objects.filter(id_tipo_dddo_id=pk).select_related('id_tipo_dddo')
-#     return render(request, "dddo_publico_list.html", {
-#         "documentos": documentos,
-#         "tipo_selecionado": tipo_selecionado,
-#     })
 
 DDDO_POR_PAGINA = 10
-
 def _dddo_context(request, qs):
     """Pencarian + paginator + penanda file, dipakai kedua view DDDO."""
     q = request.GET.get('q', '').strip()
@@ -296,14 +279,6 @@ def documentos_publicos_review(request, pk):
     response = HttpResponse(documento.documentos_publicos, content_type='application/octet-stream')
     response['Content-Disposition'] = f'attachment; filename="{documento.nome_ficheiro_original}"'
     return response
-
-# @logout_required(redirect_to='index')
-# def documentos_publicos_review(request, pk):
-#     documento = get_object_or_404(DocumentosPublicos, pk=pk)
-#     if not documento.documentos_publicos:
-#         raise Http404
-#     nome = documento.nome_ficheiro_original or f'documento_{pk}.pdf'
-#     return _servir_ficheiro(documento.documentos_publicos, nome)
 
 @logout_required(redirect_to='index')
 def documentos_publicos_download(request, pk):

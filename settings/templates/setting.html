@@ -1,5 +1,10 @@
 {% extends 'master/base.html' %}
+{% load static %}
+{% block title %}Lista Utilizadores - Comissão da Função Pública{% endblock %}
 {% block page_title %}Lista Utilizadores{% endblock %}
+{% block extra_head %}
+<link href="{% static 'back_end/DataTables/datatables.min.css' %}" rel="stylesheet">
+{% endblock %}
 {% block content %}
 
 <div class="container-fluid">
@@ -28,7 +33,7 @@
                 {% endif %}
 
                 <div class="table-responsive-sm">
-                    <table class="table">
+                    <table id="myTable" class="table">
                         <thead>
                             <tr style="background: #f8f9fa;">
                                 <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Nome Utilizador</th>
@@ -93,4 +98,12 @@
 
 </div>
 
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'back_end/DataTables/datatables.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable();
+    });
+</script>
 {% endblock %}

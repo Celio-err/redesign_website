@@ -138,18 +138,10 @@
 {% endblock %}
 
 {% block extra_js %}
-<!-- Pindahkan script JS DataTables ke block extra_js agar dimuat di akhir halaman -->
 <script src="{% static 'back_end/DataTables/datatables.min.js' %}"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Inisialisasi DataTable dengan opsi tambahan untuk mencegah layout berantakan
-    const table = new DataTable('#myTable', {
-        responsive: true,
-        autoWidth: false,
-        language: {
-            url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-PT.json" // Opsional: Bahasa Portugis agar menyatu dengan UI
-        }
+    $(document).ready(function() {
+        $('#myTable').DataTable();
     });
-});
 </script>
 {% endblock %}

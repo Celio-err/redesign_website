@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{{ noticia.nome_noticia }} — Comissão da Função Pública{% endblock %}
+<!-- MENGGUNAKAN noticia.current_title UNTUK TITLE HALAMAN -->
+{% block title %}{{ noticia.current_title }} — Comissão da Função Pública{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -34,7 +35,7 @@
 .side a.item{display:grid;grid-template-columns:76px 1fr;gap:14px;padding:16px 0;align-items:start}
 .side .pic{width:76px;height:76px;border-radius:4px;overflow:hidden;background:#ECE8F6}
 .side .pic img{width:100%;height:100%;object-fit:cover;display:block}
-.side .d{font-size:13px;color:var(--muted)}
+.side .d{font-size:13px;color:#D9D2EC}
 .side .t{font-family:'Newsreader',serif;font-size:17px;line-height:1.3;font-weight:500;color:var(--indigo);margin-top:3px}
 .side a.item:hover .t{text-decoration:underline;text-underline-offset:3px}
 .side .all{display:block;margin-top:8px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;font-weight:500;color:var(--indigo)}
@@ -54,8 +55,13 @@
   <div class="wrap">
     <div class="in">
       <div class="crumb"><a href="{% url 'todas_noticias' %}">{% translate "Notícias" %}</a></div>
-      {% if noticia.tipo_noticia %}<span class="tag">{{ noticia.tipo_noticia }}</span>{% endif %}
-      <h1>{{ noticia.nome_noticia }}</h1>
+      
+      <!-- KATEGORI/TIPO BERITA DINAMIS -->
+      {% if noticia.current_tipo %}<span class="tag">{{ noticia.current_tipo }}</span>{% endif %}
+      
+      <!-- JUDUL BERITA DINAMIS -->
+      <h1>{{ noticia.current_title }}</h1>
+      
       <div class="date">{{ noticia.data_publicacao|date:"d/m/Y" }}</div>
     </div>
   </div>
@@ -68,18 +74,20 @@
   <article class="{% if not noticia.imagen %}no-img{% endif %}">
     {% if noticia.imagen %}
     <figure class="figure">
-      <img src="/{{ noticia.imagen }}" alt="{{ noticia.nome_noticia }}">
-      {% if noticia.noticia and noticia.descricao %}
-        <figcaption>{{ noticia.descricao }}</figcaption>
+      <img src="/{{ noticia.imagen }}" alt="{{ noticia.current_title }}">
+      {% if noticia.current_noticia and noticia.current_descricao %}
+        <!-- DESKRIPSI/RINGKASAN DINAMIS -->
+        <figcaption>{{ noticia.current_descricao }}</figcaption>
       {% endif %}
     </figure>
     {% endif %}
 
     <div class="body">
-      {% if noticia.noticia %}
-        {{ noticia.noticia|linebreaks }}
-      {% elif noticia.descricao %}
-        {{ noticia.descricao|linebreaks }}
+      <!-- ISI BERITA UTAMA DINAMIS (DITAMBAHKAN FILTER |safe AGAR TAG HTML DIRENDER DENGAN AMAN) -->
+      {% if noticia.current_noticia %}
+        {{ noticia.current_noticia|safe }}
+      {% elif noticia.current_descricao %}
+        {{ noticia.current_descricao|linebreaks }}
       {% else %}
         <p>{% translate "Conteúdo não disponível." %}</p>
       {% endif %}
@@ -99,8 +107,10 @@
         <a class="item" href="{% url 'noticia_detalho' n.pk %}">
           <div class="pic">{% if n.imagen %}<img src="/{{ n.imagen }}" alt="Notícia Detalho">{% endif %}</div>
           <div>
-            <div class="d">{{ n.data_publicacao|date:"d/m/Y" }}{% if n.tipo_noticia %} · {{ n.tipo_noticia }}{% endif %}</div>
-            <div class="t">{{ n.nome_noticia }}</div>
+            <!-- TIPO / KATEGORI BERITA LAINNYA DINAMIS -->
+            <div class="d">{{ n.data_publicacao|date:"d/m/Y" }}{% if n.current_tipo %} · {{ n.current_tipo }}{% endif %}</div>
+            <!-- JUDUL BERITA LAINNYA DINAMIS -->
+            <div class="t">{{ n.current_title }}</div>
           </div>
         </a>
       </li>

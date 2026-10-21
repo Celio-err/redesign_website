@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -130,6 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
+from django.utils.translation import gettext_lazy as _
 
 LANGUAGE_CODE = 'pt'
 
@@ -142,6 +144,9 @@ LANGUAGES = [
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale')
 ]
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'pt'
+MODELTRANSLATION_LANGUAGES = ('pt', 'tet', 'en')
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('pt', 'en')
 
 USE_I18N = True
 USE_L10N = True

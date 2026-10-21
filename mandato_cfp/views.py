@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-
 from .models import Mandato, TipoMandato
 from .forms import MandatoForm, TipoMandatoForm
 from .models import FuncaoMandato
@@ -7,6 +6,7 @@ from .forms import FuncaoMandatoForm
 
 
 # List
+
 def mandato_list(request):
     mandatos = Mandato.objects.select_related(
         "id_tipo_mandato",

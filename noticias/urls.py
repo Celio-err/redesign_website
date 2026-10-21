@@ -5,7 +5,7 @@ urlpatterns = [
 
     path("noticias_list", views.noticias_list, name="noticias_list"),
     path("create/", views.noticias_create, name="noticias_create"),
-    path("<uuid:pk>/", views.noticias_detail, name="noticias_detail"),
+    path("<uuid:pk>/", views.noticias_detail, name="noticia_detail"),
     path("<uuid:pk>/edit/", views.noticias_update, name="noticias_update"),
     path("<uuid:pk>/delete/", views.noticias_delete, name="noticias_delete"),
 

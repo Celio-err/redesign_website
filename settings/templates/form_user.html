@@ -1,5 +1,11 @@
 {% extends 'master/base.html' %}
-
+{% block page_title %} {% if needs_confirmation %}
+                        Confirmar Palavra-passe
+                    {% elif is_edit %}
+                        Editar Conta Utilizador
+                    {% else %}
+                        Criar Conta Utilizador
+                    {% endif %} {% endblock %}
 {% block content %}
 
 <style>
@@ -55,23 +61,6 @@
 </style>
 
 <div class="container-fluid">
-
-    <div class="row column_title">
-        <div class="col-md-12">
-            <div class="page_title">
-                <h2>
-                    {% if needs_confirmation %}
-                        Confirmar Palavra-passe
-                    {% elif is_edit %}
-                        Editar Conta Utilizador
-                    {% else %}
-                        Criar Conta Utilizador
-                    {% endif %}
-                </h2>
-            </div>
-        </div>
-    </div>
-
     <div class="col-md-12">
         <div class="white_shd full margin_bottom_30" style="border-radius: 12px; overflow: hidden;">
 

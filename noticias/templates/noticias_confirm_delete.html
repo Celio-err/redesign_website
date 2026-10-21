@@ -1,5 +1,5 @@
 {% extends 'master/base.html' %}
-
+{% block page_title %}Excluir notícia{% endblock %}
 {% block content %}
 <div class="container-fluid px-4 py-4">
   <div class="row justify-content-center">
@@ -20,7 +20,7 @@
               <button type="submit" class="btn btn-danger">
                 <i class="fa fa-trash me-1"></i> Sim, excluir
               </button>
-              <a href="{% url 'noticias_detail' noticia.pk %}" class="btn btn-outline-secondary">
+              <a href="{% url 'noticias_list' %}" class="btn btn-outline-secondary">
                 <i class="fa fa-arrow-left me-1"></i> Cancelar
               </a>
             </div>

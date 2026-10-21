@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}Comissão da Função Pública{% endblock %}</title>
 <meta name="description"
-          content="Website Portal ba publikasaun atividade husi Comissão da Função Pública">
+        content="Website Portal ba publikasaun atividade husi Comissão da Função Pública">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&display=swap">
 <link rel="icon" href="{% static 'back_end/images/logo/logo_comicao.webp' %}" type="image/webp" />
 <style>
@@ -28,28 +28,30 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 /* Garis tipis warna bendera Timor-Leste */
 .flagbar{height:5px;background:linear-gradient(to right,#DC241F 0 34%,#FFC72C 34% 67%,#1B1830 67%)}
 
-/* ---------- Header ---------- */
-.site-header{background:#fff}
-.site-header .top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:20px;padding-bottom:20px}
+/* ---------- Header (Dibuat Sticky bersama Nav) ---------- */
+.header-wrapper{position:sticky;top:0;z-index:50;background:#fff}
+.site-header{background:#fff;border-bottom:1px solid var(--line)}
+.site-header .top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:16px;padding-bottom:16px}
 .brand{display:flex;align-items:center;gap:14px;min-width:0}
-.brand img{height:54px;width:auto}
-.brand span{font-family:'Newsreader',serif;font-size:27px;font-weight:500;letter-spacing:-0.01em;line-height:1.15}
+.brand img{height:48px;width:auto}
+.brand span{font-family:'Newsreader',serif;font-size:25px;font-weight:500;letter-spacing:-0.01em;line-height:1.15}
 
-/* Pemilih bahasa: segmen */
-.lang{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:13.5px;font-weight:500}
-.lang a{color:var(--muted);padding:6px 14px;border-radius:999px}
-.lang a:hover{color:var(--indigo)}
-.lang a.active{background:var(--indigo);color:#fff}
+/* Pemilih bahasa: segmen & bendera */
+.lang{display:flex;align-items:center;gap:6px;padding:4px 6px;border:1px solid var(--line);border-radius:999px;background:#fff}
+.lang a{display:inline-flex;align-items:center;justify-content:center;padding:5px 8px;border-radius:999px;transition:all .2s ease}
+.lang a:hover{background:rgba(42,33,96,0.08)}
+.lang a.active{background:var(--indigo);box-shadow:0 2px 6px rgba(42,33,96,0.2)}
+.lang svg{display:block;width:24px;height:16px;border-radius:2px;object-fit:cover}
 .lang-m{display:none}
 
 /* Tombol menu (ponsel) */
-.menu-btn{display:none;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--indigo);cursor:pointer}
+.menu-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--indigo);cursor:pointer}
 .menu-btn .x{display:none}
 .menu-btn[aria-expanded="true"] .ham{display:none}
 .menu-btn[aria-expanded="true"] .x{display:block}
 
-/* ---------- Bilah menu (menempel di atas saat di-scroll) ---------- */
-.site-nav{position:sticky;top:0;z-index:50;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+/* ---------- Bilah menu ---------- */
+.site-nav{background:#fff;border-bottom:1px solid var(--line)}
 .site-nav.stuck{box-shadow:0 8px 24px rgba(27,24,48,.09)}
 .nav{display:flex;flex-wrap:wrap;gap:0 34px;font-size:15px;font-weight:500}
 .nav a{padding:14px 0}
@@ -66,7 +68,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 .dd.open .dd-btn{color:var(--gold)}
 .dd.open .dd-btn svg{transform:rotate(180deg)}
 .dd.open .dd-menu{display:block}
-/* Hover hanya untuk perangkat dengan mouse (di layar sentuh hover "menempel" dan membuat menu berkedip) */
+/* Hover hanya untuk perangkat dengan mouse */
 @media (hover:hover) and (pointer:fine){
   .dd:hover .dd-btn{color:var(--gold)}
   .dd:hover .dd-btn svg{transform:rotate(180deg)}
@@ -112,12 +114,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 
 /* Ponsel & tablet kecil: menu disembunyikan di balik tombol, dropdown jadi akordeon */
 @media(max-width:760px){
-  .site-header .top{padding-top:12px;padding-bottom:12px}
-  .brand img{height:42px}
-  .brand span{font-size:19px}
+  .site-header .top{padding-top:10px;padding-bottom:10px}
+  .brand img{height:36px}
+  .brand span{font-size:17px}
   .top>.lang{display:none}
   .menu-btn{display:inline-flex;flex-shrink:0}
-  .site-nav{display:none;position:static}
+  .site-nav{display:none;position:static;border-top:1px solid var(--line)}
   .site-nav.open{display:block}
   .nav{flex-direction:column;flex-wrap:nowrap;gap:0;padding-bottom:6px}
   .nav>a,.dd-btn{display:flex;width:100%;box-sizing:border-box;padding:13px 4px;border-bottom:1px solid var(--line);margin-bottom:0}
@@ -125,7 +127,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   .nav a.active,.dd.active .dd-btn{border-bottom:1px solid var(--line);margin-bottom:0;box-shadow:inset 3px 0 0 var(--gold);padding-left:14px}
   .dd-menu,.dd-menu.wide,.dd-menu.end{position:static;left:auto;right:auto;min-width:0;box-shadow:none;border:0;border-radius:0;background:transparent;padding:0 0 8px 12px}
   .nav .dd-menu a{padding:11px 8px}
-  .lang-m{display:flex;align-self:flex-start;margin:16px 0 10px}
+  .lang-m{display:flex;align-self:flex-start;margin:16px 0 10px;padding:4px;background:#F3F0FA;border-color:var(--line)}
+  .lang-m a{padding:6px 12px}
+  .lang-m svg{width:26px;height:17px}
   .foot{grid-template-columns:1fr;padding-top:44px}
 }
 </style>
@@ -136,90 +140,179 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 <a class="skip" href="#main">{% translate "Saltar para o conteúdo" %}</a>
 <div class="flagbar" aria-hidden="true"></div>
 
-<header class="site-header">
-  <div class="wrap top">
-    <a href="/" class="brand">
-      <img src="{% static 'back_end/images/logo/logo_comicao.webp' %}" alt="Logo Comissão da Função Pública">
-      <span>Comissão da Função Pública</span>
-    </a>
-    <!-- Butaun Lingua (Tetum, Português, English) -->
-    <div class="lang">
-      <a href="javascript:void(0)" onclick="changeLanguage('tet')" title="Tetum" {% if LANGUAGE_CODE == 'tet' %}class="active"{% endif %}>Tetun</a>
-      <a href="javascript:void(0)" onclick="changeLanguage('pt')" title="Português" {% if LANGUAGE_CODE == 'pt' %}class="active"{% endif %}>Português</a>
-      <a href="javascript:void(0)" onclick="changeLanguage('en')" title="English" {% if LANGUAGE_CODE == 'en' %}class="active"{% endif %}>English</a>
+<!-- Wrapper baru untuk membungkus Header & Nav agar menempel bersama saat scroll -->
+<div class="header-wrapper">
+  <header class="site-header">
+    <div class="wrap top">
+      <a href="/" class="brand">
+        <img src="{% static 'back_end/images/logo/logo_comicao.webp' %}" alt="Logo Comissão da Função Pública">
+        <span>Comissão da Função Pública</span>
+      </a>
+      <!-- Butaun Lingua (Tetum, Português, English) -->
+      <div class="lang">
+        <a href="javascript:void(0)" onclick="changeLanguage('tet')" title="Tetun" {% if LANGUAGE_CODE == 'tet' %}class="active"{% endif %}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" aria-label="Tetun">
+            <rect width="1200" height="600" fill="#DA121A"/>
+            <polygon points="0,0 600,300 0,600" fill="#FFC72C"/>
+            <polygon points="0,0 400,300 0,600" fill="#000000"/>
+            <g transform="translate(133.33, 300) rotate(-45)">
+              <polygon points="0,-75 22.04,-22.04 75,0 22.04,22.04 0,75 -22.04,22.04 -75,0 -22.04,-22.04" fill="#FFFFFF"/>
+            </g>
+          </svg>
+        </a>
+        <a href="javascript:void(0)" onclick="changeLanguage('pt')" title="Português" {% if LANGUAGE_CODE == 'pt' %}class="active"{% endif %}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" aria-label="Português">
+            <rect width="240" height="400" fill="#006600"/>
+            <rect x="240" width="360" height="400" fill="#FF0000"/>
+            <g transform="translate(240, 200)">
+              <path d="M -50,-65 L 50,-65 L 50,20 C 50,55 0,75 0,75 C 0,75 -50,55 -50,20 Z" fill="#FF0000" stroke="#000000" stroke-width="3"/>
+              <path d="M -32,-47 L 32,-47 L 32,12 C 32,38 0,52 0,52 C 0,52 -32,38 -32,12 Z" fill="#FFFFFF" stroke="#000000" stroke-width="2"/>
+              <g fill="#003399">
+                <path d="M -8,-15 L 8,-15 L 8,3 C 8,12 0,16 0,16 C 0,16 -8,12 -8,3 Z"/>
+                <path d="M -8,-38 L 8,-38 L 8,-20 C 8,-11 0,-7 0,-7 C 0,-7 -8,-11 -8,-20 Z"/>
+                <path d="M -8,8 L 8,8 L 8,26 C 8,35 0,39 0,39 C 0,39 -8,35 -8,26 Z"/>
+                <path d="M -24,-15 L -8,-15 L -8,3 C -8,12 -16,16 -16,16 C -16,16 -24,12 -24,3 Z"/>
+                <path d="M 8,-15 L 24,-15 L 24,3 C 24,12 16,16 16,16 C 16,16 8,12 8,3 Z"/>
+              </g>
+              <g fill="#FFFFFF">
+                <circle cx="0" cy="-6" r="1.5"/>
+                <circle cx="-4" cy="-2" r="1.5"/>
+                <circle cx="4" cy="-2" r="1.5"/>
+                <circle cx="-3" cy="4" r="1.5"/>
+                <circle cx="3" cy="4" r="1.5"/>
+              </g>
+            </g>
+          </svg>
+        </a>
+        <a href="javascript:void(0)" onclick="changeLanguage('en')" title="English" {% if LANGUAGE_CODE == 'en' %}class="active"{% endif %}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" aria-label="English">
+            <clipPath id="t"><path d="M0,0 v600 h1200 v-600 z"/></clipPath>
+            <path d="M0,0 v600 h1200 v-600 z" fill="#012169"/>
+            <path d="M0,0 L1200,600 M1200,0 L0,600" stroke="#ffffff" stroke-width="120"/>
+            <path d="M0,0 L1200,600 M1200,0 L0,600" stroke="#C8102E" stroke-width="80" clip-path="url(#t)"/>
+            <path d="M0,0 L600,300 H0 Z M1200,600 L600,300 H1200 Z M1200,0 L600,300 V0 Z M0,600 L600,300 V600 Z" fill="#012169"/>
+            <path d="M0,0 L1200,600 M1200,0 L0,600" stroke="#C8102E" stroke-width="40" clip-path="url(#t)"/>
+            <path d="M600,0 V600 M0,300 H1200" stroke="#ffffff" stroke-width="200"/>
+            <path d="M600,0 V600 M0,300 H1200" stroke="#C8102E" stroke-width="120"/>
+          </svg>
+        </a>
+      </div>
+      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <g class="ham"><path d="M4 7h16M4 12h16M4 17h16"/></g>
+          <g class="x"><path d="M6 6l12 12M18 6L6 18"/></g>
+        </svg>
+      </button>
     </div>
-    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" aria-label="Menu">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
-        <g class="ham"><path d="M4 7h16M4 12h16M4 17h16"/></g>
-        <g class="x"><path d="M6 6l12 12M18 6L6 18"/></g>
-      </svg>
-    </button>
+  </header>
+
+  <div class="site-nav" id="siteNav">
+    <nav class="wrap nav" aria-label="Main">
+      <a href="{% url 'home'%}" {% if active_menu == 'home' %}class="active"{% endif %}>{% translate "Inicio" %}</a>
+      <a href="{% url 'noticias_csc_asean' %}" {% if active_menu == 'csc' %}class="active"{% endif %}>CSC &amp; ASEAN</a>
+      <a href="{% url 'documentos_publicos_publico_list' %}" {% if active_menu == 'documents' %}class="active"{% endif %}>{% translate "Documentos Públicos" %}</a>
+      <!-- Legislação (dropdown tipe DDDO) -->
+      <div class="dd {% if active_menu == 'legislation' or request.resolver_match.url_name == 'dddo_list_by_tipo' %}active{% endif %}">
+        <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
+          {% translate "Legislação" %}
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="dd-menu" role="menu">
+          {% for tipo in tipos_dddo_menu %}
+            <a role="menuitem" href="{% url 'dddo_list_by_tipo' tipo.pk %}">{{ tipo.tipo_dddo }}</a>
+          {% empty %}
+            <span class="dd-empty">Sem tipos disponíveis</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- About CFP (dropdown tipe mandato) -->
+      <div class="dd {% if active_menu == 'about' or request.resolver_match.url_name == 'mandato_list_by_tipo' %}active{% endif %}">
+        <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
+          {% translate "Sobre a CFP" %}
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="dd-menu" role="menu">
+          {% for tipo in tipos_mandato_menu %}
+            <a role="menuitem" href="{% url 'mandato_list_by_tipo' tipo.pk %}">{{ tipo.tipo_mandato }}</a>
+          {% empty %}
+            <span class="dd-empty">Sem tipos disponíveis</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Systems (dropdown tautan sistem) -->
+      <div class="dd {% if active_menu == 'systems' or request.resolver_match.url_name == 'sistemas' %}active{% endif %}">
+        <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
+          {% translate "Sistemas" %}
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="dd-menu end wide" role="menu">
+          <a role="menuitem" class="ext" href="https://bipublic.cfp.gov.tl/public/dashboard/c0121995-9855-4190-98b3-ad463f38bf91" target="_blank" rel="noopener noreferrer"><span>Dashboard de Dados da Função Pública</span><span class="x" aria-hidden="true">↗</span></a>
+          <a role="menuitem" class="ext" href="https://bipublic.cfp.gov.tl/public/dashboard/00e95e1c-d727-424b-b93f-0640a8240547" target="_blank" rel="noopener noreferrer"><span>Dashboard Funcionários Saída Definitiva</span><span class="x" aria-hidden="true">↗</span></a>
+          <a role="menuitem" class="ext" href="https://atendimento.cfp.gov.tl/" target="_blank" rel="noopener noreferrer"><span>Atendimento Digital</span><span class="x" aria-hidden="true">↗</span></a>
+          <a role="menuitem" class="ext" href="https://sigapnet.cfp.gov.tl/" target="_blank" rel="noopener noreferrer"><span>SIGAPNET</span><span class="x" aria-hidden="true">↗</span></a>
+          <a role="menuitem" class="ext" href="https://vagas.cfp.gov.tl/" target="_blank" rel="noopener noreferrer"><span>Portal de Vagas da Função Pública</span><span class="x" aria-hidden="true">↗</span></a>
+          <a role="menuitem" class="ext" href="https://sigapnet.cfp.gov.tl/app/validade/" target="_blank" rel="noopener noreferrer"><span>Validação de Documentos</span><span class="x" aria-hidden="true">↗</span></a>
+          <a role="menuitem" class="ext" href="https://sigapnet.cfp.gov.tl/resultados/index.php" target="_blank" rel="noopener noreferrer"><span>Publicação de Resultados</span><span class="x" aria-hidden="true">↗</span></a>
+          <a role="menuitem" class="ext" href="https://portal.cfp.gov.tl/interface/" target="_blank" rel="noopener noreferrer"><span>Portal SIGAP (Somente na Rede do Governo)</span><span class="x" aria-hidden="true">↗</span></a>
+          <a role="menuitem" class="ext" href="https://m.me/RosaCFP" target="_blank" rel="noopener noreferrer"><span>Chatbot ROSA</span><span class="x" aria-hidden="true">↗</span></a>
+          <a role="menuitem" class="ext" href="https://correio.cfp.gov.tl" target="_blank" rel="noopener noreferrer"><span>Webmail</span><span class="x" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <a href="{% url 'kontaktu' %}" {% if active_menu == 'contact' %}class="active"{% endif %}>{% translate "Contacto" %}</a>
+
+      <!-- Pemilih bahasa untuk ponsel (di dalam menu) -->
+      <div class="lang lang-m">
+        <a href="javascript:void(0)" onclick="changeLanguage('tet')" title="Tetun" {% if LANGUAGE_CODE == 'tet' %}class="active"{% endif %}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" aria-label="Tetun">
+            <rect width="1200" height="600" fill="#DA121A"/>
+            <polygon points="0,0 600,300 0,600" fill="#FFC72C"/>
+            <polygon points="0,0 400,300 0,600" fill="#000000"/>
+            <g transform="translate(133.33, 300) rotate(-45)">
+              <polygon points="0,-75 22.04,-22.04 75,0 22.04,22.04 0,75 -22.04,22.04 -75,0 -22.04,-22.04" fill="#FFFFFF"/>
+            </g>
+          </svg>
+        </a>
+        <a href="javascript:void(0)" onclick="changeLanguage('pt')" title="Português" {% if LANGUAGE_CODE == 'pt' %}class="active"{% endif %}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" aria-label="Português">
+            <rect width="240" height="400" fill="#006600"/>
+            <rect x="240" width="360" height="400" fill="#FF0000"/>
+            <g transform="translate(240, 200)">
+              <path d="M -50,-65 L 50,-65 L 50,20 C 50,55 0,75 0,75 C 0,75 -50,55 -50,20 Z" fill="#FF0000" stroke="#000000" stroke-width="3"/>
+              <path d="M -32,-47 L 32,-47 L 32,12 C 32,38 0,52 0,52 C 0,52 -32,38 -32,12 Z" fill="#FFFFFF" stroke="#000000" stroke-width="2"/>
+              <g fill="#003399">
+                <path d="M -8,-15 L 8,-15 L 8,3 C 8,12 0,16 0,16 C 0,16 -8,12 -8,3 Z"/>
+                <path d="M -8,-38 L 8,-38 L 8,-20 C 8,-11 0,-7 0,-7 C 0,-7 -8,-11 -8,-20 Z"/>
+                <path d="M -8,8 L 8,8 L 8,26 C 8,35 0,39 0,39 C 0,39 -8,35 -8,26 Z"/>
+                <path d="M -24,-15 L -8,-15 L -8,3 C -8,12 -16,16 -16,16 C -16,16 -24,12 -24,3 Z"/>
+                <path d="M 8,-15 L 24,-15 L 24,3 C 24,12 16,16 16,16 C 16,16 8,12 8,3 Z"/>
+              </g>
+              <g fill="#FFFFFF">
+                <circle cx="0" cy="-6" r="1.5"/>
+                <circle cx="-4" cy="-2" r="1.5"/>
+                <circle cx="4" cy="-2" r="1.5"/>
+                <circle cx="-3" cy="4" r="1.5"/>
+                <circle cx="3" cy="4" r="1.5"/>
+              </g>
+            </g>
+          </svg>
+        </a>
+        <a href="javascript:void(0)" onclick="changeLanguage('en')" title="English" {% if LANGUAGE_CODE == 'en' %}class="active"{% endif %}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" aria-label="English">
+            <clipPath id="t-m"><path d="M0,0 v600 h1200 v-600 z"/></clipPath>
+            <path d="M0,0 v600 h1200 v-600 z" fill="#012169"/>
+            <path d="M0,0 L1200,600 M1200,0 L0,600" stroke="#ffffff" stroke-width="120"/>
+            <path d="M0,0 L1200,600 M1200,0 L0,600" stroke="#C8102E" stroke-width="80" clip-path="url(#t-m)"/>
+            <path d="M0,0 L600,300 H0 Z M1200,600 L600,300 H1200 Z M1200,0 L600,300 V0 Z M0,600 L600,300 V600 Z" fill="#012169"/>
+            <path d="M0,0 L1200,600 M1200,0 L0,600" stroke="#C8102E" stroke-width="40" clip-path="url(#t-m)"/>
+            <path d="M600,0 V600 M0,300 H1200" stroke="#ffffff" stroke-width="200"/>
+            <path d="M600,0 V600 M0,300 H1200" stroke="#C8102E" stroke-width="120"/>
+          </svg>
+        </a>
+      </div>
+    </nav>
   </div>
-</header>
-
-<div class="site-nav" id="siteNav">
-  <nav class="wrap nav" aria-label="Main">
-    <a href="{% url 'home'%}" {% if active_menu == 'home' %}class="active"{% endif %}>{% translate "Inicio" %}</a>
-    <a href="{% url 'noticias_csc_asean' %}" {% if active_menu == 'csc' %}class="active"{% endif %}>CSC &amp; ASEAN</a>
-    <a href="{% url 'documentos_publicos_publico_list' %}" {% if active_menu == 'documents' %}class="active"{% endif %}>{% translate "Documentos Públicos" %}</a>
-    <!-- Legislação (dropdown tipe DDDO) -->
-    <div class="dd {% if active_menu == 'legislation' or request.resolver_match.url_name == 'dddo_list_by_tipo' %}active{% endif %}">
-      <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
-        {% translate "Legislação" %}
-        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="dd-menu" role="menu">
-        {% for tipo in tipos_dddo_menu %}
-          <a role="menuitem" href="{% url 'dddo_list_by_tipo' tipo.pk %}">{{ tipo.tipo_dddo }}</a>
-        {% empty %}
-          <span class="dd-empty">Sem tipos disponíveis</span>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- About CFP (dropdown tipe mandato) -->
-    <div class="dd {% if active_menu == 'about' or request.resolver_match.url_name == 'mandato_list_by_tipo' %}active{% endif %}">
-      <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
-        {% translate "Sobre a CFP" %}
-        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="dd-menu" role="menu">
-        {% for tipo in tipos_mandato_menu %}
-          <a role="menuitem" href="{% url 'mandato_list_by_tipo' tipo.pk %}">{{ tipo.tipo_mandato }}</a>
-        {% empty %}
-          <span class="dd-empty">Sem tipos disponíveis</span>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Systems (dropdown tautan sistem) -->
-    <div class="dd {% if active_menu == 'systems' or request.resolver_match.url_name == 'sistemas' %}active{% endif %}">
-      <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
-        {% translate "Sistemas" %}
-        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="dd-menu end wide" role="menu">
-        <a role="menuitem" class="ext" href="https://bipublic.cfp.gov.tl/public/dashboard/c0121995-9855-4190-98b3-ad463f38bf91" target="_blank" rel="noopener noreferrer"><span>Dashboard de Dados da Função Pública</span><span class="x" aria-hidden="true">↗</span></a>
-        <a role="menuitem" class="ext" href="https://bipublic.cfp.gov.tl/public/dashboard/00e95e1c-d727-424b-b93f-0640a8240547" target="_blank" rel="noopener noreferrer"><span>Dashboard Funcionários Saída Definitiva</span><span class="x" aria-hidden="true">↗</span></a>
-        <a role="menuitem" class="ext" href="https://atendimento.cfp.gov.tl/" target="_blank" rel="noopener noreferrer"><span>Atendimento Digital</span><span class="x" aria-hidden="true">↗</span></a>
-        <a role="menuitem" class="ext" href="https://sigapnet.cfp.gov.tl/" target="_blank" rel="noopener noreferrer"><span>SIGAPNET</span><span class="x" aria-hidden="true">↗</span></a>
-        <a role="menuitem" class="ext" href="https://vagas.cfp.gov.tl/" target="_blank" rel="noopener noreferrer"><span>Portal de Vagas da Função Pública</span><span class="x" aria-hidden="true">↗</span></a>
-        <a role="menuitem" class="ext" href="https://sigapnet.cfp.gov.tl/app/validade/" target="_blank" rel="noopener noreferrer"><span>Validação de Documentos</span><span class="x" aria-hidden="true">↗</span></a>
-        <a role="menuitem" class="ext" href="https://sigapnet.cfp.gov.tl/resultados/index.php" target="_blank" rel="noopener noreferrer"><span>Publicação de Resultados</span><span class="x" aria-hidden="true">↗</span></a>
-        <a role="menuitem" class="ext" href="https://portal.cfp.gov.tl/interface/" target="_blank" rel="noopener noreferrer"><span>Portal SIGAP (Somente na Rede do Governo)</span><span class="x" aria-hidden="true">↗</span></a>
-        <a role="menuitem" class="ext" href="https://m.me/RosaCFP" target="_blank" rel="noopener noreferrer"><span>Chatbot ROSA</span><span class="x" aria-hidden="true">↗</span></a>
-        <a role="menuitem" class="ext" href="https://correio.cfp.gov.tl" target="_blank" rel="noopener noreferrer"><span>Webmail</span><span class="x" aria-hidden="true">↗</span></a>
-      </div>
-    </div>
-    <a href="{% url 'kontaktu' %}" {% if active_menu == 'contact' %}class="active"{% endif %}>{% translate "Contacto" %}</a>
-
-    <!-- Pemilih bahasa untuk ponsel (di dalam menu) -->
-    <div class="lang lang-m">
-      <a href="javascript:void(0)" onclick="changeLanguage('tet')" {% if LANGUAGE_CODE == 'tet' %}class="active"{% endif %}>Tetun</a>
-      <a href="javascript:void(0)" onclick="changeLanguage('pt')" {% if LANGUAGE_CODE == 'pt' %}class="active"{% endif %}>Português</a>
-      <a href="javascript:void(0)" onclick="changeLanguage('en')" {% if LANGUAGE_CODE == 'en' %}class="active"{% endif %}>English</a>
-    </div>
-  </nav>
 </div>
 
 {% block hero %}{% endblock %}
@@ -322,11 +415,12 @@ function changeLanguage(langCode) {
   });
 
   /* ---- Bayangan bilah menu saat menempel + tombol ke atas ---- */
-  var header = document.querySelector('.site-header');
+  var headerWrapper = document.querySelector('.header-wrapper');
   var toTop = document.getElementById('toTop');
   function onScroll() {
     var y = window.scrollY || document.documentElement.scrollTop;
-    siteNav.classList.toggle('stuck', y > header.offsetTop + header.offsetHeight);
+    var siteNavEl = document.getElementById('siteNav');
+    siteNavEl.classList.toggle('stuck', y > 50);
     toTop.hidden = y < 700;
   }
   window.addEventListener('scroll', onScroll, { passive: true });

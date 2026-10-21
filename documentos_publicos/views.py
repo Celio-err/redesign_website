@@ -77,7 +77,7 @@ def documentos_publicos_delete(request, pk):
         messages.success(request, 'Documento excluído com sucesso.')
         return redirect('documentos_publicos_list')
 
-    return render(request, 'documentos_publicos_delete.html', {
+    return render(request, 'documentos_publicos_confirm_delete.html', {
         'documento': documento
     })
 
@@ -154,6 +154,6 @@ def tipo_documentos_publicos_delete(request, pk):
         messages.success(request, 'Tipo de documento excluído com sucesso.')
         return redirect('tipo_documentos_publicos_list')
 
-    return render(request, 'tipo_documentos_publicos_delete.html', {
+    return render(request, 'tipo_documentos_publicos_confirm_delete.html', {
         'tipo': tipo
     })

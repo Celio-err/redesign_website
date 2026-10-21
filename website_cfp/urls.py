@@ -18,14 +18,19 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 
+# 1. URL global yang tidak menggunakan prefix bahasa (seperti endpoint switcher i18n bawaan)
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
+]
+
+# 2. URL utama yang dibungkus dengan i18n_patterns (Otomatis mendukung /pt/, /tet/, /en/)
+urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
 
-    # Front End
+    # Front End & Back End routes
     path('', include('main_front_end.urls')),
-
-    # Back End
     path('', include('main.urls')),
 
     path('mandato_cfp/', include('mandato_cfp.urls')),
@@ -33,7 +38,11 @@ urlpatterns = [
     path('noticias/', include('noticias.urls')),
     path('documentos_publicos/', include('documentos_publicos.urls')),
     path('configuracao/', include('settings.urls')),
-]
+    
+    prefix_default_language=True,
+)
 
+# 3. Penanganan file Media/Static khusus mode Development (Lokal)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

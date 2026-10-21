@@ -1,4 +1,5 @@
 {% extends 'master/base.html' %}
+{% block page_title %}{% if form.instance.pk %}Editar notícia{% else %}Nova notícia{% endif %}{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-4 py-4">
@@ -10,11 +11,10 @@
         <li class="breadcrumb-item active">{% if form.instance.pk %}Editar{% else %}Nova notícia{% endif %}</li>
       </ol>
     </nav>
-    <h1 class="h4 fw-semibold mb-0">{% if form.instance.pk %}Editar notícia{% else %}Nova notícia{% endif %}</h1>
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-lg-10">
       <div class="card border-0 shadow-sm rounded-3">
         <div class="card-body p-4">
 
@@ -28,24 +28,123 @@
 
           <form method="post" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
-            {% for field in form %}
-            <div class="mb-4">
-              <label for="{{ field.id_for_label }}" class="form-label fw-medium small">
-                {{ field.label }}
-                {% if field.field.required %}<span class="text-danger ms-1">*</span>{% endif %}
-              </label>
-              {{ field }}
-              {% if field.help_text %}
-                <div class="form-text text-muted">{{ field.help_text }}</div>
-              {% endif %}
-              {% for error in field.errors %}
-                <div class="text-danger small mt-1">
-                  <i class="fa fa-exclamation-circle me-1"></i>{{ error }}
-                </div>
-              {% endfor %}
+
+            <!-- ================= CONFIGURASI UMUM & GAMBAR ================= -->
+            <div class="row mb-4">
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.id_tipo_noticia.id_for_label }}" class="form-label fw-medium small">
+                  {{ form.id_tipo_noticia.label }} <span class="text-danger">*</span>
+                </label>
+                {{ form.id_tipo_noticia }}
+                {% for error in form.id_tipo_noticia.errors %}
+                  <div class="text-danger small mt-1"><i class="fa fa-exclamation-circle me-1"></i>{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.data_publicacao.id_for_label }}" class="form-label fw-medium small">
+                  {{ form.data_publicacao.label }} <span class="text-danger">*</span>
+                </label>
+                {{ form.data_publicacao }}
+                {% for error in form.data_publicacao.errors %}
+                  <div class="text-danger small mt-1"><i class="fa fa-exclamation-circle me-1"></i>{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <div class="col-12 mb-3">
+                <label for="{{ form.imagen.id_for_label }}" class="form-label fw-medium small">
+                  {{ form.imagen.label }}
+                </label>
+                {{ form.imagen }}
+                {% for error in form.imagen.errors %}
+                  <div class="text-danger small mt-1"><i class="fa fa-exclamation-circle me-1"></i>{{ error }}</div>
+                {% endfor %}
+              </div>
             </div>
-            {% endfor %}
+
+            <!-- ================= NAV TABS BAHASA ================= -->
+            <ul class="nav nav-tabs mb-3" id="noticiaLangTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-semibold" id="pt-tab" data-bs-toggle="tab" data-bs-target="#pt-content" type="button" role="tab">
+                  🇵🇹 Português (Default)
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="tet-tab" data-bs-toggle="tab" data-bs-target="#tet-content" type="button" role="tab">
+                  🇹🇱 Tetun
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="en-tab" data-bs-toggle="tab" data-bs-target="#en-content" type="button" role="tab">
+                  🇬🇧 English
+                </button>
+              </li>
+            </ul>
+
+            <!-- ================= ISI TAB KONTEN ================= -->
+            <div class="tab-content border border-top-0 p-4 rounded-bottom bg-light mb-4" id="noticiaLangContent">
+              
+              <!-- TAB 1: PORTUGUÊS -->
+              <div class="tab-pane fade show active" id="pt-content" role="tabpanel" aria-labelledby="pt-tab">
+                <div class="mb-3">
+                  <label class="form-label fw-medium small">{{ form.nome_noticia.label }} <span class="text-danger">*</span></label>
+                  {{ form.nome_noticia }}
+                  {% for error in form.nome_noticia.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-medium small">{{ form.descricao.label }}</label>
+                  {{ form.descricao }}
+                  {% for error in form.descricao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-medium small">{{ form.noticia.label }} <span class="text-danger">*</span></label>
+                  {{ form.noticia }}
+                  {% for error in form.noticia.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+              </div>
+
+              <!-- TAB 2: TETUN -->
+              <div class="tab-pane fade" id="tet-content" role="tabpanel" aria-labelledby="tet-tab">
+                <div class="mb-3">
+                  <label class="form-label fw-medium small">{{ form.nome_noticia_tet.label }}</label>
+                  {{ form.nome_noticia_tet }}
+                  {% for error in form.nome_noticia_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-medium small">{{ form.descricao_tet.label }}</label>
+                  {{ form.descricao_tet }}
+                  {% for error in form.descricao_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-medium small">{{ form.noticia_tet.label }}</label>
+                  {{ form.noticia_tet }}
+                  {% for error in form.noticia_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+              </div>
+
+              <!-- TAB 3: ENGLISH -->
+              <div class="tab-pane fade" id="en-content" role="tabpanel" aria-labelledby="en-tab">
+                <div class="mb-3">
+                  <label class="form-label fw-medium small">{{ form.nome_noticia_en.label }}</label>
+                  {{ form.nome_noticia_en }}
+                  {% for error in form.nome_noticia_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-medium small">{{ form.descricao_en.label }}</label>
+                  {{ form.descricao_en }}
+                  {% for error in form.descricao_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-medium small">{{ form.noticia_en.label }}</label>
+                  {{ form.noticia_en }}
+                  {% for error in form.noticia_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+              </div>
+
+            </div>
+
             <hr class="my-4">
+            
             <div class="d-flex gap-2">
               <button type="submit" class="btn btn-primary">
                 <i class="fa fa-save me-1"></i>
@@ -55,6 +154,7 @@
                 <i class="fa fa-arrow-left me-1"></i> Voltar
               </a>
             </div>
+
           </form>
 
         </div>

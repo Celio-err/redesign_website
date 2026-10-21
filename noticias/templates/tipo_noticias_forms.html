@@ -1,5 +1,5 @@
 {% extends 'master/base.html' %}
-
+{% block page_title %}{% if form.instance.pk %}Editar tipo{% else %}Novo tipo de notícia{% endif %}{% endblock %}
 {% block content %}
 <div class="container-fluid px-4 py-4">
 

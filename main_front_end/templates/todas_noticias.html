@@ -97,14 +97,17 @@
 
   <div class="bento">
     {% for t in page_obj %}
+    <!-- MENGGUNAKAN noticia.pk ATAU ID PADA URL DETAIL -->
     <a class="tile{% if not t.imagen %} txt{% endif %}" href="{% url 'noticia_detalho' t.pk %}">
       {% if t.imagen %}<img src="/{{ t.imagen }}" alt="Imagem da notícia" loading="lazy"><div class="shade"></div>{% endif %}
       <div class="in">
         <div class="meta">
-          {% if t.tipo_noticia %}<span class="tag">{{ t.tipo_noticia }}</span>{% endif %}
+          <!-- KATEGORI / TIPE BERITA DINAMIS -->
+          {% if t.current_tipo %}<span class="tag">{{ t.current_tipo }}</span>{% endif %}
           <span>{{ t.data_publicacao|date:"d/m/Y" }}</span>
         </div>
-        <h2 class="ttl">{{ t.nome_noticia }}</h2>
+        <!-- JUDUL BERITA DINAMIS -->
+        <h2 class="ttl">{{ t.current_title }}</h2>
       </div>
     </a>
     {% endfor %}

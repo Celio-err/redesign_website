@@ -120,10 +120,12 @@ html{scroll-behavior:smooth}
         {% if t.imagen %}<img src="/{{ t.imagen }}" alt="Imagem da notícia" loading="lazy"><div class="shade"></div>{% endif %}
         <div class="in">
           <div class="meta">
-            {% if t.tipo_noticia %}<span class="tag">{{ t.tipo_noticia }}</span>{% endif %}
+            <!-- TIPO/CATEGORIA DINÂMICO PARA MULTILÍNGUE -->
+            {% if t.current_tipo %}<span class="tag">{{ t.current_tipo }}</span>{% endif %}
             <span>{{ t.data_publicacao|date:"d/m/Y" }}</span>
           </div>
-          <h3 class="ttl">{{ t.nome_noticia }}</h3>
+          <!-- TÍTULO DINÂMICO PARA MULTILÍNGUE -->
+          <h3 class="ttl">{{ t.current_title }}</h3>
         </div>
       </a>
       {% endfor %}

@@ -72,7 +72,11 @@ a.row:hover .nm{color:var(--indigo);text-decoration:underline;text-underline-off
     {% for g in grupos %}
     {% with p=g.page_obj %}
     <section class="col" id="c-{{ g.key }}" aria-labelledby="h-{{ g.key }}">
-      <h2 id="h-{{ g.key }}">{{ g.nome }} <span class="n">{{ p.paginator.count }}</span></h2>
+      <!-- Menggunakan g.tipo_obj.current_tipo agar nama kategori/jenis dokumen bersifat multilingual -->
+      <h2 id="h-{{ g.key }}">
+        {% if g.tipo_obj %}{{ g.tipo_obj.current_tipo }}{% else %}{{ g.nome }}{% endif %} 
+        <span class="n">{{ p.paginator.count }}</span>
+      </h2>
 
       {% if p.paginator.count %}
       <ul class="rows">
@@ -81,13 +85,15 @@ a.row:hover .nm{color:var(--indigo);text-decoration:underline;text-underline-off
           {% if r.tem_ficheiro %}
           <a class="row" href="{% url 'documentos_publicos_review' r.pk %}" target="_blank" rel="noopener" title="{% translate 'Abrir' %}">
             <span class="no">{{ p.start_index|add:forloop.counter0 }}</span>
-            <span class="nm">{{ r.nome_documentos_publicos }}</span>
+            <!-- Menggunakan r.current_nome agar judul/nama dokumen publik berubah sesuai bahasa aktif -->
+            <span class="nm">{{ r.current_nome }}</span>
             <span class="act" aria-hidden="true">↗</span>
           </a>
           {% else %}
           <div class="row">
             <span class="no">{{ p.start_index|add:forloop.counter0 }}</span>
-            <span class="nm">{{ r.nome_documentos_publicos }}</span>
+            <!-- Menggunakan r.current_nome untuk dokumen yang belum ada file/tidak tersedia -->
+            <span class="nm">{{ r.current_nome }}</span>
             <span class="act off">{% translate "Indisponível" %}</span>
           </div>
           {% endif %}

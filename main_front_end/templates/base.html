@@ -377,21 +377,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
         </button>
         <div class="dd-menu" role="menu">
           {% for tipo in tipos_dddo_menu %}
-            <a role="menuitem" href="{% url 'dddo_list_by_tipo' tipo.pk %}">{{ tipo.tipo_dddo }}</a>
-          {% empty %}
-            <span class="dd-empty">Sem tipos disponíveis</span>
-          {% endfor %}
-        </div>
-      </div>
-
-      <div class="dd {% if active_menu == 'about' or request.resolver_match.url_name == 'mandato_list_by_tipo' %}active{% endif %}">
-        <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
-          {% translate "Sobre a CFP" %}
-          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="dd-menu" role="menu">
-          {% for tipo in tipos_mandato_menu %}
-            <a role="menuitem" href="{% url 'mandato_list_by_tipo' tipo.pk %}">{{ tipo.tipo_mandato }}</a>
+            <a role="menuitem" href="{% url 'dddo_list_by_tipo' tipo.pk %}">{{ tipo.current_tipo }}</a>
           {% empty %}
             <span class="dd-empty">Sem tipos disponíveis</span>
           {% endfor %}
@@ -416,6 +402,22 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
           <a role="menuitem" class="ext" href="https://correio.cfp.gov.tl" target="_blank" rel="noopener noreferrer"><span>Webmail</span><span class="x" aria-hidden="true">↗</span></a>
         </div>
       </div>
+      <a href="#" {% if active_menu == '#' %}class="active"{% endif %}>{% translate "Cooperação e Parcerias" %}</a>
+      
+      <div class="dd {% if active_menu == 'about' or request.resolver_match.url_name == 'mandato_list_by_tipo' %}active{% endif %}">
+        <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
+          {% translate "Sobre a CFP" %}
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="dd-menu" role="menu">
+          {% for tipo in tipos_mandato_menu %}
+            <a role="menuitem" href="{% url 'mandato_list_by_tipo' tipo.pk %}">{{ tipo.current_tipo }}</a>
+          {% empty %}
+            <span class="dd-empty">Sem tipos disponíveis</span>
+          {% endfor %}
+        </div>
+      </div>
+
       <a href="{% url 'kontaktu' %}" {% if active_menu == 'contact' %}class="active"{% endif %}>{% translate "Contacto" %}</a>
 
       <div class="lang lang-m">

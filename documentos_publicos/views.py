@@ -21,13 +21,9 @@ def documentos_publicos_create(request):
         form = DocumentosPublicosForm(request.POST, request.FILES)
         if form.is_valid():
             documento = form.save(commit=False)
-            ficheiro = form.cleaned_data.get('ficheiro_upload')
-            if ficheiro:
-                documento.documentos_publicos = ficheiro.read()
-                documento.nome_ficheiro_original = ficheiro.name
             documento.inserido_por = request.user.username if request.user.is_authenticated else 'sistema'
             documento.inserido_em = timezone.now().strftime('%d/%m/%Y %H:%M')
-            documento.save()
+            documento.save() # Menyimpan form beserta file biner melalui method save() di forms.py
             messages.success(request, 'Documento criado com sucesso.')
             return redirect('documentos_publicos_list')
     else:
@@ -39,26 +35,13 @@ def documentos_publicos_create(request):
     })
 
 
-def documentos_publicos_detail(request, pk):
-    documento = get_object_or_404(DocumentosPublicos, pk=pk)
-    return render(request, 'documentos_publicos_detail.html', {
-        'documento': documento
-    })
-
-
 def documentos_publicos_update(request, pk):
     documento = get_object_or_404(DocumentosPublicos, pk=pk)
-
     if request.method == 'POST':
         form = DocumentosPublicosForm(request.POST, request.FILES, instance=documento)
         if form.is_valid():
-          documento_atualizado = form.save(commit=False)
-          ficheiro = form.cleaned_data.get('ficheiro_upload')
-          if ficheiro:
-            documento_atualizado.documentos_publicos = ficheiro.read()
-            documento_atualizado.nome_ficheiro_original = ficheiro.name
-            documento_atualizado.save()
-            messages.success(request, 'Documemtos atualizado com sucesso.')
+            form.save()
+            messages.success(request, 'Documento atualizado com sucesso.')
             return redirect('documentos_publicos_list')
     else:
         form = DocumentosPublicosForm(instance=documento)
@@ -68,6 +51,11 @@ def documentos_publicos_update(request, pk):
         'is_edit': True,
     })
 
+def documentos_publicos_detail(request, pk):
+    documento = get_object_or_404(DocumentosPublicos, pk=pk)
+    return render(request, 'documentos_publicos_detail.html', {
+        'documento': documento
+    })
 
 def documentos_publicos_delete(request, pk):
     documento = get_object_or_404(DocumentosPublicos, pk=pk)

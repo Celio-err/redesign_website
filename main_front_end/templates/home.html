@@ -264,6 +264,61 @@
   </div>
 </section>
 
+<!-- ============ Cooperação / Parcerias ============ -->
+<section class="coop">
+  <div class="wrap">
+    <div class="coop-header">
+      <svg class="gl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>
+      <h2>{% translate "Cooperação e Parcerias" %}</h2>
+      <p>{% translate "Atividades e articulação institucional com redes de cooperação da Função Pública, CSC e ASEAN." %}</p>
+    </div>
+
+    <!-- Grid Card Parceria (Contém logo, título, descrição e link de cada parceiro) -->
+    <div class="coop-grid">
+      
+      <!-- Card 1: CSC -->
+      <div class="coop-card">
+        <div>
+          <div class="c-logo">
+            <img src="{% static 'front_end/img/logo_csc.png' %}" alt="Logo CSC" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; font-family:'Newsreader',serif; font-size:22px; font-weight:bold; color:#fff;">CSC</span>
+          </div>
+          <h3>Civil Service Commission (CSC)</h3>
+          <p>{% translate "Parceria estratégica para o desenvolvimento de capacidades e reforma da administração pública." %}</p>
+        </div>
+        <a class="c-link" href="{% url 'noticias_csc_asean' %}">{% translate "Ver atividades CSC" %} <span aria-hidden="true">→</span></a>
+      </div>
+
+      <!-- Card 2: ASEAN -->
+      <div class="coop-card">
+        <div>
+          <div class="c-logo">
+            <img src="{% static 'front_end/img/logo_asean.png' %}" alt="Logo ASEAN" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; font-family:'Newsreader',serif; font-size:22px; font-weight:bold; color:#fff;">ASEAN</span>
+          </div>
+          <h3>ASEAN Public Service</h3>
+          <p>{% translate "Cooperação regional e partilha de boas práticas na governação e serviços públicos." %}</p>
+        </div>
+        <a class="c-link" href="{% url 'noticias_csc_asean' %}">{% translate "Ver atividades ASEAN" %} <span aria-hidden="true">→</span></a>
+      </div>
+
+      <!-- Card 3: Outros Parceiros / AC plekat -->
+      <div class="coop-card">
+        <div>
+          <div class="c-logo">
+            <img src="{% static 'front_end/img/logo_parceiro.png' %}" alt="Logo Parceiro" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; font-family:'Newsreader',serif; font-size:22px; font-weight:bold; color:#fff;">Cooperação</span>
+          </div>
+          <h3>{% translate "Redes Internacionais" %}</h3>
+          <p>{% translate "Projetos bilaterais de capacitação e intercâmbio técnico institucional." %}</p>
+        </div>
+        <a class="c-link" href="{% url 'todas_noticias' %}">{% translate "Saber mais" %} <span aria-hidden="true">→</span></a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ============ Notícias ============ -->
 <section class="sec" style="padding-top:0">
   <div class="wrap">
@@ -335,60 +390,6 @@
   </div>
 </section>
 
-<!-- ============ Cooperação / Parcerias ============ -->
-<section class="coop">
-  <div class="wrap">
-    <div class="coop-header">
-      <svg class="gl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>
-      <h2>{% translate "Cooperação e Parcerias" %}</h2>
-      <p>{% translate "Atividades e articulação institucional com redes de cooperação da Função Pública, CSC e ASEAN." %}</p>
-    </div>
-
-    <!-- Grid Card Parceria (Contém logo, título, descrição e link de cada parceiro) -->
-    <div class="coop-grid">
-      
-      <!-- Card 1: CSC -->
-      <div class="coop-card">
-        <div>
-          <div class="c-logo">
-            <img src="{% static 'front_end/img/logo_csc.png' %}" alt="Logo CSC" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <span style="display:none; font-family:'Newsreader',serif; font-size:22px; font-weight:bold; color:#fff;">CSC</span>
-          </div>
-          <h3>Civil Service Commission (CSC)</h3>
-          <p>{% translate "Parceria estratégica para o desenvolvimento de capacidades e reforma da administração pública." %}</p>
-        </div>
-        <a class="c-link" href="{% url 'noticias_csc_asean' %}">{% translate "Ver atividades CSC" %} <span aria-hidden="true">→</span></a>
-      </div>
-
-      <!-- Card 2: ASEAN -->
-      <div class="coop-card">
-        <div>
-          <div class="c-logo">
-            <img src="{% static 'front_end/img/logo_asean.png' %}" alt="Logo ASEAN" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <span style="display:none; font-family:'Newsreader',serif; font-size:22px; font-weight:bold; color:#fff;">ASEAN</span>
-          </div>
-          <h3>ASEAN Public Service</h3>
-          <p>{% translate "Cooperação regional e partilha de boas práticas na governação e serviços públicos." %}</p>
-        </div>
-        <a class="c-link" href="{% url 'noticias_csc_asean' %}">{% translate "Ver atividades ASEAN" %} <span aria-hidden="true">→</span></a>
-      </div>
-
-      <!-- Card 3: Outros Parceiros / AC plekat -->
-      <div class="coop-card">
-        <div>
-          <div class="c-logo">
-            <img src="{% static 'front_end/img/logo_parceiro.png' %}" alt="Logo Parceiro" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <span style="display:none; font-family:'Newsreader',serif; font-size:22px; font-weight:bold; color:#fff;">Cooperação</span>
-          </div>
-          <h3>{% translate "Redes Internacionais" %}</h3>
-          <p>{% translate "Projetos bilaterais de capacitação e intercâmbio técnico institucional." %}</p>
-        </div>
-        <a class="c-link" href="{% url 'todas_noticias' %}">{% translate "Saber mais" %} <span aria-hidden="true">→</span></a>
-      </div>
-
-    </div>
-  </div>
-</section>
 
 <!-- ============ Institucional ============ -->
 <section class="sec">

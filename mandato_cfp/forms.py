@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from .models import Mandato, TipoMandato, FuncaoMandato
 
@@ -12,17 +13,22 @@ class MandatoForm(forms.ModelForm):
             'id_funcao_mandato',
             'data_inicio',
             'data_fim',
-            'descricao',
+            # Kolom Deskripsi Multilingual
+            'descricao',       # Português (Default)
+            'descricao_tet',   # Tetun
+            'descricao_en',    # English
             'imagen',
         ]
-        labels = {                              # ← labels iha fatin rasik, la iha laran fields
-            'nome_pessoa': 'Nome Pessoa',
-            'id_tipo_mandato': 'Tipo Mandato',
-            'id_funcao_mandato': 'Função',
-            'data_inicio': 'Data Início',
-            'data_fim': 'Data Fim',
-            'descricao': 'Descrição',
-            'imagen': 'Foto',
+        labels = {
+            'nome_pessoa': _('Nome da Pessoa'),
+            'id_tipo_mandato': _('Tipo de Mandato'),
+            'id_funcao_mandato': _('Função'),
+            'data_inicio': _('Data de Início'),
+            'data_fim': _('Data de Fim'),
+            'descricao': _('Descrição (Português)'),
+            'descricao_tet': _('Descrição (Tetun)'),
+            'descricao_en': _('Descrição (English)'),
+            'imagen': _('Fotografia / Imagem'),
         }
         widgets = {
             'nome_pessoa': forms.TextInput(attrs={'class': 'form-control'}),
@@ -30,36 +36,48 @@ class MandatoForm(forms.ModelForm):
             'id_funcao_mandato': forms.Select(attrs={'class': 'form-control'}),
             'data_inicio': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'data_fim': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'descricao': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'descricao': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Descrição em Português...')}),
+            'descricao_tet': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Descrição em Tetun...')}),
+            'descricao_en': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Description in English...')}),
             'imagen': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
+
 
 class TipoMandatoForm(forms.ModelForm):
     class Meta:
         model = TipoMandato
-        fields = ["tipo_mandato"]
+        fields = [
+            'tipo_mandato',      # Português (Default)
+            'tipo_mandato_tet',  # Tetun
+            'tipo_mandato_en',   # English
+        ]
         labels = {
-            "tipo_mandato": "Tipo de Mandato",
+            'tipo_mandato': _('Tipo de Mandato (Português)'),
+            'tipo_mandato_tet': _('Tipo de Mandato (Tetun)'),
+            'tipo_mandato_en': _('Tipo de Mandato (English)'),
         }
         widgets = {
-            "tipo_mandato": forms.TextInput(attrs={
-                "class": "form-control"
-            }),
+            'tipo_mandato': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Ex: I Mandato')}),
+            'tipo_mandato_tet': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Ex: Mandatu Dahuluk')}),
+            'tipo_mandato_en': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Ex: First Mandate')}),
         }
-
-
-
 
 
 class FuncaoMandatoForm(forms.ModelForm):
     class Meta:
         model = FuncaoMandato
-        fields = ["funcao_mandato"]
+        fields = [
+            'funcao_mandato',      # Português (Default)
+            'funcao_mandato_tet',  # Tetun
+            'funcao_mandato_en',   # English
+        ]
         labels = {
-            "funcao_mandato": "Função",
+            'funcao_mandato': _('Função (Português)'),
+            'funcao_mandato_tet': _('Função (Tetun)'),
+            'funcao_mandato_en': _('Função (English)'),
         }
         widgets = {
-            "funcao_mandato": forms.TextInput(attrs={
-                "class": "form-control"
-            }),
+            'funcao_mandato': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Ex: Presidente')}),
+            'funcao_mandato_tet': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Ex: Prezidente')}),
+            'funcao_mandato_en': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Ex: President')}),
         }

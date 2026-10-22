@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{{ tipo_selecionado.tipo_mandato|default:"Mandatos" }} — Comissão da Função Pública{% endblock %}
+{% block title %}{{ tipo_selecionado.current_tipo|default:_("Mandatos") }} — Comissão da Função Pública{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -58,7 +58,8 @@
 <section class="m-hero">
   <div class="wrap">
     <div class="crumb">{% translate "Sobre a CFP" %} / {% translate "Mandatos" %}</div>
-    <h1>{{ tipo_selecionado.tipo_mandato|default:"Membros do Mandato" }}</h1>
+    <!-- Nome do Tipo de Mandato Dinâmico -->
+    <h1>{{ tipo_selecionado.current_tipo|default:_("Membros do Mandato") }}</h1>
     <p>{{ mandatos|length }} {% translate "membros" %}</p>
   </div>
 </section>
@@ -67,16 +68,18 @@
 {% block content %}
 <div class="wrap">
 
+  <!-- Navegação de Abas (Tabs) por Tipo de Mandato -->
   {% if tipos_mandato_menu %}
   <nav class="tabs" aria-label="{% translate 'Mandatos' %}">
     {% for tipo in tipos_mandato_menu %}
-      <a href="{% url 'mandato_list_by_tipo' tipo.pk %}" {% if tipo.pk == tipo_selecionado.pk %}class="on" aria-current="page"{% endif %}>{{ tipo.tipo_mandato }}</a>
+      <a href="{% url 'mandato_list_by_tipo' tipo.pk %}" {% if tipo.pk == tipo_selecionado.pk %}class="on" aria-current="page"{% endif %}>{{ tipo.current_tipo }}</a>
     {% endfor %}
   </nav>
   {% endif %}
 
   {% if mandatos %}
-    {% regroup mandatos by id_funcao_mandato as funcoes %}
+    <!-- Agrupamento por Função no Mandato (Presidente, Comissários, etc.) -->
+    {% regroup mandatos by current_funcao as funcoes %}
     {% for g in funcoes %}
     <section class="group">
       <h2>{{ g.grouper|default:_("Membros") }} <span class="n">{{ g.list|length }}</span></h2>
@@ -90,7 +93,8 @@
           </div>
           <div>
             <h3 class="nm">{{ m.nome_pessoa }}</h3>
-            <p class="fn">{{ m.id_funcao_mandato }}</p>
+            <!-- Função no Mandato Dinâmica -->
+            <p class="fn">{{ m.current_funcao }}</p>
             <span class="btn">{% translate "Detalho" %} →</span>
           </div>
         </a>
@@ -105,7 +109,8 @@
               <span class="go" aria-hidden="true">→</span>
             </div>
             <h3 class="nm">{{ m.nome_pessoa }}</h3>
-            <p class="fn">{{ m.id_funcao_mandato }}</p>
+            <!-- Função no Mandato Dinâmica -->
+            <p class="fn">{{ m.current_funcao }}</p>
           </a>
           {% endfor %}
         </div>

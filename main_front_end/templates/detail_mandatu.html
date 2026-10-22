@@ -48,15 +48,26 @@
   <div class="wrap">
     <div class="crumb">
       {% translate "Sobre a CFP" %} /
-      {% if m.id_tipo_mandato_id %}
-        <a href="{% url 'mandato_list_by_tipo' m.id_tipo_mandato_id %}">{{ m.tipo_mandato|default:_("Mandatos") }}</a>
+      {% if m.id_tipo_mandato_id or m.id_tipo_mandato.pk %}
+        <a href="{% url 'mandato_list_by_tipo' m.id_tipo_mandato.pk|default:m.id_tipo_mandato_id %}">
+          {{ m.id_tipo_mandato.current_tipo|default:_("Mandatos") }}
+        </a>
       {% else %}
-        {{ m.tipo_mandato|default:_("Mandatos") }}
+        {{ m.id_tipo_mandato.current_tipo|default:_("Mandatos") }}
       {% endif %}
     </div>
-    {% if m.tipo_mandato %}<span class="tag">{{ m.tipo_mandato }}</span>{% endif %}
+
+    <!-- Tag Jenis Mandato Dinamis -->
+    {% if m.id_tipo_mandato.current_tipo %}
+      <span class="tag">{{ m.id_tipo_mandato.current_tipo }}</span>
+    {% endif %}
+
     <h1>{{ m.nome_pessoa }}</h1>
-    {% if m.funcao_mandato %}<p class="fn">{{ m.funcao_mandato }}</p>{% endif %}
+
+    <!-- Jabatan/Função Dinamis -->
+    {% if m.id_funcao_mandato.current_funcao %}
+      <p class="fn">{{ m.id_funcao_mandato.current_funcao }}</p>
+    {% endif %}
   </div>
 </section>
 {% endblock %}
@@ -67,22 +78,32 @@
   <aside class="portrait">
     <div class="photo">
       {% if m.imagen %}
-        <img src="{% if m.imagen.url %}{{ m.imagen.url }}{% else %}/{{ m.imagen }}{% endif %}" alt="{{ m.nome_pessoa }}">
+        <img src="{{ m.imagen.url }}" alt="{{ m.nome_pessoa }}">
       {% else %}
         <span class="ini">{{ m.nome_pessoa|slice:":1" }}</span>
       {% endif %}
     </div>
 
     <ul class="facts">
-      {% if m.funcao_mandato %}
-      <li><span class="k">{% translate "Função" %}</span><span class="v">{{ m.funcao_mandato }}</span></li>
+      {% if m.id_funcao_mandato.current_funcao %}
+      <li>
+        <span class="k">{% translate "Função" %}</span>
+        <span class="v">{{ m.id_funcao_mandato.current_funcao }}</span>
+      </li>
       {% endif %}
-      {% if m.tipo_mandato %}
-      <li><span class="k">{% translate "Mandato" %}</span><span class="v">{{ m.tipo_mandato }}</span></li>
+
+      {% if m.id_tipo_mandato.current_tipo %}
+      <li>
+        <span class="k">{% translate "Mandato" %}</span>
+        <span class="v">{{ m.id_tipo_mandato.current_tipo }}</span>
+      </li>
       {% endif %}
+
       {% if m.data_inicio or m.data_fim %}
-      <li><span class="k">{% translate "Período" %}</span>
-          <span class="v">{{ m.data_inicio|date:"d/m/Y"|default:"…" }} – {{ m.data_fim|date:"d/m/Y"|default:"…" }}</span></li>
+      <li>
+        <span class="k">{% translate "Período" %}</span>
+        <span class="v">{{ m.data_inicio|date:"d/m/Y"|default:"…" }} – {{ m.data_fim|date:"d/m/Y"|default:"…" }}</span>
+      </li>
       {% endif %}
     </ul>
   </aside>
@@ -90,8 +111,9 @@
   <article class="bio">
     <h2>{% translate "Sobre" %}</h2>
     <div class="text">
-      {% if m.descricao %}
-        {{ m.descricao|linebreaks }}
+      <!-- Deskripsi / Biografi Dinamis (Multilingual) -->
+      {% if m.current_descricao %}
+        {{ m.current_descricao|linebreaks }}
       {% else %}
         <p>{% translate "Conteúdo não disponível." %}</p>
       {% endif %}
@@ -99,8 +121,10 @@
 
     <div class="actions">
       <a href="javascript:history.back()">← {% translate "Voltar" %}</a>
-      {% if m.id_tipo_mandato_id %}
-      <a href="{% url 'mandato_list_by_tipo' m.id_tipo_mandato_id %}">{% translate "Ver todos os membros" %}</a>
+      {% if m.id_tipo_mandato.pk or m.id_tipo_mandato_id %}
+      <a href="{% url 'mandato_list_by_tipo' m.id_tipo_mandato.pk|default:m.id_tipo_mandato_id %}">
+        {% translate "Ver todos os membros" %}
+      </a>
       {% endif %}
     </div>
   </article>

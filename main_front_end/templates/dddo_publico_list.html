@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{{ tipo_selecionado.tipo_dddo|default:_("Legislação") }} — Comissão da Função Pública{% endblock %}
+{% block title %}{{ tipo_selecionado.current_tipo|default:_("Legislação") }} — Comissão da Função Pública{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -57,7 +57,8 @@ a.row:hover .nm{color:var(--indigo);text-decoration:underline;text-underline-off
 <section class="l-hero">
   <div class="wrap">
     <div class="crumb">{% translate "Legislação" %}</div>
-    <h1>{{ tipo_selecionado.tipo_dddo|default:_("Deliberação, Decisão, Despacho e Orientação") }}</h1>
+    <!-- Título do Tipo de Legislação Selecionado com Fallback e Tradução Dinâmica -->
+    <h1>{{ tipo_selecionado.current_tipo|default:_("Deliberação, Decisão, Despacho e Orientação") }}</h1>
     <p>{{ page_obj.paginator.count }} {% translate "documentos publicados" %}</p>
   </div>
 </section>
@@ -66,10 +67,11 @@ a.row:hover .nm{color:var(--indigo);text-decoration:underline;text-underline-off
 {% block content %}
 <div class="wrap">
 
+  <!-- Abas (Tabs) para Tipos de Legislação Multilíngues -->
   {% if tipos_dddo_menu %}
   <nav class="tabs" aria-label="{% translate 'Tipos' %}">
     {% for tipo in tipos_dddo_menu %}
-      <a href="{% url 'dddo_list_by_tipo' tipo.pk %}" {% if tipo.pk == tipo_selecionado.pk %}class="on" aria-current="page"{% endif %}>{{ tipo.tipo_dddo }}</a>
+      <a href="{% url 'dddo_list_by_tipo' tipo.pk %}" {% if tipo.pk == tipo_selecionado.pk %}class="on" aria-current="page"{% endif %}>{{ tipo.current_tipo }}</a>
     {% endfor %}
   </nav>
   {% endif %}
@@ -91,8 +93,10 @@ a.row:hover .nm{color:var(--indigo);text-decoration:underline;text-underline-off
         <a class="row" href="{% url 'documentos_dddo_review' documento.pk %}" target="_blank" rel="noopener">
           <span class="no">{{ page_obj.start_index|add:forloop.counter0 }}</span>
           <span>
-            <span class="nm">{{ documento.nome_dddo }}</span>
-            {% if not tipo_selecionado and documento.id_tipo_dddo %}<br><span class="tipo">{{ documento.id_tipo_dddo }}</span>{% endif %}
+            <!-- Nome do Documento Dinâmico no Idioma Ativo -->
+            <span class="nm">{{ documento.current_nome }}</span>
+            <!-- Tipo de Legislação Dinâmico em Badge -->
+            {% if not tipo_selecionado and documento.id_tipo_dddo %}<br><span class="tipo">{{ documento.id_tipo_dddo.current_tipo }}</span>{% endif %}
           </span>
           <span class="act">{% translate "Ver" %} ↗</span>
         </a>
@@ -100,8 +104,10 @@ a.row:hover .nm{color:var(--indigo);text-decoration:underline;text-underline-off
         <div class="row">
           <span class="no">{{ page_obj.start_index|add:forloop.counter0 }}</span>
           <span>
-            <span class="nm">{{ documento.nome_dddo }}</span>
-            {% if not tipo_selecionado and documento.id_tipo_dddo %}<br><span class="tipo">{{ documento.id_tipo_dddo }}</span>{% endif %}
+            <!-- Nome do Documento Dinâmico no Idioma Ativo -->
+            <span class="nm">{{ documento.current_nome }}</span>
+            <!-- Tipo de Legislação Dinâmico em Badge -->
+            {% if not tipo_selecionado and documento.id_tipo_dddo %}<br><span class="tipo">{{ documento.id_tipo_dddo.current_tipo }}</span>{% endif %}
           </span>
           <span class="act off">{% translate "Indisponível" %}</span>
         </div>

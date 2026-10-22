@@ -7,12 +7,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}Comissão da Função Pública{% endblock %}</title>
-<meta name="description"
-        content="Website Portal ba publikasaun atividade husi Comissão da Função Pública">
+<meta name="description" content="Website Portal ba publikasaun atividade husi Comissão da Função Pública">
 <meta name="theme-color" content="#2A2160">
 <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 
-<!-- Pratinjau saat tautan dibagikan (Facebook, WhatsApp, dll.) -->
+<!-- Pratinjau saat tautan dibagikan -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Comissão da Função Pública">
 <meta property="og:title" content="{% block og_title %}Comissão da Função Pública{% endblock %}">
@@ -40,66 +39,150 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&display=swap">
 <link rel="icon" href="{% static 'back_end/images/logo/logo_comicao.webp' %}" type="image/webp" />
+
 <style>
 :root{
-  --indigo:#2A2160;--gold:#B8862B;--ink:#1B1830;--line:#E4E0EE;--paper:#FBFAFD;--muted:#6A6580;
+  --indigo:#2A2160; --gold:#B8862B; --ink:#1B1830; --line:#E4E0EE; --paper:#FBFAFD; --muted:#6A6580;
   
-  /* 1. Latar Belakang Pola Default (Footer & Kotak Lain) */
-  --pattern-bg:linear-gradient(to bottom,rgba(27,24,48,.75),rgba(27,24,48,.82)),url("{% static 'front_end/img/presence-iii.png' %}") 0 0/260px auto;
-
-  /* 2. Banner Beranda Utama DILENGKAPI PARALLAX (background-attachment: fixed) */
-  --hero-bg:linear-gradient(90deg,rgba(27,24,48,.85) 0%,rgba(27,24,48,.55) 50%,rgba(27,24,48,.3) 100%),url("{% static 'front_end/img/building.png' %}") center/cover no-repeat fixed;
-
-  /* 3. Banner Halaman Dalam */
-  --banner-bg:var(--pattern-bg);
+  /* Latar Belakang Pola Default */
+  --pattern-bg: linear-gradient(to bottom, rgba(27,24,48,.75), rgba(27,24,48,.82)), url("{% static 'front_end/img/presence-iii.png' %}") 0 0/260px auto;
+  --banner-bg: var(--pattern-bg);
 }
 
-/* ================= Banner & Parallax Setting ================= */
+/* ================= Hero Section & Dual Background Layers ================= */
 section.hero {
-  background: var(--hero-bg);
+  position: relative;
   color: #fff;
+  overflow: hidden;
+  background-color: #1B1830;
 }
 
-/* Tambah tinggi minimal wrap agar ruang geser parallax terlihat jelas */
+/* Lapisan Background Pagi & Malam menggunakan Tag Django Langsung */
+.hero-bg-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  transition: opacity 0.8s ease-in-out;
+  z-index: 0;
+}
+
+/* Overlay Gradien Gelap agar teks mudah dibaca */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(27,24,48,.85) 0%, rgba(27,24,48,.55) 50%, rgba(27,24,48,.3) 100%);
+  z-index: 1;
+}
+
+/* Gambar Pagi */
+.hero-bg-morning {
+  background-image: url("{% static 'front_end/img/building_cfp_morning.png' %}");
+  opacity: 1;
+}
+
+/* Gambar Malam */
+.hero-bg-night {
+  background-image: url("{% static 'front_end/img/building_cfp_night.png' %}");
+  opacity: 0;
+}
+
+/* Ketika kelas night-mode aktif pada section.hero */
+section.hero.night-mode .hero-bg-morning {
+  opacity: 0;
+}
+section.hero.night-mode .hero-bg-night {
+  opacity: 1;
+}
+
+/* Tombol Pengganti Suasana Pagi/Malam */
+.hero-theme-toggle {
+  position: absolute;
+  bottom: 24px;
+  right: 32px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(27, 24, 48, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 8px 16px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-family: 'Public Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.hero-theme-toggle:hover {
+  background: rgba(42, 33, 96, 0.95);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.hero-theme-toggle svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  transition: transform 0.4s ease;
+}
+
 .hero .wrap {
-  min-height: 600px; 
+  position: relative;
+  z-index: 2;
+  min-height: 550px;
   display: flex;
   align-items: center;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding-top: 80px;
+  padding-bottom: 80px;
 }
 
-/* Penyesuaian khusus untuk perangkat seluler */
 @media (max-width: 960px) {
-  :root {
-    /* Di mobile, ubah fixed menjadi scroll agar performa lancar & tidak bug */
-    --hero-bg:linear-gradient(90deg,rgba(27,24,48,.85) 0%,rgba(27,24,48,.55) 50%,rgba(27,24,48,.3) 100%),url("{% static 'front_end/img/building.png' %}") center/cover no-repeat scroll;
+  .hero-bg-layer {
+    background-attachment: scroll; /* Ubah ke scroll di mobile untuk performa lancar */
   }
   .hero .wrap {
-    min-height: 450px;
-    padding-top: 60px;
-    padding-bottom: 60px;
+    min-height: 400px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .hero-theme-toggle {
+    bottom: 16px;
+    right: 16px;
+    padding: 6px 12px;
+    font-size: 12.5px;
   }
 }
-/* Header menempel di atas: tautan #anchor tidak boleh tertutup header */
+
+/* Header & General Layout */
 html{scroll-padding-top:140px}
 body{margin:0;font-family:'Public Sans',sans-serif;color:var(--ink);background:var(--paper)}
 a{color:inherit;text-decoration:none}
 a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .wrap{max-width:1200px;margin:0 auto;padding-left:32px;padding-right:32px}
 
-/* Banner atas semua halaman membaca variabel di atas */
-section.hero{background:var(--hero-bg)}
 section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,section.a-hero,section.c-hero{background:var(--banner-bg)}
 
-/* Lompat ke konten (aksesibilitas keyboard) */
 .skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--indigo);color:#fff;padding:10px 16px;border-radius:0 0 6px 6px;font-size:14px}
 .skip:focus{top:0}
 
-/* Garis tipis warna bendera Timor-Leste */
 .flagbar{height:5px;background:linear-gradient(to right,#DC241F 0 34%,#FFC72C 34% 67%,#1B1830 67%)}
 
-/* ---------- Header (Dibuat Sticky bersama Nav) ---------- */
+/* ---------- Header & Nav ---------- */
 .header-wrapper{position:sticky;top:0;z-index:1500;background:#fff}
 .site-header{background:#fff;border-bottom:1px solid var(--line)}
 .site-header .top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:16px;padding-bottom:16px}
@@ -107,7 +190,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
 .brand img{height:48px;width:auto}
 .brand span{font-family:'Newsreader',serif;font-size:25px;font-weight:500;letter-spacing:-0.01em;line-height:1.15}
 
-/* Pemilih bahasa: segmen & bendera */
+/* Language selector */
 .lang{display:flex;align-items:center;gap:6px;padding:4px 6px;border:1px solid var(--line);border-radius:999px;background:#fff}
 .lang a{display:inline-flex;align-items:center;justify-content:center;padding:5px 8px;border-radius:999px;transition:all .2s ease}
 .lang a:hover{background:rgba(42,33,96,0.08)}
@@ -115,13 +198,12 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
 .lang svg{display:block;width:24px;height:16px;border-radius:2px;object-fit:cover}
 .lang-m{display:none}
 
-/* Tombol menu (ponsel) */
 .menu-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--indigo);cursor:pointer}
 .menu-btn .x{display:none}
 .menu-btn[aria-expanded="true"] .ham{display:none}
 .menu-btn[aria-expanded="true"] .x{display:block}
 
-/* ---------- Bilah menu ---------- */
+/* Navigation */
 .site-nav{background:#fff;border-bottom:1px solid var(--line)}
 .site-nav.stuck{box-shadow:0 8px 24px rgba(27,24,48,.09)}
 .nav{display:flex;flex-wrap:wrap;gap:0 34px;font-size:15px;font-weight:500}
@@ -130,16 +212,15 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
 .nav a:hover{color:var(--gold)}
 .nav a.active{color:var(--indigo);border-bottom:3px solid var(--gold);margin-bottom:-1px}
 
-/* Dropdown menu (Legislação, Sobre a CFP, Sistemas) */
+/* Dropdown */
 .nav .dd{position:relative}
 .dd-btn{font:inherit;font-weight:500;color:inherit;background:none;border-top:0;border-left:0;border-right:0;padding:14px 0;cursor:pointer;display:inline-flex;align-items:center;gap:6px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .dd-btn svg{transition:transform .2s}
 .dd-menu{display:none;position:absolute;left:-14px;top:100%;min-width:240px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:0 0 6px 6px;box-shadow:0 14px 34px rgba(27,24,48,.14);padding:8px;z-index:60}
-/* Dibuka lewat klik/ketuk (semua perangkat) */
 .dd.open .dd-btn{color:var(--gold)}
 .dd.open .dd-btn svg{transform:rotate(180deg)}
 .dd.open .dd-menu{display:block}
-/* Hover hanya untuk perangkat dengan mouse */
+
 @media (hover:hover) and (pointer:fine){
   .dd:hover .dd-btn{color:var(--gold)}
   .dd:hover .dd-btn svg{transform:rotate(180deg)}
@@ -158,7 +239,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
 .nav .dd-menu a.ext:hover .x{color:var(--indigo)}
 .dd-empty{display:block;padding:10px 12px;font-size:14px;color:var(--muted)}
 
-/* ---------- Footer ---------- */
+/* Footer */
 .site-footer{background:var(--pattern-bg);color:#CFCADF}
 .foot{display:grid;grid-template-columns:1.5fr 1fr 1.1fr 1fr;gap:40px;padding-top:60px;padding-bottom:52px}
 .f-brand img{height:60px;width:auto;display:block}
@@ -174,7 +255,6 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
 .f-bottom{border-top:1px solid rgba(255,255,255,.14);font-size:13px;color:#B9B3CF}
 .f-bottom .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;padding-top:18px;padding-bottom:18px}
 
-/* Tombol kembali ke atas */
 .totop{position:fixed;right:20px;bottom:20px;z-index:40;width:44px;height:44px;border:0;border-radius:50%;background:var(--indigo);color:#fff;font-size:20px;line-height:1;cursor:pointer;box-shadow:0 8px 22px rgba(27,24,48,.3)}
 .totop:hover{background:var(--gold)}
 .totop[hidden]{display:none}
@@ -183,7 +263,6 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
   .foot{grid-template-columns:1fr 1fr;gap:36px}
 }
 
-/* Ponsel & tablet kecil: menu disembunyikan di balik tombol, dropdown jadi akordeon */
 @media(max-width:760px){
   html{scroll-padding-top:72px}
   .site-header .top{padding-top:10px;padding-bottom:10px}
@@ -192,7 +271,6 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
   .top>.lang{display:none}
   .menu-btn{display:inline-flex;flex-shrink:0}
   .site-nav{display:none;position:static;border-top:1px solid var(--line)}
-  /* Menu terbuka tidak boleh lebih tinggi dari layar: bisa di-scroll sendiri */
   .site-nav.open{display:block;max-height:calc(100vh - 70px);max-height:calc(100dvh - 70px);overflow-y:auto}
   .nav{flex-direction:column;flex-wrap:nowrap;gap:0;padding-bottom:6px}
   .nav>a,.dd-btn{display:flex;width:100%;box-sizing:border-box;padding:13px 4px;border-bottom:1px solid var(--line);margin-bottom:0}
@@ -206,7 +284,6 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
   .foot{grid-template-columns:1fr;padding-top:44px}
 }
 
-/* Cetak (mis. mencetak berita atau dokumen): sembunyikan header, footer, dan tombol */
 @media print{
   .header-wrapper,.flagbar,.totop,.skip,.site-footer .foot{display:none!important}
   body{background:#fff}
@@ -219,7 +296,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
 <a class="skip" href="#main">{% translate "Saltar para o conteúdo" %}</a>
 <div class="flagbar" aria-hidden="true"></div>
 
-<!-- Wrapper baru untuk membungkus Header & Nav agar menempel bersama saat scroll -->
+<!-- Header & Nav Wrapper -->
 <div class="header-wrapper">
   <header class="site-header">
     <div class="wrap top">
@@ -227,7 +304,8 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
         <img src="{% static 'back_end/images/logo/logo_comicao.webp' %}" alt="Logo Comissão da Função Pública">
         <span>Comissão da Função Pública</span>
       </a>
-      <!-- Butaun Lingua (Tetum, Português, English) -->
+      
+      <!-- Flag Selector -->
       <div class="lang">
         <a href="javascript:void(0)" onclick="changeLanguage('tet')" title="Tetun" {% if LANGUAGE_CODE == 'tet' %}class="active"{% endif %}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" aria-label="Tetun">
@@ -248,7 +326,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
               <path d="M -32,-47 L 32,-47 L 32,12 C 32,38 0,52 0,52 C 0,52 -32,38 -32,12 Z" fill="#FFFFFF" stroke="#000000" stroke-width="2"/>
               <g fill="#003399">
                 <path d="M -8,-15 L 8,-15 L 8,3 C 8,12 0,16 0,16 C 0,16 -8,12 -8,3 Z"/>
-                <path d="M -8,-38 L 8,-38 L 8,-20 C 8,-11 0,-7 0,-7 C 0,-7 -8,-11 -8,-20 Z"/>
+                <path d="M -8,-38 L 8,-38 L 8,-20 C 8,-11 0,-7 0,-7 C 0,7 -8,-11 -8,-20 Z"/>
                 <path d="M -8,8 L 8,8 L 8,26 C 8,35 0,39 0,39 C 0,39 -8,35 -8,26 Z"/>
                 <path d="M -24,-15 L -8,-15 L -8,3 C -8,12 -16,16 -16,16 C -16,16 -24,12 -24,3 Z"/>
                 <path d="M 8,-15 L 24,-15 L 24,3 C 24,12 16,16 16,16 C 16,16 8,12 8,3 Z"/>
@@ -276,6 +354,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
           </svg>
         </a>
       </div>
+
       <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" aria-label="Menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
           <g class="ham"><path d="M4 7h16M4 12h16M4 17h16"/></g>
@@ -290,7 +369,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
       <a href="{% url 'home'%}" {% if active_menu == 'home' %}class="active"{% endif %}>{% translate "Inicio" %}</a>
       <a href="{% url 'noticias_csc_asean' %}" {% if active_menu == 'csc' %}class="active"{% endif %}>CSC &amp; ASEAN</a>
       <a href="{% url 'documentos_publicos_publico_list' %}" {% if active_menu == 'documents' %}class="active"{% endif %}>{% translate "Documentos Públicos" %}</a>
-      <!-- Legislação (dropdown tipe DDDO) -->
+      
       <div class="dd {% if active_menu == 'legislation' or request.resolver_match.url_name == 'dddo_list_by_tipo' %}active{% endif %}">
         <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
           {% translate "Legislação" %}
@@ -305,7 +384,6 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
         </div>
       </div>
 
-      <!-- About CFP (dropdown tipe mandato) -->
       <div class="dd {% if active_menu == 'about' or request.resolver_match.url_name == 'mandato_list_by_tipo' %}active{% endif %}">
         <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
           {% translate "Sobre a CFP" %}
@@ -320,7 +398,6 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
         </div>
       </div>
 
-      <!-- Systems (dropdown tautan sistem) -->
       <div class="dd {% if active_menu == 'systems' or request.resolver_match.url_name == 'sistemas' %}active{% endif %}">
         <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
           {% translate "Sistemas" %}
@@ -341,7 +418,6 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
       </div>
       <a href="{% url 'kontaktu' %}" {% if active_menu == 'contact' %}class="active"{% endif %}>{% translate "Contacto" %}</a>
 
-      <!-- Pemilih bahasa untuk ponsel (di dalam menu) -->
       <div class="lang lang-m">
         <a href="javascript:void(0)" onclick="changeLanguage('tet')" title="Tetun" {% if LANGUAGE_CODE == 'tet' %}class="active"{% endif %}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" aria-label="Tetun">
@@ -362,7 +438,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
               <path d="M -32,-47 L 32,-47 L 32,12 C 32,38 0,52 0,52 C 0,52 -32,38 -32,12 Z" fill="#FFFFFF" stroke="#000000" stroke-width="2"/>
               <g fill="#003399">
                 <path d="M -8,-15 L 8,-15 L 8,3 C 8,12 0,16 0,16 C 0,16 -8,12 -8,3 Z"/>
-                <path d="M -8,-38 L 8,-38 L 8,-20 C 8,-11 0,-7 0,-7 C 0,-7 -8,-11 -8,-20 Z"/>
+                <path d="M -8,-38 L 8,-38 L 8,-20 C 8,-11 0,-7 0,-7 C 0,7 -8,-11 -8,-20 Z"/>
                 <path d="M -8,8 L 8,8 L 8,26 C 8,35 0,39 0,39 C 0,39 -8,35 -8,26 Z"/>
                 <path d="M -24,-15 L -8,-15 L -8,3 C -8,12 -16,16 -16,16 C -16,16 -24,12 -24,3 Z"/>
                 <path d="M 8,-15 L 24,-15 L 24,3 C 24,12 16,16 16,16 C 16,16 8,12 8,3 Z"/>
@@ -394,7 +470,17 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
   </div>
 </div>
 
-{% block hero %}{% endblock %}
+<!-- SECTION HERO DENGAN DUA LAPISAN GAMBAR BAWAAN (PAGI & MALAM) -->
+{% block hero %}
+<section class="hero">
+  <div class="hero-bg-layer hero-bg-morning"></div>
+  <div class="hero-bg-layer hero-bg-night"></div>
+  <div class="hero-overlay"></div>
+  <div class="wrap">
+    <!-- Konten default hero -->
+  </div>
+</section>
+{% endblock %}
 
 <main id="main">
   {% block content %}{% endblock %}
@@ -445,20 +531,20 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
 
 <button type="button" class="totop" id="toTop" hidden aria-label="{% translate 'Voltar ao topo' %}">↑</button>
 
-<!-- Form bahasa (dipakai changeLanguage) -->
 <form id="language-form" action="{% url 'set_language' %}" method="post" style="display:none">
   {% csrf_token %}
   <input type="hidden" name="language" id="selected-language">
   <input type="hidden" name="next" value="{{ request.get_full_path }}">
 </form>
+
 <script>
 function changeLanguage(langCode) {
   document.getElementById('selected-language').value = langCode;
   document.getElementById('language-form').submit();
 }
 
-(function () {
-  /* ---- Dropdown menu (Legislação, Sobre a CFP, Sistemas) ---- */
+document.addEventListener('DOMContentLoaded', function () {
+  /* ---- Dropdown Menu ---- */
   document.querySelectorAll('.dd').forEach(function (dd) {
     var btn = dd.querySelector('.dd-btn');
     btn.addEventListener('click', function (e) {
@@ -478,34 +564,77 @@ function changeLanguage(langCode) {
   }
   document.addEventListener('click', closeAll);
 
-  /* ---- Tombol menu (ponsel) ---- */
+  /* ---- Mobile Menu ---- */
   var menuBtn = document.getElementById('menuBtn');
   var siteNav = document.getElementById('siteNav');
   function setMenu(open) {
     siteNav.classList.toggle('open', open);
     menuBtn.setAttribute('aria-expanded', open);
   }
-  menuBtn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    setMenu(!siteNav.classList.contains('open'));
-  });
+  if (menuBtn) {
+    menuBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setMenu(!siteNav.classList.contains('open'));
+    });
+  }
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { closeAll(); setMenu(false); }
   });
 
-  /* ---- Bayangan bilah menu saat menempel + tombol ke atas ---- */
-  var headerWrapper = document.querySelector('.header-wrapper');
+  /* ---- Scroll Shadow & Totop ---- */
   var toTop = document.getElementById('toTop');
   function onScroll() {
     var y = window.scrollY || document.documentElement.scrollTop;
     var siteNavEl = document.getElementById('siteNav');
-    siteNavEl.classList.toggle('stuck', y > 50);
-    toTop.hidden = y < 700;
+    if (siteNavEl) siteNavEl.classList.toggle('stuck', y > 50);
+    if (toTop) toTop.hidden = y < 700;
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
-  toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
-})();
+  if (toTop) {
+    toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  }
+
+  /* ---- FITUR TOMBOL GANTI FOTO HERO (Pagi / Malam Instan & Smooth) ---- */
+  const heroSection = document.querySelector('section.hero');
+  if (heroSection) {
+    // Pastikan elemen lapisan malam & pagi sudah ada di dalam hero (atau buat otomatis jika halaman anak meng-override blok hero tanpa lapisan tersebut)
+    if (!heroSection.querySelector('.hero-bg-night')) {
+      const morningLayer = document.createElement('div');
+      morningLayer.className = 'hero-bg-layer hero-bg-morning';
+      const nightLayer = document.createElement('div');
+      nightLayer.className = 'hero-bg-layer hero-bg-night';
+      const overlayLayer = document.createElement('div');
+      overlayLayer.className = 'hero-overlay';
+      
+      heroSection.prepend(overlayLayer);
+      heroSection.prepend(nightLayer);
+      heroSection.prepend(morningLayer);
+    }
+
+    const toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    toggleBtn.className = 'hero-theme-toggle';
+    toggleBtn.setAttribute('aria-label', 'Ganti Suasana Pagi/Malam');
+    
+    const sunIcon = `<svg viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0z"/></svg>`;
+    const moonIcon = `<svg viewBox="0 0 24 24"><path d="M12.3 2.01c-4.29.37-7.6 3.96-7.6 8.34 0 4.62 3.75 8.37 8.37 8.37 4.38 0 7.97-3.31 8.34-7.6-.07.24-.15.47-.26.7-1.4 2.87-4.38 4.86-7.83 4.86-4.75 0-8.6-3.85-8.6-8.6 0-3.45 1.99-6.43 4.86-7.83.23-.11.46-.19.7-.26z"/></svg>`;
+
+    toggleBtn.innerHTML = `${moonIcon} <span>Noite</span>`;
+    heroSection.appendChild(toggleBtn);
+
+    toggleBtn.addEventListener('click', function() {
+      heroSection.classList.toggle('night-mode');
+      const isNight = heroSection.classList.contains('night-mode');
+      
+      if (isNight) {
+        toggleBtn.innerHTML = `${sunIcon} <span>Dia</span>`;
+      } else {
+        toggleBtn.innerHTML = `${moonIcon} <span>Noite</span>`;
+      }
+    });
+  }
+});
 </script>
 
 {% block extra_js %}{% endblock %}

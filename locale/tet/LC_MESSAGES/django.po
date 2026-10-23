@@ -93,7 +93,6 @@ msgid "Deliberação, Decisão, Despacho e Orientação"
 msgstr "Deliberasaun, Desizaun, Despaxu no Orientasaun"
 
 #: .\main_front_end\templates\dddo_publico_list.html:61
-
 msgid "documentos publicados"
 msgstr "dokumentu publikadu"
 
@@ -173,6 +172,7 @@ msgstr "Kona-ba"
 #: .\main_front_end\templates\noticia_detalho.html:84
 msgid "Conteúdo não disponível."
 msgstr "Konteúdo la disponível."
+
 #: .\main_front_end\templates\noticia_detalho.html:89
 msgid "Voltar"
 msgstr "Fila"
@@ -231,11 +231,11 @@ msgstr "Haree Notisia hotu"
 
 #: .\main_front_end\templates\mandato_list.html:62
 msgid "membros"
-msgstr "membru sira"
+msgstr "membru"
 
 #: .\main_front_end\templates\mandato_list.html:82
 msgid "Membros"
-msgstr "Memberu sira"
+msgstr "Membru sira"
 
 #: .\main_front_end\templates\mandato_list.html:94
 msgid "Detalho"
@@ -292,8 +292,6 @@ msgstr "Seluk"
 #~ msgid "DOCUMENTOS"
 #~ msgstr "DOKUMENTU PUBLIKU"
 
-#~ msgid "Documentos"
-#~ msgstr "Dokumentu Sira"
 
 #~ msgid "Visualizar"
 #~ msgstr "Vizualiza"
@@ -315,3 +313,46 @@ msgstr "Seluk"
 
 msgid "Website Portal para a publicação de atividades da Comissão da Função Pública"
 msgstr "Website Portal ba publikasaun atividade husi Comissão da Função Pública"
+
+msgid "Portal oficial da Comissão da Função Pública de Timor-Leste: notícias, documentos, legislação e serviços digitais."
+msgstr "Portal ofisial Komisaun Funsaun Públika Timor-Leste: notísia, dokumentu sira, lejislasaun no servisu dijital."
+
+msgid "Documentos"
+msgstr "Dokumentu"
+
+msgid "Pesquisar documentos e notícias..."
+msgstr "Buka dokumentu no notísia sira..."
+
+msgid "Serviços digitais"
+msgstr "Servisu dijital sira"
+
+msgid "Acesso rápido aos sistemas e plataformas da Comissão da Função Pública."
+msgstr "Asesu lais ba sistema no plataforma Komisaun Funsaun Públika nian."
+
+msgid "Dados da Força de Trabalho"
+msgstr "Dadus Forsa Traballu nian"
+
+msgid "Dashboards públicos com os dados da função pública de Timor-Leste."
+msgstr "Dashboard públiku ho dadus funsaun públika Timor-Leste."
+
+msgid "Dashboard público"
+msgstr "Dashboard públiku"
+
+msgid "Abrir dashboard"
+msgstr "Loke dashboard"
+
+msgid "Cooperação e Parcerias"
+msgstr "Kooperasaun no Parseria"
+
+msgid "Atividades e articulação institucional com redes de cooperação da Função Pública, CSC e ASEAN."
+msgstr "Atividade no artikulasaun institusional ho rede kooperasaun Funsaun Públika nian."
+
+msgid "Ver atividades CSC"
+msgstr "Haree atividade CSC"
+
+msgid "Notícias Recentes"
+msgstr "Notísia Resente"
+
+msgid "Ler mais"
+msgstr "Lee detallu"
+

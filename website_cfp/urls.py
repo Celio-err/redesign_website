@@ -38,6 +38,7 @@ urlpatterns += i18n_patterns(
     path('noticias/', include('noticias.urls')),
     path('documentos_publicos/', include('documentos_publicos.urls')),
     path('configuracao/', include('settings.urls')),
+    path('contacto/', include('contacto.urls')),
     
     prefix_default_language=True,
 )

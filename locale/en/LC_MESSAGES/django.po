@@ -149,15 +149,15 @@ msgstr "No DDDO document found."
 
 #: .\main_front_end\templates\mandato_list.html:71
 msgid "Mandatos"
-msgstr ""
+msgstr "Mandates"
 
 #: .\main_front_end\templates\detail_mandatu.html:78
 msgid "Função"
-msgstr ""
+msgstr "Function"
 
 #: .\main_front_end\templates\detail_mandatu.html:81
 msgid "Mandato"
-msgstr ""
+msgstr "Mandate"
 
 #: .\main_front_end\templates\detail_mandatu.html:84
 msgid "Período"
@@ -291,7 +291,47 @@ msgstr "Clear filter"
 msgid "Outros"
 msgstr "Others"
 
-
 msgid "Website Portal para a publicação de atividades da Comissão da Função Pública"
 msgstr "Portal Website for publish activities from Civil service Comission of Timor-Leste"
 
+msgid "Portal oficial da Comissão da Função Pública de Timor-Leste: notícias, documentos, legislação e serviços digitais."
+msgstr "Oficial Portal Website of Public service Comission of Timor-Leste: news, documents, legislation and digital services"
+
+msgid "Documentos"
+msgstr "Documents"
+
+msgid "Pesquisar documentos e notícias..."
+msgstr "Search documents & news..."
+
+msgid "Serviços digitais"
+msgstr "Digital Services"
+
+msgid "Acesso rápido aos sistemas e plataformas da Comissão da Função Pública."
+msgstr "Quick acces into the Public Service Comision's systems and platforms."
+
+msgid "Dados da Força de Trabalho"
+msgstr "Public Service Data"
+
+msgid "Dashboards públicos com os dados da função pública de Timor-Leste."
+msgstr "Dashboard with public service data in East-Timor."
+
+msgid "Dashboard público"
+msgstr "Public dashboard"
+
+msgid "Abrir dashboard"
+msgstr "Open dashboard"
+
+msgid "Cooperação e Parcerias"
+msgstr "Cooperation and Partnership"
+
+msgid "Atividades e articulação institucional com redes de cooperação da Função Pública, CSC e ASEAN."
+msgstr "Institucional activities with partnership of Public service."
+
+msgid "Ver atividades CSC"
+msgstr "See CSC activities"
+
+msgid "Notícias Recentes"
+msgstr "Recent News"
+
+msgid "Ler mais"
+msgstr "Read more"

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n static %}
 
 {% block title %}{% translate "Contacto" %} — Comissão da Função Pública{% endblock %}
 
@@ -8,48 +8,104 @@
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
       crossorigin="">
 <style>
-/* ---------- Banner ---------- */
-.c-hero{background:var(--pattern-bg);color:#fff;overflow:hidden}
-.c-hero .wrap{padding-top:72px;padding-bottom:64px}
-.c-hero h1{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:72px;line-height:1;letter-spacing:-.03em}
-.c-hero h1::after{content:"";display:block;height:4px;background:var(--gold);margin-top:18px;width:72px}
-.c-hero p{margin:22px 0 0;font-size:18px;color:#D9D2EC}
+:root{
+  --cfp:#2A2160; --cfp-deep:#1D1745; --cfp-gold:#C29B38; --cfp-gold-lt:#E3C46B;
+  --cfp-bg:#F6F5FB; --cfp-line:#DDD9EE; --cfp-field:#FAFAFE;
+}
+main{background:var(--cfp-bg);overflow-x:clip}
+
+/* ---------- Banner: foto gedung + lapisan ungu CFP ---------- */
+.c-hero{
+  position:relative;color:#fff;overflow:hidden;
+  background:
+    linear-gradient(90deg,rgba(29,23,69,.95) 0%,rgba(42,33,96,.84) 55%,rgba(42,33,96,.64) 100%),
+    url("{% static 'front_end/img/building_cfp_morning.webp' %}") center/cover no-repeat;
+  background-color:var(--cfp-deep);
+  border-bottom:4px solid var(--cfp-gold);
+}
+.c-hero .wrap{padding-top:88px;padding-bottom:80px}
+.c-hero h1{margin:0;font-family:'Merriweather',serif;font-weight:700;font-size:56px;line-height:1.1;letter-spacing:-.02em}
+.c-hero h1::after{content:"";display:block;height:3px;background:var(--cfp-gold);margin-top:22px;width:72px}
+.c-hero p{margin:22px 0 0;font-size:18px;letter-spacing:.01em;color:#E4E0F4}
 
 /* ---------- Layout ---------- */
-.contact{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:48px;align-items:start;padding-top:64px;padding-bottom:96px}
-.info h2{margin:0 0 28px;font-family:'Newsreader',serif;font-size:38px;line-height:1.1;font-weight:500;letter-spacing:-.02em;color:var(--indigo)}
-.info h2::after{content:"";display:block;width:48px;height:4px;background:var(--gold);margin-top:14px}
+.contact{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:56px;align-items:start;padding-top:80px;padding-bottom:96px}
+.info h2{margin:0 0 28px;font-family:'Merriweather',serif;font-size:32px;line-height:1.2;font-weight:700;letter-spacing:-.01em;color:var(--cfp)}
+.info h2::after{content:"";display:block;width:48px;height:3px;background:var(--cfp-gold);margin-top:14px}
 
 /* ---------- Baris kontak ---------- */
-.ci{display:grid;grid-template-columns:48px 1fr auto;gap:16px;align-items:start;padding:20px 0;border-top:1px solid var(--line);position:relative}
-.ci:last-of-type{border-bottom:1px solid var(--line)}
-.ico{width:48px;height:48px;border-radius:50%;background:#ECE8F6;color:var(--indigo);display:flex;align-items:center;justify-content:center}
-.ci:hover .ico{background:var(--indigo);color:#fff}
-.ci .lb{font-size:13px;color:var(--muted);margin:0 0 4px}
-.ci .vl{display:block;font-size:16px;line-height:1.5;color:var(--ink)}
-a.vl:hover{color:var(--indigo);text-decoration:underline;text-underline-offset:3px}
-.cp{font:inherit;font-size:12px;font-weight:500;color:var(--indigo);background:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
-.cp:hover{border-color:var(--indigo);background:#F3F0FA}
+.ci{display:grid;grid-template-columns:52px 1fr auto;gap:18px;align-items:start;padding:22px 0;border-top:1px solid var(--cfp-line);position:relative}
+.ci:last-of-type{border-bottom:1px solid var(--cfp-line)}
+.ico{width:52px;height:52px;border-radius:50%;background:var(--cfp);color:var(--cfp-gold-lt);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px #fff,0 0 0 5px var(--cfp-line);transition:background .2s,color .2s}
+.ci:hover .ico{background:var(--cfp-gold);color:var(--cfp-deep)}
+.ci .lb{font-size:13px;font-weight:600;letter-spacing:.02em;color:#7A759E;margin:0 0 5px}
+.ci .vl{display:block;font-size:16px;line-height:1.55;color:var(--cfp-deep)}
+a.vl:hover{color:var(--cfp);text-decoration:underline;text-decoration-color:var(--cfp-gold);text-decoration-thickness:2px;text-underline-offset:4px}
+.cp{font:inherit;font-size:12.5px;font-weight:600;color:var(--cfp);background:#fff;border:1px solid var(--cfp-line);border-radius:999px;padding:6px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.cp:hover{border-color:var(--cfp);background:var(--cfp);color:#fff}
 
 /* ---------- Peta ---------- */
-.mapcard{position:relative;height:540px;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:#ECE8F6}
+.mapcard{position:relative;height:540px;border-radius:10px;overflow:hidden;border:1px solid var(--cfp-line);background:#E6E3F3;box-shadow:0 28px 50px -26px rgba(29,23,69,.45)}
 #map{width:100%;height:100%}
-.leaflet-tile-pane{filter:saturate(.75) contrast(1.02)}
-.dir{position:absolute;right:14px;top:14px;z-index:1000;display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--indigo);font-size:14px;font-weight:500;padding:10px 16px;border-radius:999px;box-shadow:0 6px 20px rgba(27,24,48,.18)}
-.dir:hover{background:var(--indigo);color:#fff}
+.leaflet-tile-pane{filter:saturate(.7) contrast(1.03)}
+.dir{position:absolute;right:16px;top:16px;z-index:1000;display:inline-flex;align-items:center;gap:8px;background:var(--cfp-deep);color:#fff;font-size:14px;font-weight:600;padding:11px 18px;border-radius:999px;border:1px solid rgba(227,196,107,.55);box-shadow:0 8px 22px rgba(29,23,69,.35);transition:all .2s}
+.dir:hover{background:var(--cfp-gold);color:var(--cfp-deep);border-color:var(--cfp-gold)}
 
 /* Toast "Copiado" */
-.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,0);background:var(--ink);color:#fff;font-size:14px;padding:11px 20px;border-radius:999px;opacity:0;pointer-events:none;z-index:2000}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,0);background:var(--cfp-deep);color:#fff;font-size:14px;font-weight:500;padding:12px 22px;border-radius:999px;border:1px solid var(--cfp-gold);opacity:0;pointer-events:none;z-index:2000}
 .toast.show{opacity:1}
 
+/* ---------- Komentar: pita ungu pekat selebar layar ---------- */
+.cm-section{
+  position:relative;padding-top:88px;padding-bottom:96px;scroll-margin-top:24px;
+  background:var(--cfp-deep);
+  box-shadow:0 0 0 100vmax var(--cfp-deep),0 -3px 0 100vmax var(--cfp-gold);
+  clip-path:inset(-3px -100vmax 0);
+}
+.cm{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:56px;align-items:start}
+.cm h2{margin:0 0 8px;font-family:'Merriweather',serif;font-size:32px;line-height:1.2;font-weight:700;letter-spacing:-.01em;color:#fff}
+.cm h2::after{content:"";display:block;width:48px;height:3px;background:var(--cfp-gold);margin-top:16px}
+.cm .intro{margin:22px 0 0;font-size:15.5px;line-height:1.7;color:#CFCBEA}
+
+/* Form: card putih di atas pita ungu */
+.cm form{box-sizing:border-box;max-width:640px;background:#fff;border-radius:10px;padding:40px;box-shadow:0 30px 60px -24px rgba(0,0,0,.55)}
+.f-row{margin-bottom:20px}
+.f-row label{display:block;font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--cfp-deep);margin-bottom:8px}
+.f-row .opt{font-weight:400;color:#7A759E}
+.f-row input[type=text],.f-row input[type=email],.f-row textarea{
+  width:100%;box-sizing:border-box;font:inherit;font-size:16px;color:var(--cfp-deep);background:var(--cfp-field);
+  border:1px solid var(--cfp-line);border-radius:6px;padding:13px 15px;transition:border-color .2s,box-shadow .2s,background .2s}
+.f-row textarea{min-height:150px;resize:vertical;line-height:1.55}
+.f-row input:focus,.f-row textarea:focus{outline:none;background:#fff;border-color:var(--cfp);box-shadow:0 0 0 3px rgba(194,155,56,.35)}
+.f-row.has-err input,.f-row.has-err textarea{border-color:#B3261E}
+.f-err{margin:6px 0 0;font-size:13px;color:#B3261E}
+.f-count{margin:6px 0 0;font-size:12px;color:#7A759E;text-align:right}
+.f-btn{font:inherit;font-size:15px;font-weight:700;color:var(--cfp-deep);background:var(--cfp-gold);border:0;border-radius:999px;padding:14px 32px;cursor:pointer;box-shadow:0 8px 18px -8px rgba(194,155,56,.8);transition:all .2s}
+.f-btn:hover{background:var(--cfp-gold-lt);transform:translateY(-1px)}
+.f-btn:focus-visible{outline:2px solid var(--cfp);outline-offset:3px}
+.f-btn[disabled]{opacity:.6;cursor:wait;transform:none}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* Notifikasi */
+.notice{display:flex;gap:10px;align-items:flex-start;margin:0 0 24px;padding:15px 18px;border-radius:8px;font-size:15px;line-height:1.5;background:#E6F2EA;color:#14532D;border:1px solid #BCDCC6}
+.notice.err{background:#FBEAE9;color:#7A1D17;border-color:#F0C4C1}
+
+.f-two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
 @media(max-width:900px){
-  .contact{grid-template-columns:1fr;gap:40px;padding-top:48px}
+  .contact,.cm{grid-template-columns:1fr;gap:44px}
+  .contact{padding-top:56px;padding-bottom:64px}
   .mapcard{height:400px}
+  .cm-section{padding-top:60px;padding-bottom:64px}
+  .cm form{padding:28px}
 }
 @media(max-width:600px){
-  .c-hero h1{font-size:48px}
-  .ci{grid-template-columns:44px 1fr}
+  .c-hero .wrap{padding-top:60px;padding-bottom:52px}
+  .c-hero h1{font-size:38px}
+  .ci{grid-template-columns:48px 1fr}
   .ci .cp{grid-column:2;justify-self:start}
+  .f-two{grid-template-columns:1fr;gap:0}
+  .cm form{padding:22px}
 }
 </style>
 {% endblock %}
@@ -107,13 +163,69 @@ a.vl:hover{color:var(--indigo);text-decoration:underline;text-underline-offset:3
   </section>
 
   <div class="mapcard">
-    <a class="dir" href="https://www.google.com/maps/dir/?api=1&destination=-8.56209538684203,125.56832667588387" target="_blank" rel="noopener">
+    <a class="dir" href="https://www.google.com/maps/place/Komisaun+Funsaun+Publika/@2.0377649,82.9536212,3z/data=!4m17!1m10!4m9!1m4!2m2!1d-147.30555!2d64.76531!4e1!1m3!2m2!1d125.5716364!2d-8.5621034!3m5!1s0x2d01e7ea294c8f4d:0x37d27ef9efafba6e!8m2!3d-8.5621143!4d125.5716219!16s%2Fg%2F11fl0yxdnm?entry=ttu&g_ep=EgoyMDI2MTAxOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">
       {% translate "Obter direções" %} ↗
     </a>
     <div id="map" role="region" aria-label="{% translate 'Mapa' %}"></div>
-    
   </div>
 
+</div>
+
+{# ===================== KOMENTAR (hanya input; dibaca lewat backend) ===================== #}
+<div class="wrap cm-section" id="comentarios">
+  <div class="cm">
+
+    <div>
+      <h2 id="h-form">{% translate "Deixe o seu comentário" %}</h2>
+      <p class="intro">{% translate "A sua mensagem é enviada à nossa equipa, que a lerá com atenção." %}</p>
+    </div>
+
+    <section aria-labelledby="h-form">
+      {% if enviado %}
+      <div class="notice" role="status">
+        {% translate "Obrigado. O seu comentário foi enviado com sucesso." %}
+      </div>
+      {% endif %}
+
+      {% if form.non_field_errors %}
+      <div class="notice err" role="alert">{{ form.non_field_errors|join:" " }}</div>
+      {% endif %}
+
+      <form method="post" action="{% url 'contact' %}#comentarios" id="form-comentario" novalidate>
+        {% csrf_token %}
+
+        <div class="f-two">
+          <div class="f-row{% if form.name.errors %} has-err{% endif %}">
+            <label for="{{ form.name.id_for_label }}">{% translate "Nome" %}</label>
+            {{ form.name }}
+            {% for e in form.name.errors %}<p class="f-err" role="alert">{{ e }}</p>{% endfor %}
+          </div>
+
+          <div class="f-row{% if form.email.errors %} has-err{% endif %}">
+            <label for="{{ form.email.id_for_label }}">Email <span class="opt">({% translate "opcional" %})</span></label>
+            {{ form.email }}
+            {% for e in form.email.errors %}<p class="f-err" role="alert">{{ e }}</p>{% endfor %}
+          </div>
+        </div>
+
+        <div class="f-row{% if form.body.errors %} has-err{% endif %}">
+          <label for="{{ form.body.id_for_label }}">{% translate "Comentário" %}</label>
+          {{ form.body }}
+          <p class="f-count" aria-live="polite"><span id="cnt">0</span>/500</p>
+          {% for e in form.body.errors %}<p class="f-err" role="alert">{{ e }}</p>{% endfor %}
+        </div>
+
+        {# Honeypot: invisível para pessoas, bots costumam preenchê-lo #}
+        <div class="hp" aria-hidden="true">
+          <label for="id_website">Website</label>
+          <input type="text" name="website" id="id_website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button type="submit" class="f-btn">{% translate "Enviar comentário" %}</button>
+      </form>
+    </section>
+
+  </div>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite">{% translate "Copiado" %}</div>
@@ -136,6 +248,21 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   });
+
+  /* ---- Contador de caracteres + evitar envio duplo ---- */
+  var form = document.getElementById('form-comentario');
+  var body = document.getElementById('{{ form.body.id_for_label }}');
+  var cnt = document.getElementById('cnt');
+  if (body && cnt) {
+    var upd = function () { cnt.textContent = body.value.length; };
+    body.addEventListener('input', upd); upd();
+  }
+  if (form) {
+    form.addEventListener('submit', function () {
+      var btn = form.querySelector('button[type=submit]');
+      btn.disabled = true;
+    });
+  }
 
   /* ---- Peta ---- */
   var lat = -8.562103379379066, lng = 125.57163640455003;

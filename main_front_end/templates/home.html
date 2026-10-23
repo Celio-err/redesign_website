@@ -11,165 +11,290 @@
 .hero{background:var(--hero-bg);color:#fff}
 .hero .wrap{min-height:420px;display:flex;align-items:center;padding-top:80px;padding-bottom:80px}
 .hero .in{max-width:640px}
-.hero h1{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:68px;line-height:1.02;letter-spacing:-.03em}
-.hero h1::after{content:"";display:block;width:72px;height:4px;background:#D6A84A;margin-top:24px}
-.hero p{margin:24px 0 0;max-width:46ch;font-size:18px;line-height:1.6;color:#E4DEF5}
-.hsearch{display:flex;align-items:center;gap:4px;max-width:560px;margin-top:32px;padding:5px;background:#fff;border-radius:999px;box-shadow:0 10px 30px rgba(27,24,48,.25)}
+.hero h1{margin:0;font-family:'Merriweather',serif;font-weight:700;font-size:56px;line-height:1.1;letter-spacing:-.02em}
+.hero h1::after{content:"";display:block;width:64px;height:3px;background:var(--gold);margin-top:20px}
+.hero p{margin:20px 0 0;max-width:46ch;font-size:17px;line-height:1.6;color:#E2E8F0}
+.hsearch{display:flex;align-items:center;gap:4px;max-width:560px;margin-top:32px;padding:5px;background:#fff;border-radius:999px;box-shadow:0 10px 30px rgba(15,23,42,.15)}
 .hsearch select{font:inherit;font-size:14px;font-weight:500;color:var(--indigo);background:transparent;border:0;border-right:1px solid var(--line);padding:10px 12px 10px 16px;cursor:pointer;border-radius:999px 0 0 999px}
 .hsearch input{flex:1;min-width:0;font:inherit;font-size:15px;color:var(--ink);background:transparent;border:0;padding:10px 12px}
 .hsearch input:focus,.hsearch select:focus{outline:none}
-.hsearch:focus-within{outline:2px solid #D6A84A;outline-offset:2px}
-.hsearch button{font:inherit;font-size:14.5px;font-weight:600;color:var(--ink);background:#D6A84A;border:0;border-radius:999px;padding:11px 22px;cursor:pointer}
-.hsearch button:hover{background:var(--indigo);color:#fff}
+.hsearch:focus-within{outline:2px solid var(--gold);outline-offset:2px}
+.hsearch button{font:inherit;font-size:14.5px;font-weight:600;color:#fff;background:var(--indigo);border:0;border-radius:999px;padding:11px 22px;cursor:pointer;transition:background 0.2s}
+.hsearch button:hover{background:var(--gold)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:999px;font-size:15px;font-weight:600}
-.btn.g{background:#D6A84A;color:var(--ink)}
-.btn.g:hover{background:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:999px;font-size:14.5px;font-weight:600;transition:all 0.2s}
+.btn.g{background:var(--gold);color:#fff}
+.btn.g:hover{background:var(--gold-hover)}
 .btn.l{border:1px solid rgba(255,255,255,.6);color:#fff}
 .btn.l:hover{background:#fff;color:var(--indigo)}
 
 /* ================= Seksi umum ================= */
 .sec{padding-top:80px;padding-bottom:80px}
-.band{background:#F3F0FA}
-.sh{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 32px;margin-bottom:32px}
-.sh h2{margin:0;font-family:'Newsreader',serif;font-size:36px;line-height:1.1;font-weight:500;letter-spacing:-.02em;color:var(--indigo)}
-.sh h2::after{content:"";display:block;width:56px;height:4px;background:var(--gold);margin-top:14px}
-.sh p{margin:0;max-width:50ch;color:var(--muted);font-size:15.5px;line-height:1.6}
-.meta{font-size:14px;color:var(--muted)}
+.band{background:#F1F5F9}
+.sh{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 32px;margin-bottom:36px}
+.sh h2{margin:0;font-family:'Merriweather',serif;font-size:32px;line-height:1.2;font-weight:700;letter-spacing:-.01em;color:var(--indigo)}
+.sh h2::after{content:"";display:block;width:48px;height:3px;background:var(--gold);margin-top:12px}
+.sh p{margin:0;max-width:50ch;color:var(--muted);font-size:15px;line-height:1.6}
+.meta{font-size:13px;color:var(--muted);font-weight:500}
 
 /* ================= Layanan digital ================= */
-.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.svc a{display:flex;align-items:center;gap:16px;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:6px}
-.svc a:hover{border-color:var(--indigo)}
-.svc .ic{width:46px;height:46px;border-radius:50%;background:#ECE8F6;color:var(--indigo);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.svc a:hover .ic{background:var(--indigo);color:#fff}
-.svc .nm{flex:1;font-family:'Newsreader',serif;font-size:19px;line-height:1.25;color:var(--ink)}
+.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.svc a{display:flex;align-items:center;gap:16px;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:8px;transition:all 0.2s ease}
+.svc a:hover{border-color:var(--indigo);transform:translateY(-2px);box-shadow:0 6px 20px rgba(15,23,42,0.06)}
+.svc .ic{width:46px;height:46px;border-radius:50%;background:#F8FAFC;color:var(--indigo);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--line)}
+.svc a:hover .ic{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+.svc .nm{flex:1;font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;line-height:1.3;color:var(--ink);font-weight:700}
 .svc .x{color:var(--muted);font-size:15px}
 .svc a:hover .nm{color:var(--indigo)}
 
-/* ================= Bento berita: 4 kolom ================= */
-.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,172px);grid-auto-rows:172px;gap:14px}
-.t{position:relative;overflow:hidden;border-radius:6px;display:flex;flex-direction:column;box-sizing:border-box;min-width:0}
-.c2x2{grid-column:span 2;grid-row:span 2}
-.c2{grid-column:span 2}
-.t:hover .ttl{text-decoration:underline;text-underline-offset:3px}
-.t .ttl{font-family:'Newsreader',serif;font-weight:500;line-height:1.25;color:var(--indigo)}
-.tag{display:inline-block;font-size:11px;font-weight:500;color:var(--indigo);background:#fff;border:1px solid var(--line);border-radius:999px;padding:1px 9px;margin-top:6px}
-.clamp{display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+/* ================= Redesain Berita: Grid 3x3 UNTL Style dengan Background Shadow Elegat ================= */
+.news-grid-3x3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
 
-/* Tile berfoto penuh */
-.t-ov{color:#fff;background:var(--indigo);justify-content:flex-end}
-.t-ov>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.t-ov .shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(27,24,48,.92),rgba(27,24,48,.3) 62%,rgba(27,24,48,0))}
-.t-ov .in{position:relative;padding:14px 16px}
-.t-ov .meta{font-size:11.5px;color:#E4DEF5}
-.t-ov .ttl{color:#fff;font-size:16px;margin:4px 0 0;-webkit-line-clamp:3}
-.t-ov .tag{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);color:#fff}
-.t-ov.lg .in{padding:24px 26px}
-.t-ov.lg .meta{font-size:13px}
-.t-ov.lg .ttl{font-size:27px;line-height:1.15;margin-top:8px;-webkit-line-clamp:4}
-.t-ov.lg .tag{font-size:12px;margin-top:10px}
-.t-ov.txt{background:#ECE8F6;justify-content:stretch}
-.t-ov.txt .in{display:flex;flex-direction:column;justify-content:space-between;height:100%;box-sizing:border-box;width:100%}
-.t-ov.txt .meta{color:#5A5475}
-.t-ov.txt .ttl{color:var(--indigo)}
-.t-ov.txt .tag{background:#fff;border-color:var(--line);color:var(--indigo)}
+.news-card {
+  /* Latar belakang dengan warna gradien lembut agar tidak terasa polos/kosong */
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Bayangan default yang halus dan berisi */
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+}
 
-/* Kartu terang */
-.t-top{background:#fff;border:1px solid var(--line)}
-.t-top .pic{height:72px;flex-shrink:0;background:#ECE8F6;overflow:hidden}
-.t-top .pic img{width:100%;height:100%;object-fit:cover;display:block}
-.t-top .tx{padding:10px 14px 12px;display:flex;flex-direction:column;gap:6px;min-height:0}
-.t-top .meta{font-size:11.5px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.t-top .meta .tag{margin-top:0}
-.t-top .ttl{font-size:16px;margin:0;-webkit-line-clamp:2}
-.t-top.noimg .ttl{-webkit-line-clamp:5}
+.news-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(49, 46, 129, 0.25);
+  /* Bayangan lembut bertingkat saat kursor diarahkan (Hover) */
+  box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.12), 0 10px 15px -5px rgba(15, 23, 42, 0.05);
+}
 
-/* Tile lebar */
-.t-wide{background:#fff;border:1px solid var(--line);flex-direction:row}
-.t-wide .pic{width:42%;flex-shrink:0;background:var(--line);overflow:hidden}
-.t-wide .pic img{width:100%;height:100%;object-fit:cover;display:block}
-.t-wide .tx{flex:1;min-width:0;padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between}
-.t-wide .meta{font-size:12px}
-.t-wide .ttl{font-size:20px;margin:6px 0 0;-webkit-line-clamp:4}
+.news-card .thumb {
+  position: relative;
+  width: 100%;
+  height: 210px;
+  background: #E2E8F0;
+  overflow: hidden;
+}
 
-/* Kotak dokumen */
-.t-docs{background:var(--pattern-bg);color:#fff;padding:16px 22px;justify-content:center}
-.t-docs h3{margin:0 0 4px;font-family:'Newsreader',serif;font-size:19px;font-weight:500}
-.t-docs a{display:block;padding:6px 0;border-top:1px solid rgba(255,255,255,.25);font-size:13.5px}
-.t-docs a:hover{text-decoration:underline;text-underline-offset:3px}
+.news-card .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
 
-.more{display:inline-block;margin-top:28px;padding:13px 26px;border:1.5px solid var(--indigo);border-radius:999px;color:var(--indigo);font-weight:500}
-.more:hover{background:var(--indigo);color:#fff}
+.news-card:hover .thumb img {
+  transform: scale(1.05);
+}
+
+.news-card .body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.news-card .meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.news-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--indigo);
+  background: #FFFFFF;
+  padding: 4px 12px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 1px solid #E2E8F0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+/* Menggunakan Plus Jakarta Sans (seragam dengan navbar) */
+.news-card h3 {
+  margin: 0 0 16px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+  font-weight: 700;
+  color: var(--indigo);
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  transition: color 0.2s ease;
+}
+
+.news-card:hover h3 {
+  color: var(--gold-hover);
+}
+
+.news-card .read-more {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--indigo);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+}
+
+.news-card:hover .read-more {
+  color: var(--gold-hover);
+}
+.news-card .read-more {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--indigo);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+}
+
+.news-card:hover .read-more {
+  color: var(--gold-hover);
+}
+
+.more-wrap {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 30px;
+  border: 1.5px solid var(--indigo);
+  border-radius: 999px;
+  color: var(--indigo);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14.5px;
+  transition: all 0.2s ease;
+}
+
+.more:hover {
+  background: var(--indigo);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(30, 27, 75, 0.15);
+}
 
 /* ================= Dashboard data ================= */
 .dash{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.dcard{position:relative;overflow:hidden;background:var(--pattern-bg);color:#fff;border-radius:6px;padding:34px 36px;min-height:240px;display:flex;flex-direction:column;justify-content:space-between}
+.dcard{position:relative;overflow:hidden;background:var(--pattern-bg);color:#fff;border-radius:8px;padding:34px 36px;min-height:240px;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.2s}
+.dcard:hover{transform:translateY(-2px)}
 .dcard .bars{position:absolute;right:-4px;bottom:-4px;width:200px;height:140px;color:#fff;opacity:.11}
-.dcard .tp{position:relative;font-size:13px;color:#D9D2EC}
-.dcard h3{position:relative;margin:14px 0 0;font-family:'Newsreader',serif;font-size:28px;line-height:1.18;font-weight:500;max-width:20ch}
-.dcard:hover h3{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}
-.dcard .go{position:relative;align-self:flex-start;margin-top:26px;display:inline-flex;gap:8px;padding:11px 22px;border-radius:999px;background:#D6A84A;color:var(--ink);font-weight:600;font-size:14.5px}
-.dcard:hover .go{background:#fff}
+.dcard .tp{position:relative;font-size:13px;color:#CBD5E1}
+.dcard h3{position:relative;margin:14px 0 0;font-family:'Merriweather',serif;font-size:26px;line-height:1.2;font-weight:700;max-width:20ch}
+.dcard:hover h3{text-decoration:underline;text-underline-offset:4px}
+.dcard .go{position:relative;align-self:flex-start;margin-top:26px;display:inline-flex;gap:8px;padding:10px 20px;border-radius:999px;background:var(--gold);color:#fff;font-weight:600;font-size:14px;transition:background 0.2s}
+.dcard:hover .go{background:var(--gold-hover)}
 
 /* ================= Cooperação (Parceiros/Parceria) ================= */
 .coop{background:var(--pattern-bg);color:#fff;padding-top:80px;padding-bottom:80px}
-.coop .wrap{max-width:1200px;margin:0 auto;padding-left:32px;padding-right:32px}
+.coop .wrap{max-width:1240px;margin:0 auto;padding-left:32px;padding-right:32px}
 .coop-header{text-align:center;max-width:700px;margin:0 auto 48px}
-.coop-header .gl{width:48px;height:48px;color:#D6A84A;margin:0 auto 12px}
-.coop-header h2{margin:0;font-family:'Newsreader',serif;font-size:40px;line-height:1.1;font-weight:500;letter-spacing:-.02em}
-.coop-header h2::after{content:"";display:block;width:56px;height:4px;background:#D6A84A;margin:16px auto 0}
-.coop-header p{margin:22px 0 0;color:#D9D2EC;line-height:1.7;font-size:17px}
+.coop-header .gl{width:48px;height:48px;color:var(--gold);margin:0 auto 12px}
+.coop-header h2{margin:0;font-family:'Merriweather',serif;font-size:36px;line-height:1.1;font-weight:700;letter-spacing:-.01em}
+.coop-header h2::after{content:"";display:block;width:48px;height:3px;background:var(--gold);margin:16px auto 0}
+.coop-header p{margin:20px 0 0;color:#CBD5E1;line-height:1.7;font-size:16px}
 
 /* Grid Card Parceria */
 .coop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.coop-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:28px;display:flex;flex-direction:column;justify-content:space-between;transition:all .3s ease}
-.coop-card:hover{background:rgba(255,255,255,.1);border-color:#D6A84A;transform:translateY(-3px)}
-.coop-card .c-logo{height:60px;display:flex;align-items:center;margin-bottom:20px}
+.coop-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:28px;display:flex;flex-direction:column;justify-content:space-between;transition:all .3s ease}
+.coop-card:hover{background:rgba(255,255,255,.09);border-color:var(--gold);transform:translateY(-3px)}
+.coop-card .c-logo{height:56px;display:flex;align-items:center;margin-bottom:20px}
 .coop-card .c-logo img{max-height:100%;max-width:160px;object-fit:contain}
-.coop-card h3{margin:0 0 10px;font-family:'Newsreader',serif;font-size:20px;color:#fff;font-weight:500}
-.coop-card p{margin:0 0 20px;font-size:14.5px;color:#D9D2EC;line-height:1.6}
-.coop-card .c-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:#D6A84A}
+.coop-card h3{margin:0 0 10px;font-family:'Merriweather',serif;font-size:19px;color:#fff;font-weight:700}
+.coop-card p{margin:0 0 20px;font-size:14px;color:#CBD5E1;line-height:1.6}
+.coop-card .c-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--gold)}
 .coop-card .c-link:hover{color:#fff;text-decoration:underline}
 
 /* ================= Institucional ================= */
-.inst{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.panel{background:#fff;border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:0 0 6px 6px;padding:28px 28px 18px}
-.panel h3{margin:0 0 14px;font-family:'Newsreader',serif;font-size:24px;font-weight:500;color:var(--indigo)}
-.panel a.r{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line);font-size:15px}
+.inst{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.panel{background:#fff;border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:0 0 8px 8px;padding:28px}
+.panel h3{margin:0 0 14px;font-family:'Merriweather',serif;font-size:22px;font-weight:700;color:var(--indigo)}
+.panel a.r{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line);font-size:14.5px;color:#334155;transition:color 0.2s}
 .panel a.r span{color:var(--gold)}
 .panel a.r:hover{color:var(--indigo)}
-.panel address{font-style:normal;line-height:1.7;font-size:15px;margin-bottom:16px}
+.panel address{font-style:normal;line-height:1.7;font-size:14.5px;color:#334155;margin-bottom:16px}
 
 /* ================= Responsif ================= */
-@media(max-width:960px){
+@media(max-width:1024px){
+  .news-grid-3x3{grid-template-columns:repeat(2, 1fr)}
   .svc{grid-template-columns:repeat(2,1fr)}
   .dash{grid-template-columns:1fr}
   .coop-grid{grid-template-columns:repeat(2,1fr)}
   .inst{grid-template-columns:1fr}
-  .bento{grid-template-columns:repeat(2,1fr);grid-template-rows:none;grid-auto-rows:minmax(172px,auto)}
-  .c2x2{grid-column:span 2;grid-row:auto;min-height:280px}
-  .c2{grid-column:span 2}
 }
-@media(max-width:600px){
+
+@media(max-width:640px){
+  .news-grid-3x3{grid-template-columns:1fr}
   .hero .wrap{min-height:340px;padding-top:56px;padding-bottom:56px}
-  .hero h1{font-size:44px}
+  .hero h1{font-size:38px}
   .hsearch{flex-wrap:wrap;border-radius:18px}
   .hsearch select{border-right:0;border-bottom:1px solid var(--line);width:100%;border-radius:14px 14px 0 0}
   .hsearch input{flex:1 1 60%}
   .sec{padding-top:56px;padding-bottom:56px}
-  .sh h2{font-size:30px}
+  .sh h2{font-size:26px}
   .svc{grid-template-columns:1fr}
-  .bento{grid-template-columns:1fr}
-  .c2x2,.c2{grid-column:span 1}
-  .t-ov.lg .ttl{font-size:23px}
-  .t-wide{flex-direction:column}
-  .t-wide .pic{width:100%;height:140px}
   .dcard{padding:28px 24px}
-  .coop-header h2{font-size:32px}
+  .coop-header h2{font-size:30px}
   .coop-grid{grid-template-columns:1fr}
 }
+
+:root{
+  --cfp:#2A2160; --cfp-deep:#1D1745; --cfp-tint:#EEEDF6; --cfp-line:#D9D6EE;
+}
+ 
+/* ---- Layanan digital: isi lavender, saat di-hover seluruh card jadi ungu CFP ---- */
+.svc a{background:var(--cfp-tint);border-color:var(--cfp-line)}
+.svc .ic{background:var(--cfp);color:#fff;border-color:var(--cfp)}
+.svc a:hover{background:var(--cfp);border-color:var(--cfp);box-shadow:none}
+.svc a:hover .nm{color:#fff}
+.svc a:hover .x{color:var(--gold)}
+.svc a:hover .ic{background:var(--gold);color:var(--cfp-deep);border-color:var(--gold)}
+ 
+/* ---- Dashboard: ungu CFP pekat dengan tekstur pola asli ---- */
+.dcard{background:linear-gradient(rgba(42,33,96,.94),rgba(29,23,69,.97)),url("{% static 'front_end/img/presence-iii.png' %}") 0 0/260px auto}
+ 
+/* ---- Cooperação: panel ungu solid yang sedikit lebih terang dari latarnya ---- */
+.coop-card{background:#352B78;border-color:rgba(255,255,255,.14)}
+.coop-card:hover{background:#3E3388;border-color:var(--gold)}
+ 
+/* ---- Berita: isi lavender sangat muda, label kategori emas muda ---- */
+.news-card{background:#F7F6FC;border-color:var(--cfp-line)}
+.news-card:hover{border-color:var(--cfp)}
+.news-card .thumb{background:var(--cfp-line)}
+.news-tag{background:#F3E7BF;color:var(--cfp-deep);border-color:#E4D08E}
+.news-card h3,.news-card .read-more{color:var(--cfp)}
+ 
+/* ---- Institucional: isi lavender sangat muda ---- */
+.panel{background:#F7F6FC;border-color:var(--cfp-line)}
+.panel h3{color:var(--cfp)}
+.panel a.r{border-top-color:var(--cfp-line)}
+.panel a.r:hover{color:var(--cfp)}ee
 </style>
 {% endblock %}
 
@@ -186,7 +311,7 @@
           <option value="{% url 'todas_noticias' %}">{% translate "Notícias" %}</option>
         </select>
         <label class="sr" for="hq">{% translate "Pesquisar" %}</label>
-        <input id="hq" type="search" name="q" placeholder="{% translate 'Pesquisar documentos e notícias...' %}" autocomplete="off">
+        <input id="hq" type="search" name="q" placeholder="{% translate "Pesquisar documentos e notícias..." %}" autocomplete="off">
         <button type="submit">{% translate "Pesquisar" %}</button>
       </form>
       <div class="cta">
@@ -273,15 +398,13 @@
       <p>{% translate "Atividades e articulação institucional com redes de cooperação da Função Pública, CSC e ASEAN." %}</p>
     </div>
 
-    <!-- Grid Card Parceria (Contém logo, título, descrição e link de cada parceiro) -->
     <div class="coop-grid">
-      
       <!-- Card 1: CSC -->
       <div class="coop-card">
         <div>
           <div class="c-logo">
             <img src="{% static 'front_end/img/logo_csc.png' %}" alt="Logo CSC" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <span style="display:none; font-family:'Newsreader',serif; font-size:22px; font-weight:bold; color:#fff;">CSC</span>
+            <span style="display:none; font-family:'Merriweather',serif; font-size:20px; font-weight:bold; color:#fff;">CSC</span>
           </div>
           <h3>Civil Service Commission (CSC)</h3>
           <p>{% translate "Parceria estratégica para o desenvolvimento de capacidades e reforma da administração pública." %}</p>
@@ -294,7 +417,7 @@
         <div>
           <div class="c-logo">
             <img src="{% static 'front_end/img/logo_asean.png' %}" alt="Logo ASEAN" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <span style="display:none; font-family:'Newsreader',serif; font-size:22px; font-weight:bold; color:#fff;">ASEAN</span>
+            <span style="display:none; font-family:'Merriweather',serif; font-size:20px; font-weight:bold; color:#fff;">ASEAN</span>
           </div>
           <h3>ASEAN Public Service</h3>
           <p>{% translate "Cooperação regional e partilha de boas práticas na governação e serviços públicos." %}</p>
@@ -302,97 +425,63 @@
         <a class="c-link" href="{% url 'noticias_csc_asean' %}">{% translate "Ver atividades ASEAN" %} <span aria-hidden="true">→</span></a>
       </div>
 
-      <!-- Card 3: Outros Parceiros / AC plekat -->
+      <!-- Card 3: Outros Parceiros -->
       <div class="coop-card">
         <div>
           <div class="c-logo">
             <img src="{% static 'front_end/img/logo_parceiro.png' %}" alt="Logo Parceiro" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <span style="display:none; font-family:'Newsreader',serif; font-size:22px; font-weight:bold; color:#fff;">Cooperação</span>
+            <span style="display:none; font-family:'Merriweather',serif; font-size:20px; font-weight:bold; color:#fff;">Cooperação</span>
           </div>
           <h3>{% translate "Redes Internacionais" %}</h3>
           <p>{% translate "Projetos bilaterais de capacitação e intercâmbio técnico institucional." %}</p>
         </div>
         <a class="c-link" href="{% url 'todas_noticias' %}">{% translate "Saber mais" %} <span aria-hidden="true">→</span></a>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ============ Notícias ============ -->
-<section class="sec" style="padding-top:0">
+<!-- ============ Notícias (Grid 3x3 dengan Font Plus Jakarta Sans) ============ -->
+<section class="sec">
   <div class="wrap">
     <div class="sh">
-      <h2>{% translate "Notícias" %}</h2>
+      <h2>{% translate "Notícias Recentes" %}</h2>
     </div>
 
-    <div class="bento">
-      {% for n in noticias_recentes %}
-
-        {% if forloop.first %}
-        <a class="t c2x2 t-ov lg{% if not n.imagen %} txt{% endif %}" href="{% url 'noticia_detalho' n.pk %}">
-          {% if n.imagen %}<img src="/{{ n.imagen }}" alt="" onerror="this.style.display='none'"><div class="shade"></div>{% endif %}
-          <div class="in">
-            <div class="meta">{% translate "Mais recente" %} · {{ n.data_publicacao|date:"d/m/Y" }}</div>
-            <div class="ttl clamp">{{ n.current_title }}</div>
-            {% if n.current_tipo %}<span class="tag">{{ n.current_tipo }}</span>{% endif %}
-          </div>
-        </a>
-
-        {% elif forloop.counter0 == 1 or forloop.counter0 == 5 %}
-        <a class="t t-ov{% if not n.imagen %} txt{% endif %}" href="{% url 'noticia_detalho' n.pk %}">
-          {% if n.imagen %}<img src="/{{ n.imagen }}" alt="" loading="lazy" onerror="this.style.display='none'"><div class="shade"></div>{% endif %}
-          <div class="in">
-            <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
-            <div class="ttl clamp">{{ n.current_title }}</div>
-            {% if n.current_tipo %}<span class="tag">{{ n.current_tipo }}</span>{% endif %}
-          </div>
-        </a>
-
-        {% elif forloop.counter0 == 3 %}
-        <a class="t c2 t-wide" href="{% url 'noticia_detalho' n.pk %}">
-          {% if n.imagen %}<div class="pic"><img src="/{{ n.imagen }}" alt="" loading="lazy" onerror="this.style.display='none'"></div>{% endif %}
-          <div class="tx">
-            <div>
-              <div class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</div>
-              <div class="ttl clamp">{{ n.current_title }}</div>
+    <div class="news-grid-3x3">
+      {% for n in noticias_recentes|slice:":9" %}
+      <a class="news-card" href="{% url 'noticia_detalho' n.pk %}">
+        <div class="thumb">
+          {% if n.imagen %}
+            <img src="/{{ n.imagen }}" alt="{{ n.current_title }}" loading="lazy" onerror="this.style.display='none'">
+          {% endif %}
+        </div>
+        <div class="body">
+          <div>
+            <div class="meta-row">
+              {% if n.current_tipo %}<span class="news-tag">{{ n.current_tipo }}</span>{% endif %}
+              <span class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</span>
             </div>
-            {% if n.current_tipo %}<span class="tag" style="align-self:flex-start">{{ n.current_tipo }}</span>{% endif %}
+            <h3>{{ n.current_title }}</h3>
           </div>
-        </a>
-
-        {% else %}
-        <a class="t t-top{% if not n.imagen %} noimg{% endif %}" href="{% url 'noticia_detalho' n.pk %}">
-          {% if n.imagen %}<div class="pic"><img src="/{{ n.imagen }}" alt="" loading="lazy" onerror="this.style.display='none'"></div>{% endif %}
-          <div class="tx">
-            <div class="meta">
-              {% if n.current_tipo %}<span class="tag">{{ n.current_tipo }}</span>{% endif %}
-              <span>{{ n.data_publicacao|date:"d/m/Y" }}</span>
-            </div>
-            <div class="ttl clamp">{{ n.current_title }}</div>
-          </div>
-        </a>
-        {% endif %}
-
+          <span class="read-more">
+            {% translate "Ler mais" %} <span aria-hidden="true">→</span>
+          </span>
+        </div>
+      </a>
       {% empty %}
-        <p style="grid-column:1/-1">{% translate "Nenhuma notícia encontrada." %}</p>
+        <p style="grid-column: 1 / -1;">{% translate "Nenhuma notícia encontrada." %}</p>
       {% endfor %}
-
-      <div class="t c2 t-docs">
-        <h3>{% translate "Encontrar documentos" %}</h3>
-        <a href="{% url 'documentos_publicos_publico_list' %}">{% translate "Documentos públicos" %}</a>
-        <a href="https://bipublic.cfp.gov.tl/public/dashboard/c0121995-9855-4190-98b3-ad463f38bf91" target="_blank" rel="noopener noreferrer">{% translate "Dados da Função Pública" %}</a>
-        <a href="https://vagas.cfp.gov.tl/" target="_blank" rel="noopener noreferrer">{% translate "Portal Vagas da Função Pública" %}</a>
-      </div>
     </div>
 
-    <a href="{% url 'todas_noticias' %}" class="more">{% translate "Ver Todas as Notícias" %}</a>
+    <div class="more-wrap">
+      <a href="{% url 'todas_noticias' %}" class="more">{% translate "Ver Todas as Notícias" %} <span aria-hidden="true">→</span></a>
+    </div>
   </div>
 </section>
 
-
 <!-- ============ Institucional ============ -->
-<section class="sec">
+<section class="sec band">
   <div class="wrap">
     <div class="sh">
       <h2>{% translate "Institucional" %}</h2>
@@ -420,7 +509,7 @@
       <div class="panel">
         <h3>{% translate "Contacto" %}</h3>
         <address>{% translate "Rua Estrada de Balide," %}<br>{% translate "Dili, Timor-Leste" %}</address>
-        <a class="r" href="{% url 'kontaktu' %}">{% translate "Fale connosco" %} <span aria-hidden="true">→</span></a>
+        <a class="r" href="{% url 'contact' %}">{% translate "Fale connosco" %} <span aria-hidden="true">→</span></a>
         <a class="r" href="https://www.google.com/maps/dir/?api=1&destination=-8.562103379379066,125.57163640455003" target="_blank" rel="noopener noreferrer">{% translate "Obter direções" %} <span aria-hidden="true">↗</span></a>
       </div>
 

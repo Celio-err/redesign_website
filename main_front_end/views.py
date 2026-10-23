@@ -12,6 +12,10 @@ from django.db.models import Case, When, Value, BooleanField
 import mimetypes
 from urllib.parse import quote
 from django.db.models import Q
+from django.urls import reverse
+from django_ratelimit.decorators import ratelimit
+from .forms import CommentForm
+
 
 
 
@@ -287,8 +291,30 @@ def documentos_publicos_download(request, pk):
     response['Content-Disposition'] = f'attachment; filename="{documento.nome_ficheiro_original}"'
     return response
 
-@logout_required(redirect_to='index')
 def contacto(request):
     return render(request, "contacto.html" ,{
+        "active_menu": "contact",
+    })
+
+@logout_required(redirect_to='index')
+@ratelimit(key="ip", rate="5/m", method="POST", block=True)
+def contacto(request):
+    done = f"{reverse('contact')}?enviado=1#comentarios"
+
+    if request.method == "POST":
+        # Honeypot terisi = bot: pura-pura sukses, jangan simpan
+        if request.POST.get("website"):
+            return redirect(done)
+
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()          # disimpan ke tabel yang dibaca oleh backend
+            return redirect(done)  # Post/Redirect/Get
+    else:
+        form = CommentForm()
+
+    return render(request, "contacto.html", {
+        "form": form,
+        "enviado": request.GET.get("enviado") == "1",
         "active_menu": "contact",
     })

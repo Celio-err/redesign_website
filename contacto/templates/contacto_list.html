@@ -1,0 +1,89 @@
+{% extends 'master/base.html' %}
+{% load i18n %}
+{% block title %}Contacto - Comissão da Função Pública{% endblock %}
+{% block page_title %}{% translate "Comentários" %}{% endblock %}
+{% block content %}
+<style>
+.cl h1{margin:0 0 4px;font-size:26px}
+.cl .sub{margin:0 0 20px;color:#6b6880;font-size:14px}
+.cl-bar{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:16px}
+.cl-tabs{display:flex;gap:8px}
+.cl-tabs a{padding:7px 14px;border:1px solid #ddd8ea;border-radius:999px;font-size:14px;color:#2b2250}
+.cl-tabs a.on{background:#2b2250;color:#fff;border-color:#2b2250}
+.cl-bar input{font:inherit;padding:8px 12px;border:1px solid #ddd8ea;border-radius:6px;min-width:220px}
+.cl table{width:100%;border-collapse:collapse;font-size:14px}
+.cl th{text-align:left;font-weight:500;color:#6b6880;padding:10px 12px;border-bottom:1px solid #ddd8ea}
+.cl td{padding:14px 12px;border-bottom:1px solid #eee;vertical-align:top}
+.cl tr.unread td{background:#faf8ff}
+.cl tr.unread .nm{font-weight:600}
+.cl .msg{white-space:pre-line;overflow-wrap:anywhere;max-width:420px;line-height:1.5}
+.cl .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#c8a24a;margin-right:6px}
+.cl .acts{display:flex;gap:6px;white-space:nowrap}
+.cl .acts button{font:inherit;font-size:13px;padding:5px 12px;border:1px solid #ddd8ea;border-radius:999px;background:#fff;cursor:pointer}
+.cl .acts button:hover{background:#f3f0fa}
+.cl .acts .del{color:#b3261e}
+.cl .empty{padding:40px 0;color:#6b6880}
+.cl .pager{display:flex;justify-content:space-between;margin-top:20px;font-size:14px}
+</style>
+
+<div class="cl">
+  <h1>{% translate "Comentários" %}</h1>
+  <p class="sub">{{ unread_count }} {% translate "por ler" %} · {{ page.paginator.count }} {% translate "no total desta lista" %}</p>
+
+  <div class="cl-bar">
+    <nav class="cl-tabs" aria-label="{% translate 'Filtro' %}">
+      <a href="?q={{ q }}" class="{% if not status %}on{% endif %}">{% translate "Todos" %}</a>
+      <a href="?status=unread&q={{ q }}" class="{% if status == 'unread' %}on{% endif %}">{% translate "Por ler" %}</a>
+      <a href="?status=read&q={{ q }}" class="{% if status == 'read' %}on{% endif %}">{% translate "Lidos" %}</a>
+    </nav>
+    <form method="get">
+      {% if status %}<input type="hidden" name="status" value="{{ status }}">{% endif %}
+      <input type="search" name="q" value="{{ q }}" placeholder="{% translate 'Pesquisar nome ou texto' %}">
+    </form>
+  </div>
+
+  {% if page %}
+  <table>
+    <thead>
+      <tr><th>{% translate "Nome" %}</th><th>{% translate "Comentário" %}</th><th>{% translate "Data" %}</th><th></th></tr>
+    </thead>
+    <tbody>
+    {% for c in page %}
+      <tr class="{% if not c.is_read %}unread{% endif %}">
+        <td>
+          <div class="nm">{% if not c.is_read %}<span class="dot" title="{% translate 'Por ler' %}"></span>{% endif %}{{ c.name }}</div>
+          {% if c.email %}<a href="mailto:{{ c.email }}">{{ c.email }}</a>{% endif %}
+        </td>
+        <td class="msg">{{ c.body }}</td>
+        <td>{{ c.created_at|date:"d/m/Y H:i" }}</td>
+        <td>
+          <div class="acts">
+            <form method="post" action="{% url 'backend_comment_toggle_read' c.pk %}">
+              {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <button type="submit">{% if c.is_read %}{% translate "Marcar por ler" %}{% else %}{% translate "Marcar como lido" %}{% endif %}</button>
+            </form>
+            <form method="post" action="{% url 'backend_comment_delete' c.pk %}"
+                  onsubmit="return confirm('{% translate "Apagar este comentário?" %}')">
+              {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <button type="submit" class="del">{% translate "Apagar" %}</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% if page.has_other_pages %}
+  <nav class="pager">
+    {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}&status={{ status }}&q={{ q }}">{% translate "Anterior" %}</a>{% else %}<span></span>{% endif %}
+    <span>{{ page.number }} / {{ page.paginator.num_pages }}</span>
+    {% if page.has_next %}<a href="?page={{ page.next_page_number }}&status={{ status }}&q={{ q }}">{% translate "Seguinte" %}</a>{% else %}<span></span>{% endif %}
+  </nav>
+  {% endif %}
+
+  {% else %}
+  <p class="empty">{% translate "Nenhum comentário encontrado." %}</p>
+  {% endif %}
+</div>
+{% endblock %}

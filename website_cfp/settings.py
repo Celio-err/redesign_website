@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'dddo',
     'main_front_end',
     'settings',
+    'contacto'
 ]
 
 MIDDLEWARE = [

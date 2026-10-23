@@ -17,28 +17,43 @@
 .a-hero .date{margin-top:20px;font-size:15px;color:#D9D2EC}
 
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:56px;align-items:start;padding-bottom:96px}
-.figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;transform:translateY(-32px)}
+
+/* FOTO UTAMA (CAPA) */
+.figure{margin:0 0 32px 0;background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;transform:translateY(-32px)}
 .figure img{display:block;width:100%;max-height:480px;object-fit:cover}
-.figure figcaption{padding:12px 20px;font-size:14px;font-style:italic;color:var(--muted)}
+.figure figcaption{padding:16px 20px;font-size:15px;font-style:italic;color:var(--muted);background:#faf9fc;border-top:1px solid var(--line)}
+
+/* ISI BERITA */
 .body{max-width:68ch;font-size:18px;line-height:1.8;color:#2E2A45}
 .body p{margin:0 0 1.2em}
 .no-img .body{margin-top:56px}
-.back{display:flex;gap:12px;flex-wrap:wrap;max-width:68ch;margin-top:56px;padding-top:28px;border-top:1px solid var(--line)}
-.back a{padding:12px 24px;border:1.5px solid var(--indigo);border-radius:999px;color:var(--indigo);font-weight:500;font-size:15px}
+
+/* GALERI FOTO SISA DI BAWAH (UKURAN SEDANG) */
+.extra-gallery{max-width:68ch;margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+.extra-gallery h3{font-family:'Newsreader',serif;font-size:20px;font-weight:500;margin-bottom:16px;color:var(--indigo)}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));gap:12px}
+.gallery-item{background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;padding:0;aspect-ratio:4/3}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.2s}
+.gallery-item:hover img{transform:scale(1.03)}
+
+/* TOMBOL VOLTAR */
+.back{display:flex;gap:12px;flex-wrap:wrap;max-width:68ch;margin-top:40px;padding-top:28px;border-top:1px solid var(--line)}
+.back a{padding:12px 24px;border:1.5px solid var(--indigo);border-radius:999px;color:var(--indigo);font-weight:500;font-size:15px;text-decoration:none;display:inline-block}
 .back a:hover{background:var(--indigo);color:#fff}
 
+/* SIDEBAR OUTRAS NOTÍCIAS */
 .side{position:sticky;top:24px;margin-top:56px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px 22px}
 .side h2{margin:0 0 6px;font-family:'Newsreader',serif;font-size:22px;font-weight:500}
 .side ul{list-style:none;margin:0;padding:0;max-height:calc(100vh - 160px);overflow-y:auto}
 .side li{border-top:1px solid var(--line)}
 .side li:first-child{border-top:0}
-.side a.item{display:grid;grid-template-columns:76px 1fr;gap:14px;padding:16px 0;align-items:start}
+.side a.item{display:grid;grid-template-columns:76px 1fr;gap:14px;padding:16px 0;align-items:start;text-decoration:none}
 .side .pic{width:76px;height:76px;border-radius:4px;overflow:hidden;background:#ECE8F6}
 .side .pic img{width:100%;height:100%;object-fit:cover;display:block}
-.side .d{font-size:13px;color:#D9D2EC}
+.side .d{font-size:13px;color:var(--muted)}
 .side .t{font-family:'Newsreader',serif;font-size:17px;line-height:1.3;font-weight:500;color:var(--indigo);margin-top:3px}
 .side a.item:hover .t{text-decoration:underline;text-underline-offset:3px}
-.side .all{display:block;margin-top:8px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;font-weight:500;color:var(--indigo)}
+.side .all{display:block;margin-top:8px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;font-weight:500;color:var(--indigo);text-decoration:none}
 .side .all:hover{color:var(--gold)}
 
 @media(max-width:960px){
@@ -55,13 +70,13 @@
   <div class="wrap">
     <div class="in">
       <div class="crumb"><a href="{% url 'todas_noticias' %}">{% translate "Notícias" %}</a></div>
-      
+
       <!-- KATEGORI/TIPO BERITA DINAMIS -->
       {% if noticia.current_tipo %}<span class="tag">{{ noticia.current_tipo }}</span>{% endif %}
-      
+
       <!-- JUDUL BERITA DINAMIS -->
       <h1>{{ noticia.current_title }}</h1>
-      
+
       <div class="date">{{ noticia.data_publicacao|date:"d/m/Y" }}</div>
     </div>
   </div>
@@ -71,19 +86,22 @@
 {% block content %}
 <div class="wrap layout">
 
-  <article class="{% if not noticia.imagen %}no-img{% endif %}">
-    {% if noticia.imagen %}
+  <article class="{% if not galeria %}no-img{% endif %}">
+    
+    <!-- 1. FOTO PERTAMA (CAPA) DI BAGIAN ATAS -->
+    {% if galeria %}
     <figure class="figure">
-      <img src="/{{ noticia.imagen }}" alt="{{ noticia.current_title }}">
-      {% if noticia.current_noticia and noticia.current_descricao %}
-        <!-- DESKRIPSI/RINGKASAN DINAMIS -->
+      <img src="{{ galeria.0.url }}" alt="{{ galeria.0.legenda|default:noticia.current_title }}">
+
+      <!-- 2. DESKRIPSI/RINGKASAN TEPAT DI BAWAH FOTO UTAMA -->
+      {% if noticia.current_descricao %}
         <figcaption>{{ noticia.current_descricao }}</figcaption>
       {% endif %}
     </figure>
     {% endif %}
 
+    <!-- 3. ISI BERITA UTAMA (NOTICIA) -->
     <div class="body">
-      <!-- ISI BERITA UTAMA DINAMIS (DITAMBAHKAN FILTER |safe AGAR TAG HTML DIRENDER DENGAN AMAN) -->
       {% if noticia.current_noticia %}
         {{ noticia.current_noticia|safe }}
       {% elif noticia.current_descricao %}
@@ -93,11 +111,30 @@
       {% endif %}
     </div>
 
+    <!-- 4. FOTO SISA DI BAWAH BERITA DENGAN UKURAN SEDANG -->
+    {% if galeria and galeria|length > 1 %}
+    <div class="extra-gallery">
+      <h3>{% translate "Galeria de Imagens" %}</h3>
+      <div class="gallery-grid">
+        {% for item in galeria %}
+          {% if not forloop.first %}
+          <button type="button" class="gallery-item" onclick="openLightbox('{{ item.url }}', '{{ item.legenda|default:noticia.current_title }}')">
+            <img src="{{ item.url }}" alt="{% translate 'Imagem' %} {{ forloop.counter }}" loading="lazy">
+          </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- 5. TOMBOL VOLTAR DI PALING BAWAH -->
     <div class="back">
       <a href="javascript:history.back()">← {% translate "Voltar" %}</a>
     </div>
+
   </article>
 
+  <!-- SIDEBAR: OUTRAS NOTÍCIAS -->
   {% if outras_noticias %}
   <aside class="side" aria-label="{% translate 'Outras notícias' %}">
     <h2>{% translate "Outras notícias" %}</h2>
@@ -105,11 +142,9 @@
       {% for n in outras_noticias %}
       <li>
         <a class="item" href="{% url 'noticia_detalho' n.pk %}">
-          <div class="pic">{% if n.imagen %}<img src="/{{ n.imagen }}" alt="Notícia Detalho">{% endif %}</div>
+          <div class="pic">{% if n.capa_url %}<img src="{{ n.capa_url }}" alt="{{ n.current_title }}" loading="lazy">{% endif %}</div>
           <div>
-            <!-- TIPO / KATEGORI BERITA LAINNYA DINAMIS -->
             <div class="d">{{ n.data_publicacao|date:"d/m/Y" }}{% if n.current_tipo %} · {{ n.current_tipo }}{% endif %}</div>
-            <!-- JUDUL BERITA LAINNYA DINAMIS -->
             <div class="t">{{ n.current_title }}</div>
           </div>
         </a>
@@ -121,4 +156,24 @@
   {% endif %}
 
 </div>
+
+<!-- Modal Sederhana untuk memperbesar foto galeri jika diklik (Opsional) -->
+<div id="imageModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center; padding:20px;" onclick="closeLightbox()">
+  <img id="modalImg" style="max-width:90%; max-height:90%; object-fit:contain; border-radius:4px;" alt="">
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function openLightbox(url, alt) {
+  var modal = document.getElementById('imageModal');
+  var img = document.getElementById('modalImg');
+  img.src = url;
+  img.alt = alt;
+  modal.style.display = 'flex';
+}
+function closeLightbox() {
+  document.getElementById('imageModal').style.display = 'none';
+}
+</script>
 {% endblock %}

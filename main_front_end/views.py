@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from mandato_cfp.models import Mandato, TipoMandato
-from noticias.models import TipoNoticias
+from noticias.models import Noticias, TipoNoticias
 from main_front_end.models import NoticiasView, MandatoView
 from dddo.models import DDDO, TipoDDDO
 from documentos_publicos.models import DocumentosPublicos
@@ -15,8 +15,7 @@ from django.db.models import Q
 from django.urls import reverse
 from django_ratelimit.decorators import ratelimit
 from .forms import CommentForm
-
-
+from noticias.models import ImagemNoticia
 
 
 #HOME PAGE
@@ -26,8 +25,34 @@ def index(request):
         "id_tipo_mandato",
         "id_funcao_mandato"  
     )
-    noticias_recentes = NoticiasView.objects.all().order_by('-data_publicacao')[:6]
+    noticias_recentes = Noticias.objects.prefetch_related('imagens').order_by('-data_publicacao')[:9]
+    for n in noticias_recentes:
+        capa_url = None
+        
+        # 1. Cek apakah ada field imagen langsung di berita
+        if hasattr(n, 'imagen') and n.imagen:
+            try:
+                capa_url = n.imagen.url
+            except AttributeError:
+                # Jika imagen berupa string path biasa di database
+                path = str(n.imagen)
+                capa_url = path if path.startswith('/') or path.startswith('http') else f"/media/{path}"
+        
+        # 2. Jika n.imagen kosong, cari foto pertama dari galeri (ImagemNoticia / imagens)
+        if not capa_url:
+            # Cek relasi galeri
+            galeria_fotos = getattr(n, 'imagens', None)
+            if galeria_fotos and galeria_fotos.exists():
+                foto_primeira = galeria_fotos.first()
+                if hasattr(foto_primeira, 'imagem') and foto_primeira.imagem:
+                    try:
+                        capa_url = foto_primeira.imagem.url
+                    except AttributeError:
+                        path = str(foto_primeira.imagem)
+                        capa_url = path if path.startswith('/') or path.startswith('http') else f"/media/{path}"
 
+        # Simpan URL gambar yang sudah valid ke dalam atribut objek
+        n.capa_url = capa_url
     return render(request, 'home.html', {
         'mandatos': mandatos,
         'noticias_recentes': noticias_recentes,
@@ -48,12 +73,6 @@ def mandato_list_by_tipo(request, pk):
         "tipo_selecionado": tipo_selecionado,
     })
 
-# @logout_required(redirect_to='index')
-# def detallu_mandatu(request, pk):
-#     mandato = get_object_or_404(MandatoView, pk=pk)
-#     return render(request, "detail_mandatu.html" , {
-#         'm': mandato
-#     })
 @logout_required(redirect_to='index')
 def detallu_mandatu(request, pk):
     mandato = get_object_or_404(
@@ -70,7 +89,50 @@ def detallu_mandatu(request, pk):
 
 TAGS_CSC_ASEAN = ['CSC', 'ASEAN']      # urutan tampil dari atas ke bawah
 NOTICIAS_POR_PAGINA = 5               # 5 = satu blok bento penuh (1 besar + 4 kecil)
+
+def _url_imagem_antiga(obj):
+    """Cadangan: kolom 'imagen' lama. Di NoticiasView nilainya berupa teks path,
+    jadi dibentuk seperti di template lama: '/' + path."""
+    antiga = getattr(obj, 'imagen', None)
+    return f'/{antiga}' if antiga else None
  
+ 
+def _url_imagem(imagem_field):
+    """URL gambar baru. Jika URL tampil salah, cukup ubah di SINI (satu tempat).
+    Normalnya mengikuti MEDIA_URL di settings.py."""
+    return imagem_field.url
+ 
+ 
+def _anexar_capas(objetos):
+    """Pasang atribut .capa_url pada setiap objek NoticiasView (1 query untuk semua)."""
+    ids = {o.pk for o in objetos}
+    capas = {}
+    if ids:
+        qs = ImagemNoticia.objects.filter(id_noticia_id__in=ids)  # sudah urut: ordem, criado_em
+        for im in qs:
+            capas.setdefault(im.id_noticia_id, im)                # simpan hanya yang pertama
+    for o in objetos:
+        capa = capas.get(o.pk)
+        o.capa_url = _url_imagem(capa.imagem) if capa else _url_imagem_antiga(o)
+    return objetos
+ 
+ 
+def _montar_galeria(noticia):
+    """Semua gambar notícia sebagai list [{'url':..., 'legenda':...}]."""
+    galeria = [
+        {'url': _url_imagem(im.imagem), 'legenda': im.legenda}
+        for im in ImagemNoticia.objects.filter(id_noticia_id=noticia.pk)
+    ]
+    if not galeria:
+        antiga = _url_imagem_antiga(noticia)
+        if antiga:
+            galeria = [{'url': antiga, 'legenda': None}]
+    return galeria
+ 
+ 
+# ---------------------------------------------------------------------------
+# Views
+# ---------------------------------------------------------------------------
 @logout_required(redirect_to='index')
 def noticias_publico_lista(request, pk=None):      # pk tidak dipakai, dibiarkan agar URL lama tetap jalan
     q = request.GET.get('q', '').strip()
@@ -97,28 +159,37 @@ def noticias_publico_lista(request, pk=None):      # pk tidak dipakai, dibiarkan
             'qs': params.urlencode(),
         })
  
+    # Ambil sampul semua kartu di semua grup dengan SATU query
+    semua = []
+    for g in grupos:
+        g['page_obj'].object_list = list(g['page_obj'].object_list)
+        semua.extend(g['page_obj'].object_list)
+    _anexar_capas(semua)
+ 
     return render(request, "noticias_publico_lista.html", {
         "grupos": grupos,
         "q": q,
         "active_menu": "csc",
     })
-
+ 
+ 
 @logout_required(redirect_to='index')
 def noticia_detalho(request, pk):
     noticia = get_object_or_404(NoticiasView, pk=pk)
-
-    outras_noticias = (
+ 
+    outras_noticias = list(
         NoticiasView.objects
         .exclude(pk=pk)
         .order_by('-data_publicacao')[:6]
     )
-
+    _anexar_capas(outras_noticias)
+ 
     return render(request, "noticia_detalho.html", {
         "noticia": noticia,
+        "galeria": _montar_galeria(noticia),
         "outras_noticias": outras_noticias,
         "active_menu": "home",
     })
-
 @logout_required(redirect_to='index')
 def todas_noticias(request):
     q = request.GET.get('q', '').strip()

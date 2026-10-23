@@ -142,3 +142,5 @@ class NoticiasView(models.Model):
         elif lang == 'en' and self.tipo_noticia_en:
             return self.tipo_noticia_en
         return self.tipo_noticia_pt or self.tipo_noticia
+
+    

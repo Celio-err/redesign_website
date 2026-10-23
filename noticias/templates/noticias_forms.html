@@ -1,14 +1,17 @@
 {% extends 'master/base.html' %}
-{% block page_title %}{% if form.instance.pk %}Editar notícia{% else %}Nova notícia{% endif %}{% endblock %}
+{% load i18n static %}
+
+{% block page_title %}{% if form.instance.pk %}{% translate "Editar Notícia" %}{% else %}{% translate "Nova Notícia" %}{% endif %}{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-4 py-4">
 
+  <!-- ================= BREADCRUMB ================= -->
   <div class="mb-4">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb small">
-        <li class="breadcrumb-item"><a href="{% url 'noticias_list' %}" class="text-decoration-none">Notícias</a></li>
-        <li class="breadcrumb-item active">{% if form.instance.pk %}Editar{% else %}Nova notícia{% endif %}</li>
+        <li class="breadcrumb-item"><a href="{% url 'noticias_list' %}" class="text-decoration-none">{% translate "Notícias" %}</a></li>
+        <li class="breadcrumb-item active">{% if form.instance.pk %}{% translate "Editar" %}{% else %}{% translate "Nova" %}{% endif %}</li>
       </ol>
     </nav>
   </div>
@@ -18,22 +21,16 @@
       <div class="card border-0 shadow-sm rounded-3">
         <div class="card-body p-4">
 
-          {% if form.instance.pk and form.instance.imagen %}
-          <div class="mb-4 text-center">
-            <p class="small text-muted fw-medium mb-2">Imagem atual</p>
-            <img src="{{ form.instance.imagen.url }}" alt="Imagem atual"
-                 style="width:100%; height:220px; object-fit:cover; border-radius:10px;">
-          </div>
-          {% endif %}
-
           <form method="post" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
 
-            <!-- ================= CONFIGURASI UMUM & GAMBAR ================= -->
+            <!-- ================= CONFIGURAÇÃO GERAL E MULTIMÉDIA (3 COLUNAS) ================= -->
             <div class="row mb-4">
-              <div class="col-md-6 mb-3">
+              
+              <!-- 1. Tipo de Notícia -->
+              <div class="col-md-4 mb-3">
                 <label for="{{ form.id_tipo_noticia.id_for_label }}" class="form-label fw-medium small">
-                  {{ form.id_tipo_noticia.label }} <span class="text-danger">*</span>
+                  {% translate "Tipo de Notícia" %} <span class="text-danger">*</span>
                 </label>
                 {{ form.id_tipo_noticia }}
                 {% for error in form.id_tipo_noticia.errors %}
@@ -41,9 +38,10 @@
                 {% endfor %}
               </div>
 
-              <div class="col-md-6 mb-3">
+              <!-- 2. Data de Publicação -->
+              <div class="col-md-4 mb-3">
                 <label for="{{ form.data_publicacao.id_for_label }}" class="form-label fw-medium small">
-                  {{ form.data_publicacao.label }} <span class="text-danger">*</span>
+                  {% translate "Data de Publicação" %} <span class="text-danger">*</span>
                 </label>
                 {{ form.data_publicacao }}
                 {% for error in form.data_publicacao.errors %}
@@ -51,22 +49,55 @@
                 {% endfor %}
               </div>
 
-              <div class="col-12 mb-3">
-                <label for="{{ form.imagen.id_for_label }}" class="form-label fw-medium small">
-                  {{ form.imagen.label }}
+              <!-- 3. Upload de Imagens -->
+              <div class="col-md-4 mb-3">
+                <label for="{{ form.imagens.id_for_label }}" class="form-label fw-medium small">
+                  {% translate "Imagens" %}
                 </label>
-                {{ form.imagen }}
-                {% for error in form.imagen.errors %}
+                {{ form.imagens }}
+                <div class="form-text text-muted mt-1 small">
+                  {% translate "Máx. 10 imagens · 5 MB cada" %}
+                </div>
+                {% for error in form.imagens.errors %}
                   <div class="text-danger small mt-1"><i class="fa fa-exclamation-circle me-1"></i>{{ error }}</div>
                 {% endfor %}
               </div>
+
+              <!-- Area Galeria & Preview Gambar -->
+              <div class="col-12 mt-2">
+                <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3" id="previa"></div>
+
+                {% if form.instance.pk %}
+                  {% with imagens=form.instance.imagens.all %}
+                  {% if imagens %}
+                  <p class="small text-muted fw-medium mt-3 mb-2">
+                    <i class="fa fa-picture-o me-1"></i> {% translate "Imagens atuais" %} <span class="fw-normal">— {% translate "marque para apagar ao guardar" %}</span>
+                  </p>
+                  <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
+                    {% for im in imagens %}
+                    <div class="col">
+                      <div class="card h-100 border rounded-2 overflow-hidden">
+                        <img src="{{ im.imagem.url }}" alt="Imagem {{ forloop.counter }}" style="width:100%; height:90px; object-fit:cover;">
+                        <div class="form-check m-2">
+                          <input class="form-check-input" type="checkbox" name="apagar_imagens" value="{{ im.pk }}" id="del-{{ im.pk }}">
+                          <label class="form-check-label small text-danger" for="del-{{ im.pk }}">{% translate "Apagar" %}</label>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                  {% endwith %}
+                {% endif %}
+              </div>
+
             </div>
 
-            <!-- ================= NAV TABS BAHASA ================= -->
+            <!-- ================= NAV TABS IDIOMAS ================= -->
             <ul class="nav nav-tabs mb-3" id="noticiaLangTabs" role="tablist">
               <li class="nav-item" role="presentation">
                 <button class="nav-link active fw-semibold" id="pt-tab" data-bs-toggle="tab" data-bs-target="#pt-content" type="button" role="tab">
-                Português <span class="badge bg-success ms-1" style="font-size: 10px;">PT</span>
+                  Português <span class="badge bg-success ms-1" style="font-size: 10px;">PT</span>
                 </button>
               </li>
               <li class="nav-item" role="presentation">
@@ -76,29 +107,43 @@
               </li>
               <li class="nav-item" role="presentation">
                 <button class="nav-link fw-semibold" id="en-tab" data-bs-toggle="tab" data-bs-target="#en-content" type="button" role="tab">
-                English <span class="badge bg-primary ms-1" style="font-size: 10px;">EN</span>
+                  English <span class="badge bg-primary ms-1" style="font-size: 10px;">EN</span>
                 </button>
               </li>
             </ul>
 
-            <!-- ================= ISI TAB KONTEN ================= -->
+            <!-- ================= CONTEÚDO DAS TABS ================= -->
             <div class="tab-content border border-top-0 p-4 rounded-bottom bg-light mb-4" id="noticiaLangContent">
               
               <!-- TAB 1: PORTUGUÊS -->
               <div class="tab-pane fade show active" id="pt-content" role="tabpanel" aria-labelledby="pt-tab">
                 <div class="mb-3">
-                  <label class="form-label fw-medium small">{{ form.nome_noticia.label }} <span class="text-danger">*</span></label>
-                  {{ form.nome_noticia }}
+                  <label for="{{ form.nome_noticia.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Título da Notícia" %} <span class="text-danger">*</span>
+                  </label>
+                  <div class="w-100">
+                    {{ form.nome_noticia }}
+                  </div>
                   {% for error in form.nome_noticia.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
+
                 <div class="mb-3">
-                  <label class="form-label fw-medium small">{{ form.descricao.label }}</label>
-                  {{ form.descricao }}
+                  <label for="{{ form.descricao.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Descrição" %}
+                  </label>
+                  <div class="w-100">
+                    {{ form.descricao }}
+                  </div>
                   {% for error in form.descricao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
+
                 <div class="mb-3">
-                  <label class="form-label fw-medium small">{{ form.noticia.label }} <span class="text-danger">*</span></label>
-                  {{ form.noticia }}
+                  <label for="{{ form.noticia.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Notícia" %} <span class="text-danger">*</span>
+                  </label>
+                  <div class="w-100">
+                    {{ form.noticia }}
+                  </div>
                   {% for error in form.noticia.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
               </div>
@@ -106,18 +151,32 @@
               <!-- TAB 2: TETUN -->
               <div class="tab-pane fade" id="tet-content" role="tabpanel" aria-labelledby="tet-tab">
                 <div class="mb-3">
-                  <label class="form-label fw-medium small">{{ form.nome_noticia_tet.label }}</label>
-                  {{ form.nome_noticia_tet }}
+                  <label for="{{ form.nome_noticia_tet.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Título da Notícia (Tetun)" %}
+                  </label>
+                  <div class="w-100">
+                    {{ form.nome_noticia_tet }}
+                  </div>
                   {% for error in form.nome_noticia_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
+
                 <div class="mb-3">
-                  <label class="form-label fw-medium small">{{ form.descricao_tet.label }}</label>
-                  {{ form.descricao_tet }}
+                  <label for="{{ form.descricao_tet.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Descrição (Tetun)" %}
+                  </label>
+                  <div class="w-100">
+                    {{ form.descricao_tet }}
+                  </div>
                   {% for error in form.descricao_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
+
                 <div class="mb-3">
-                  <label class="form-label fw-medium small">{{ form.noticia_tet.label }}</label>
-                  {{ form.noticia_tet }}
+                  <label for="{{ form.noticia_tet.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Notícia (Tetun)" %}
+                  </label>
+                  <div class="w-100">
+                    {{ form.noticia_tet }}
+                  </div>
                   {% for error in form.noticia_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
               </div>
@@ -125,18 +184,32 @@
               <!-- TAB 3: ENGLISH -->
               <div class="tab-pane fade" id="en-content" role="tabpanel" aria-labelledby="en-tab">
                 <div class="mb-3">
-                  <label class="form-label fw-medium small">{{ form.nome_noticia_en.label }}</label>
-                  {{ form.nome_noticia_en }}
+                  <label for="{{ form.nome_noticia_en.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Title" %}
+                  </label>
+                  <div class="w-100">
+                    {{ form.nome_noticia_en }}
+                  </div>
                   {% for error in form.nome_noticia_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
+
                 <div class="mb-3">
-                  <label class="form-label fw-medium small">{{ form.descricao_en.label }}</label>
-                  {{ form.descricao_en }}
+                  <label for="{{ form.descricao_en.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Description" %}
+                  </label>
+                  <div class="w-100">
+                    {{ form.descricao_en }}
+                  </div>
                   {% for error in form.descricao_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
+
                 <div class="mb-3">
-                  <label class="form-label fw-medium small">{{ form.noticia_en.label }}</label>
-                  {{ form.noticia_en }}
+                  <label for="{{ form.noticia_en.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "News Content" %}
+                  </label>
+                  <div class="w-100">
+                    {{ form.noticia_en }}
+                  </div>
                   {% for error in form.noticia_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
               </div>
@@ -144,14 +217,14 @@
             </div>
 
             <hr class="my-4">
-            
+
+            <!-- ================= BOTÕES DE AÇÃO ================= -->
             <div class="d-flex gap-2">
-              <button type="submit" class="btn btn-primary">
-                <i class="fa fa-save me-1"></i>
-                {% if form.instance.pk %}Guardar alterações{% else %}Publicar notícia{% endif %}
+              <button type="submit" class="btn btn-primary px-4" style="border-radius: 8px; font-weight: 600;">
+                <i class="fa fa-save me-1"></i> {% translate "Guardar" %}
               </button>
-              <a href="{% url 'noticias_list' %}" class="btn btn-outline-secondary">
-                <i class="fa fa-arrow-left me-1"></i> Voltar
+              <a href="{% url 'noticias_list' %}" class="btn btn-outline-secondary px-4" style="border-radius: 8px; font-weight: 600;">
+                <i class="fa fa-arrow-left me-1"></i> {% translate "Voltar" %}
               </a>
             </div>
 
@@ -163,4 +236,59 @@
   </div>
 
 </div>
+
+<style>
+  /* Styling Presisi */
+  input[type="text"], input[type="date"], select {
+    width: 100% !important;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    background-color: #fff;
+  }
+  
+  /* Field Descrição Dibuat Ringkas/Kompak */
+  textarea[name$="descricao"], textarea[name$="descricao_tet"], textarea[name$="descricao_en"] {
+    width: 100% !important;
+    height: 70px !important;
+    min-height: 70px !important;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    resize: vertical;
+  }
+
+  /* Field Notícia Lebar Penuh */
+  textarea[name$="noticia"], textarea[name$="noticia_tet"], textarea[name$="noticia_en"] {
+    width: 100% !important;
+    min-height: 220px !important;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    resize: vertical;
+  }
+</style>
+
+<script>
+/* Pratinjau Foto Banyak */
+(function () {
+  var input = document.getElementById('{{ form.imagens.id_for_label }}');
+  var box = document.getElementById('previa');
+  if (!input || !box) return;
+  input.addEventListener('change', function () {
+    box.innerHTML = '';
+    Array.prototype.forEach.call(input.files, function (f) {
+      var col = document.createElement('div'); col.className = 'col';
+      var card = document.createElement('div'); card.className = 'card h-100 border rounded-2 overflow-hidden';
+      var im = document.createElement('img');
+      im.src = URL.createObjectURL(f); im.alt = f.name;
+      im.style.cssText = 'width:100%; height:90px; object-fit:cover;';
+      card.appendChild(im); col.appendChild(card); box.appendChild(col);
+    });
+  });
+})();
+</script>
 {% endblock %}

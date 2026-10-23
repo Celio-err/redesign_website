@@ -452,8 +452,12 @@
       {% for n in noticias_recentes|slice:":9" %}
       <a class="news-card" href="{% url 'noticia_detalho' n.pk %}">
         <div class="thumb">
-          {% if n.imagen %}
-            <img src="/{{ n.imagen }}" alt="{{ n.current_title }}" loading="lazy" onerror="this.style.display='none'">
+          {% if n.capa %}
+            <!-- Menggunakan properti .capa yang sudah didefinisikan di model Noticias -->
+            <img src="{{ n.capa.imagem.url }}" alt="{{ n.current_title }}" loading="lazy" onerror="this.style.display='none'">
+          {% elif n.imagen %}
+            <!-- Fallback ke field lama jika masih ada data lama -->
+            <img src="{{ n.imagen.url }}" alt="{{ n.current_title }}" loading="lazy" onerror="this.style.display='none'">
           {% endif %}
         </div>
         <div class="body">
@@ -472,10 +476,6 @@
       {% empty %}
         <p style="grid-column: 1 / -1;">{% translate "Nenhuma notícia encontrada." %}</p>
       {% endfor %}
-    </div>
-
-    <div class="more-wrap">
-      <a href="{% url 'todas_noticias' %}" class="more">{% translate "Ver Todas as Notícias" %} <span aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>

@@ -4,86 +4,159 @@
 {% block page_title %}{% translate "Comentários" %}{% endblock %}
 {% block content %}
 <style>
-.cl h1{margin:0 0 4px;font-size:26px}
-.cl .sub{margin:0 0 20px;color:#6b6880;font-size:14px}
-.cl-bar{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:16px}
-.cl-tabs{display:flex;gap:8px}
-.cl-tabs a{padding:7px 14px;border:1px solid #ddd8ea;border-radius:999px;font-size:14px;color:#2b2250}
-.cl-tabs a.on{background:#2b2250;color:#fff;border-color:#2b2250}
-.cl-bar input{font:inherit;padding:8px 12px;border:1px solid #ddd8ea;border-radius:6px;min-width:220px}
-.cl table{width:100%;border-collapse:collapse;font-size:14px}
-.cl th{text-align:left;font-weight:500;color:#6b6880;padding:10px 12px;border-bottom:1px solid #ddd8ea}
-.cl td{padding:14px 12px;border-bottom:1px solid #eee;vertical-align:top}
-.cl tr.unread td{background:#faf8ff}
-.cl tr.unread .nm{font-weight:600}
-.cl .msg{white-space:pre-line;overflow-wrap:anywhere;max-width:420px;line-height:1.5}
-.cl .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#c8a24a;margin-right:6px}
+/* Mengikuti gaya "Documentos Públicos": card putih 12px, header navy #0c253f,
+   thead #f8f9fa, badge ungu, tombol aksi lembut biru/oranye/merah. */
+.cl .cl-card{border-radius:12px;overflow:hidden}
+
+/* ---------- Header card ---------- */
+.cl .cl-head{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;padding:22px 28px;background:linear-gradient(135deg,#0c253f 0%,#143a5f 100%)}
+.cl .cl-head::after{content:"\f086";font-family:FontAwesome;position:absolute;right:-14px;bottom:-34px;font-size:130px;line-height:1;color:#fff;opacity:.06;pointer-events:none}
+.cl .cl-head-l{position:relative;z-index:1;display:flex;align-items:center;gap:16px;min-width:0}
+.cl .cl-ico{flex:0 0 auto;width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.14);color:#fff;font-size:21px;display:flex;align-items:center;justify-content:center}
+.cl .cl-head h1{margin:0;font-size:18px;line-height:1.3;font-weight:600;color:#fff}
+.cl .cl-sub{margin:4px 0 0;font-size:13.5px;color:rgba(255,255,255,.72)}
+.cl .cl-sub b{font-weight:600;color:#fff}
+.cl .cl-sub .sep{margin:0 6px;opacity:.6}
+
+/* Tab filter di header (gaya tombol header Documentos Públicos) */
+.cl .cl-tabs{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px}
+.cl .cl-tabs a{padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;color:#fff;background:rgba(255,255,255,.2);transition:background .2s,color .2s}
+.cl .cl-tabs a:hover{background:rgba(255,255,255,.32);color:#fff}
+.cl .cl-tabs a.on{background:#fff;color:#0984e3}
+
+/* ---------- Body ---------- */
+.cl .cl-body{padding:20px}
+.cl .cl-search{position:relative;max-width:380px;margin-bottom:18px}
+.cl .cl-search i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#b2bec3;pointer-events:none}
+.cl .cl-search input{width:100%;box-sizing:border-box;font:inherit;font-size:14px;color:#2d3436;background:#f8f9fa;border:1px solid #e6e9ec;border-radius:8px;padding:10px 14px 10px 38px;transition:border-color .2s,box-shadow .2s,background .2s}
+.cl .cl-search input:focus{outline:none;background:#fff;border-color:#0984e3;box-shadow:0 0 0 3px rgba(9,132,227,.15)}
+
+/* ---------- Tabel ---------- */
+.cl .cl-table{width:100%;margin:0;border-collapse:collapse;font-size:14px}
+.cl .cl-table>thead>tr{background:#f8f9fa}
+.cl .cl-table>thead>tr>th{border:0;text-align:left;padding:12px 15px;color:#636e72;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.cl .cl-table>tbody>tr>td{border:0;border-bottom:1px solid #f0f0f0;padding:16px 15px;vertical-align:middle;color:#2d3436}
+.cl .cl-table>tbody>tr{transition:background .15s}
+.cl .cl-table>tbody>tr:hover>td{background:#fafcff}
+.cl .cl-table>tbody>tr.unread>td{background:#f5faff}
+.cl .cl-table>tbody>tr.unread:hover>td{background:#eef6ff}
+.cl .cl-table>tbody>tr.unread>td:first-child{box-shadow:inset 3px 0 0 #0984e3}
+
+.cl .who{display:flex;align-items:center;gap:12px}
+.cl .av{flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:#f0ecff;color:#6c5ce7;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center}
+.cl tr.unread .av{background:#e8f7ff;color:#0984e3}
+.cl .nm{font-weight:600;color:#2d3436}
+.cl tr.unread .nm{font-weight:700}
+.cl .who a{display:block;margin-top:2px;font-size:13px;color:#0984e3}
+.cl .who a:hover{text-decoration:underline}
+.cl .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#0984e3;box-shadow:0 0 0 3px rgba(9,132,227,.18);margin-right:8px;vertical-align:middle}
+.cl .msg{min-width:260px;max-width:420px;white-space:pre-line;overflow-wrap:anywhere;line-height:1.55;color:#2d3436}
+.cl .dt{white-space:nowrap;color:#636e72}
+
+/* ---------- Tombol aksi ---------- */
 .cl .acts{display:flex;gap:6px;white-space:nowrap}
-.cl .acts button{font:inherit;font-size:13px;padding:5px 12px;border:1px solid #ddd8ea;border-radius:999px;background:#fff;cursor:pointer}
-.cl .acts button:hover{background:#f3f0fa}
-.cl .acts .del{color:#b3261e}
-.cl .empty{padding:40px 0;color:#6b6880}
-.cl .pager{display:flex;justify-content:space-between;margin-top:20px;font-size:14px}
+.cl .acts form{margin:0}
+.cl .acts button{font:inherit;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border:0;border-radius:6px;cursor:pointer;transition:filter .15s,transform .15s}
+.cl .acts button:hover{filter:brightness(.95);transform:translateY(-1px)}
+.cl .acts .act-read{background:#e8f7ff;color:#0984e3}
+.cl .acts .act-unread{background:#fff6e0;color:#e67e22}
+.cl .acts .del{background:#ffeaea;color:#e74c3c}
+
+/* ---------- Kosong & pager ---------- */
+.cl .empty{margin:0;padding:48px 0;text-align:center;color:#b2bec3}
+.cl .empty i{display:block;font-size:34px;margin-bottom:10px}
+.cl .pager{display:flex;justify-content:space-between;align-items:center;margin-top:22px;font-size:14px;color:#636e72}
+.cl .pager a{padding:8px 18px;border-radius:8px;background:#e8f7ff;color:#0984e3;font-weight:600;transition:filter .15s}
+.cl .pager a:hover{filter:brightness(.95)}
+
+@media(max-width:768px){
+  .cl .cl-head{padding:18px 20px}
+  .cl .cl-body{padding:16px}
+  .cl .cl-search{max-width:none}
+}
 </style>
 
-<div class="cl">
-  <h1>{% translate "Comentários" %}</h1>
-  <p class="sub">{{ unread_count }} {% translate "por ler" %} · {{ page.paginator.count }} {% translate "no total desta lista" %}</p>
+<div class="container-fluid cl">
+  <div class="col-md-12">
+    <div class="white_shd full margin_bottom_30 cl-card">
 
-  <div class="cl-bar">
-    <nav class="cl-tabs" aria-label="{% translate 'Filtro' %}">
-      <a href="?q={{ q }}" class="{% if not status %}on{% endif %}">{% translate "Todos" %}</a>
-      <a href="?status=unread&q={{ q }}" class="{% if status == 'unread' %}on{% endif %}">{% translate "Por ler" %}</a>
-      <a href="?status=read&q={{ q }}" class="{% if status == 'read' %}on{% endif %}">{% translate "Lidos" %}</a>
-    </nav>
-    <form method="get">
-      {% if status %}<input type="hidden" name="status" value="{{ status }}">{% endif %}
-      <input type="search" name="q" value="{{ q }}" placeholder="{% translate 'Pesquisar nome ou texto' %}">
-    </form>
-  </div>
-
-  {% if page %}
-  <table>
-    <thead>
-      <tr><th>{% translate "Nome" %}</th><th>{% translate "Comentário" %}</th><th>{% translate "Data" %}</th><th></th></tr>
-    </thead>
-    <tbody>
-    {% for c in page %}
-      <tr class="{% if not c.is_read %}unread{% endif %}">
-        <td>
-          <div class="nm">{% if not c.is_read %}<span class="dot" title="{% translate 'Por ler' %}"></span>{% endif %}{{ c.name }}</div>
-          {% if c.email %}<a href="mailto:{{ c.email }}">{{ c.email }}</a>{% endif %}
-        </td>
-        <td class="msg">{{ c.body }}</td>
-        <td>{{ c.created_at|date:"d/m/Y H:i" }}</td>
-        <td>
-          <div class="acts">
-            <form method="post" action="{% url 'backend_comment_toggle_read' c.pk %}">
-              {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
-              <button type="submit">{% if c.is_read %}{% translate "Marcar por ler" %}{% else %}{% translate "Marcar como lido" %}{% endif %}</button>
-            </form>
-            <form method="post" action="{% url 'backend_comment_delete' c.pk %}"
-                  onsubmit="return confirm('{% translate "Apagar este comentário?" %}')">
-              {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
-              <button type="submit" class="del">{% translate "Apagar" %}</button>
-            </form>
+      <div class="cl-head">
+        <div class="cl-head-l">
+          <span class="cl-ico" aria-hidden="true"><i class="fa fa-comments"></i></span>
+          <div>
+            <h1>{% translate "Comentários" %}</h1>
+            <p class="cl-sub"><b>{{ unread_count }}</b> {% translate "por ler" %} <span class="sep">·</span> <b>{{ page.paginator.count }}</b> {% translate "no total desta lista" %}</p>
           </div>
-        </td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+        </div>
 
-  {% if page.has_other_pages %}
-  <nav class="pager">
-    {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}&status={{ status }}&q={{ q }}">{% translate "Anterior" %}</a>{% else %}<span></span>{% endif %}
-    <span>{{ page.number }} / {{ page.paginator.num_pages }}</span>
-    {% if page.has_next %}<a href="?page={{ page.next_page_number }}&status={{ status }}&q={{ q }}">{% translate "Seguinte" %}</a>{% else %}<span></span>{% endif %}
-  </nav>
-  {% endif %}
+        <nav class="cl-tabs" aria-label="{% translate 'Filtro' %}">
+          <a href="?q={{ q }}" class="{% if not status %}on{% endif %}">{% translate "Todos" %}</a>
+          <a href="?status=unread&q={{ q }}" class="{% if status == 'unread' %}on{% endif %}">{% translate "Por ler" %}</a>
+          <a href="?status=read&q={{ q }}" class="{% if status == 'read' %}on{% endif %}">{% translate "Lidos" %}</a>
+        </nav>
+      </div>
 
-  {% else %}
-  <p class="empty">{% translate "Nenhum comentário encontrado." %}</p>
-  {% endif %}
+      <div class="cl-body">
+
+        <form method="get" class="cl-search">
+          {% if status %}<input type="hidden" name="status" value="{{ status }}">{% endif %}
+          <i class="fa fa-search" aria-hidden="true"></i>
+          <input type="search" name="q" value="{{ q }}" placeholder="{% translate 'Pesquisar nome ou texto' %}">
+        </form>
+
+        {% if page %}
+        <div class="table-responsive-sm">
+          <table class="table cl-table">
+            <thead>
+              <tr><th>{% translate "Nome" %}</th><th>{% translate "Comentário" %}</th><th>{% translate "Data" %}</th><th></th></tr>
+            </thead>
+            <tbody>
+            {% for c in page %}
+              <tr class="{% if not c.is_read %}unread{% endif %}">
+                <td>
+                  <div class="who">
+                    <span class="av" aria-hidden="true">{{ c.name|slice:":1"|upper }}</span>
+                    <div>
+                      <div class="nm">{% if not c.is_read %}<span class="dot" title="{% translate 'Por ler' %}"></span>{% endif %}{{ c.name }}</div>
+                      {% if c.email %}<a href="mailto:{{ c.email }}">{{ c.email }}</a>{% endif %}
+                    </div>
+                  </div>
+                </td>
+                <td class="msg">{{ c.body }}</td>
+                <td class="dt">{{ c.created_at|date:"d/m/Y H:i" }}</td>
+                <td>
+                  <div class="acts">
+                    <form method="post" action="{% url 'backend_comment_toggle_read' c.pk %}">
+                      {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+                      <button type="submit" class="{% if c.is_read %}act-unread{% else %}act-read{% endif %}"><i class="fa {% if c.is_read %}fa-envelope-o{% else %}fa-check{% endif %}" aria-hidden="true"></i>{% if c.is_read %}{% translate "Marcar por ler" %}{% else %}{% translate "Marcar como lido" %}{% endif %}</button>
+                    </form>
+                    <form method="post" action="{% url 'backend_comment_delete' c.pk %}"
+                          onsubmit="return confirm('{% translate "Apagar este comentário?" %}')">
+                      {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+                      <button type="submit" class="del"><i class="fa fa-trash" aria-hidden="true"></i>{% translate "Apagar" %}</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% if page.has_other_pages %}
+        <nav class="pager">
+          {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}&status={{ status }}&q={{ q }}">{% translate "Anterior" %}</a>{% else %}<span></span>{% endif %}
+          <span>{{ page.number }} / {{ page.paginator.num_pages }}</span>
+          {% if page.has_next %}<a href="?page={{ page.next_page_number }}&status={{ status }}&q={{ q }}">{% translate "Seguinte" %}</a>{% else %}<span></span>{% endif %}
+        </nav>
+        {% endif %}
+
+        {% else %}
+        <p class="empty"><i class="fa fa-inbox" aria-hidden="true"></i>{% translate "Nenhum comentário encontrado." %}</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

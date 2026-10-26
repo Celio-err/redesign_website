@@ -5,7 +5,6 @@
 
 {% block extra_head %}
 <style>
-/* Latar banner beranda: atur --hero-bg di base.html (:root), bukan di sini */
 
 /* ================= Banner ================= */
 .hero{background:var(--hero-bg);color:#fff}
@@ -29,7 +28,7 @@
 .btn.l{border:1px solid rgba(255,255,255,.6);color:#fff}
 .btn.l:hover{background:#fff;color:var(--indigo)}
 
-/* ================= Seksi umum ================= */
+/* ================= Sesaun Jeral ================= */
 .sec{padding-top:80px;padding-bottom:80px}
 .band{background:#F1F5F9}
 .sh{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 32px;margin-bottom:36px}
@@ -38,7 +37,7 @@
 .sh p{margin:0;max-width:50ch;color:var(--muted);font-size:15px;line-height:1.6}
 .meta{font-size:13px;color:var(--muted);font-weight:500}
 
-/* ================= Layanan digital ================= */
+/* ================= Servisu digital ================= */
 .svc{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .svc a{display:flex;align-items:center;gap:16px;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:8px;transition:all 0.2s ease}
 .svc a:hover{border-color:var(--indigo);transform:translateY(-2px);box-shadow:0 6px 20px rgba(15,23,42,0.06)}
@@ -48,7 +47,7 @@
 .svc .x{color:var(--muted);font-size:15px}
 .svc a:hover .nm{color:var(--indigo)}
 
-/* ================= Redesain Berita: Grid 3x3 UNTL Style dengan Background Shadow Elegat ================= */
+/* ================= Redesain Notisia: 3x3 ================= */
 .news-grid-3x3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -200,7 +199,7 @@
   box-shadow: 0 6px 18px rgba(30, 27, 75, 0.15);
 }
 
-/* ================= Dashboard data ================= */
+/* ================= Dashboard dadus ================= */
 .dash{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .dcard{position:relative;overflow:hidden;background:var(--pattern-bg);color:#fff;border-radius:8px;padding:34px 36px;min-height:240px;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.2s}
 .dcard:hover{transform:translateY(-2px)}
@@ -276,21 +275,21 @@
 .svc a:hover .x{color:var(--gold)}
 .svc a:hover .ic{background:var(--gold);color:var(--cfp-deep);border-color:var(--gold)}
  
-/* ---- Dashboard: ungu CFP pekat dengan tekstur pola asli ---- */
+/* ---- Dashboard: CFP  ---- */
 .dcard{background:linear-gradient(rgba(42,33,96,.94),rgba(29,23,69,.97)),url("{% static 'front_end/img/presence-iii.png' %}") 0 0/260px auto}
  
-/* ---- Cooperação: panel ungu solid yang sedikit lebih terang dari latarnya ---- */
+/* ---- Cooperação: ---- */
 .coop-card{background:#352B78;border-color:rgba(255,255,255,.14)}
 .coop-card:hover{background:#3E3388;border-color:var(--gold)}
  
-/* ---- Berita: isi lavender sangat muda, label kategori emas muda ---- */
+/* ---- Berita: ---- */
 .news-card{background:#F7F6FC;border-color:var(--cfp-line)}
 .news-card:hover{border-color:var(--cfp)}
 .news-card .thumb{background:var(--cfp-line)}
 .news-tag{background:#F3E7BF;color:var(--cfp-deep);border-color:#E4D08E}
 .news-card h3,.news-card .read-more{color:var(--cfp)}
  
-/* ---- Institucional: isi lavender sangat muda ---- */
+/* ---- Institucional: ---- */
 .panel{background:#F7F6FC;border-color:var(--cfp-line)}
 .panel h3{color:var(--cfp)}
 .panel a.r{border-top-color:var(--cfp-line)}

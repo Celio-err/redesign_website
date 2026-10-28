@@ -113,7 +113,7 @@ html { scroll-behavior: smooth; }
             </div>
             <h3>{{ tipo.current_tipo|default:tipo.tipo_mandato }}</h3>
             {% if tipo.descricao %}
-              <p>{{ tipo.descricao }}</p>
+              <p>{{ tipo.descricao|safe }}</p>
             {% else %}
               <p>{% translate "Consulte a lista completa dos membros e comissários em exercício durante este período de mandato." %}</p>
             {% endif %}

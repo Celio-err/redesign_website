@@ -113,7 +113,7 @@
     <div class="text">
       <!-- Deskripsi / Biografi Dinamis (Multilingual) -->
       {% if m.current_descricao %}
-        {{ m.current_descricao|linebreaks }}
+        {{ m.current_descricao|safe }}
       {% else %}
         <p>{% translate "Conteúdo não disponível." %}</p>
       {% endif %}

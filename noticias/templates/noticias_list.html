@@ -67,16 +67,22 @@
                         {% for noticia in noticias %}
                         <tr style="border-bottom:1px solid #f0f0f0;">
                             <!-- Image -->
-                            <td style="padding:14px 15px;vertical-align:middle;">
-                                {% if noticia.imagen %}
-                                    <img src="{{ noticia.imagen.url }}"
-                                         style="width:90px; height:60px; object-fit:cover; border-radius:8px;">
-                                {% else %}
-                                    <div style="width:90px; height:60px; background:#f1f3f5; border-radius:8px; display:flex; justify-content:center; align-items:center;">
-                                        <i class="fa fa-image text-muted"></i>
-                                    </div>
-                                {% endif %}
-                            </td>
+                            <!-- Image -->
+<td style="padding:14px 15px;vertical-align:middle;">
+    {% if noticia.imagens.first %}
+        <!-- Jika menggunakan relasi ImagemNoticia -->
+        <img src="{{ noticia.imagens.first.imagem.url }}"
+             style="width:90px; height:60px; object-fit:cover; border-radius:8px;">
+    {% elif noticia.imagem %}
+        <!-- Jika field tunggal bernama imagem -->
+        <img src="{{ noticia.imagem.url }}"
+             style="width:90px; height:60px; object-fit:cover; border-radius:8px;">
+    {% else %}
+        <div style="width:90px; height:60px; background:#f1f3f5; border-radius:8px; display:flex; justify-content:center; align-items:center;">
+            <i class="fa fa-image text-muted"></i>
+        </div>
+    {% endif %}
+</td>
 
                             <!-- Title -->
                             <td style="padding:14px 15px;vertical-align:middle;font-weight:600;">

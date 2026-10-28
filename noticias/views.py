@@ -40,7 +40,7 @@ def noticias_create(request, pk=None):
         if form.is_valid():
             noticia = form.save(commit=False)
             if not noticia.inserido_por:
-                noticia.inserido_por = request.user.get_username()
+                noticia.inserido_por = request.user.get_username() if request.user.is_authenticated else "admin"
             noticia.save()
  
             # 1) apagar gambar yang dicentang
@@ -48,13 +48,16 @@ def noticias_create(request, pk=None):
             if ids:
                 noticia.imagens.filter(pk__in=ids).delete()
  
-            # 2) simpan gambar baru, lanjut dari urutan terakhir
-            ordem = noticia.imagens.aggregate(m=Max("ordem"))["m"] or 0
-            for i, f in enumerate(form.cleaned_data["imagens"], start=1):
-                ImagemNoticia.objects.create(
-                    id_noticia=noticia, imagem=f, ordem=ordem + i
-                )
+            # 2) simpan gambar baru jika ada yang di-upload
+            imagens_novas = form.cleaned_data.get("imagens")
+            if imagens_novas:
+                ordem = noticia.imagens.aggregate(m=Max("ordem"))["m"] or 0
+                for i, f in enumerate(imagens_novas, start=1):
+                    ImagemNoticia.objects.create(
+                        id_noticia=noticia, imagem=f, ordem=ordem + i
+                    )
  
+            messages.success(request, 'Notícia guardada com sucesso.')
             return redirect("noticias_list")
     else:
         form = NoticiasForm(instance=noticia)
@@ -70,24 +73,6 @@ def noticias_detail(request, pk):
     return render(request, 'noticias_detail.html', {
         'noticia': noticia
     })
-
-
-def noticias_update(request, pk):
-    noticia = get_object_or_404(Noticias, pk=pk)
-
-    if request.method == 'POST':
-        form = NoticiasForm(request.POST, request.FILES, instance=noticia)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Notícia atualizada com sucesso.')
-            return redirect('noticias_list')
-    else:
-        form = NoticiasForm(instance=noticia)
-
-    return render(request, 'noticias_forms.html', {
-        'form': form
-    })
-
 
 def noticias_delete(request, pk):
     noticia = get_object_or_404(Noticias, pk=pk)

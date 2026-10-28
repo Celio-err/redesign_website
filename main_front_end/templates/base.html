@@ -372,7 +372,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
           <a role="menuitem" href="{% url 'lista_mandato' %}">{% translate "Mandatos" %}</a>
         </div>
       </div>
-      <a href="{% url 'noticias' %}" {% if active_menu == 'noticias' %}class="active"{% endif %}>{% translate "Notícias" %}</a>
+      <a href="{% url 'todas_noticias' %}" {% if active_menu == 'noticias' %}class="active"{% endif %}>{% translate "Notícias" %}</a>
       <a href="{% url 'noticias_csc_asean' %}" {% if active_menu == 'csc' %}class="active"{% endif %}>CSC &amp; ASEAN</a>
       <a href="{% url 'documentos_publicos_publico_list' %}" {% if active_menu == 'documents' %}class="active"{% endif %}>{% translate "Documentos Públicos" %}</a>
       
@@ -492,7 +492,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
       <h4>{% translate "Ligações" %}</h4>
       <ul>
         <li><a href="{% url 'home' %}">{% translate "Inicio" %}</a></li>
-        <li><a href="{% url 'noticias' %}">{% translate "Notícias" %}</a></li>
+        <li><a href="{% url 'todas_noticias' %}">{% translate "Notícias" %}</a></li>
         <li><a href="{% url 'noticias_csc_asean' %}">CSC &amp; ASEAN</a></li>
         <li><a href="{% url 'documentos_publicos_publico_list' %}">{% translate "Documentos Públicos" %}</a></li>
         <li><a href="{% url 'contact' %}">{% translate "Contacto" %}</a></li>

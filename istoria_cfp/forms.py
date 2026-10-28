@@ -1,4 +1,5 @@
 from django import forms
+from ckeditor.widgets import CKEditorWidget  
 from .models import IstoriaCFP
 
 class IstoriaCFPForm(forms.ModelForm):
@@ -13,15 +14,15 @@ class IstoriaCFPForm(forms.ModelForm):
             # Português
             'titulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Título em Português'}),
             'subtitulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subtítulo em Português'}),
-            'conteudo': forms.Textarea(attrs={'class': 'form-control', 'rows': 10, 'placeholder': 'Conteúdo em Português'}),
+            'conteudo': CKEditorWidget(config_name='default'),
             
             # Tetun
             'titulo_tet': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Título em Tetun'}),
             'subtitulo_tet': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subtítulo em Tetun'}),
-            'conteudo_tet': forms.Textarea(attrs={'class': 'form-control', 'rows': 10, 'placeholder': 'Conteúdo em Tetun'}),
+            'conteudo_tet': CKEditorWidget(config_name='default'),
             
             # English
             'titulo_en': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title in English'}),
             'subtitulo_en': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subtitle in English'}),
-            'conteudo_en': forms.Textarea(attrs={'class': 'form-control', 'rows': 10, 'placeholder': 'Content in English'}),
+            'conteudo_en': CKEditorWidget(config_name='default'),
         }

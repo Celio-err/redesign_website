@@ -71,11 +71,11 @@ html { scroll-behavior: smooth; }
       {% if istoria %}
         <div class="body-text">
           {% if LANGUAGE_CODE == 'tet' and istoria.conteudo_tet %}
-            {{ istoria.conteudo_tet|linebreaks }}
+            {{ istoria.conteudo_tet|safe }}
           {% elif LANGUAGE_CODE == 'en' and istoria.conteudo_en %}
-            {{ istoria.conteudo_en|linebreaks }}
+            {{ istoria.conteudo_en|safe }}
           {% else %}
-            {{ istoria.conteudo|linebreaks }}
+            {{ istoria.conteudo|safe }}
           {% endif %}
         </div>
       {% else %}

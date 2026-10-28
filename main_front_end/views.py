@@ -76,24 +76,6 @@ def lista_mandatos(request):
     })
 
 @logout_required(redirect_to='index')
-def noticias(request):
-    q = request.GET.get('q', '').strip()
-    page_number = request.GET.get('page', 1)
-    base_qs = NoticiasView.objects.order_by('-data_publicacao')
-    if q:
-        base_qs = base_qs.filter(nome_noticia__icontains=q)
-    paginator = Paginator(base_qs, 15)
-    page_obj = paginator.get_page(page_number)
-    page_obj.object_list = list(page_obj.object_list)
-    _anexar_capas(page_obj.object_list)
-
-    return render(request, 'noticias_lista_publico.html', { 
-        'page_obj': page_obj,
-        'q': q,
-        "active_menu": "noticias",  
-    })
-
-@logout_required(redirect_to='index')
 def mandato_list_by_tipo(request, pk):
     tipo_selecionado = get_object_or_404(TipoMandato, pk=pk)
     mandatos = (
@@ -115,28 +97,26 @@ def detallu_mandatu(request, pk):
     )
     mandato.funcao_mandato = str(mandato.id_funcao_mandato) if mandato.id_funcao_mandato_id else ""
     mandato.tipo_mandato = str(mandato.id_tipo_mandato) if mandato.id_tipo_mandato_id else ""
- 
+
     return render(request, "detail_mandatu.html", {
         "m": mandato,
         "active_menu": "about",
     })
 
 TAGS_CSC_ASEAN = ['CSC', 'ASEAN']      # urutan tampil dari atas ke bawah
-NOTICIAS_POR_PAGINA = 5               # 5 = satu blok bento penuh (1 besar + 4 kecil)
+NOTICIAS_POR_PAGINA = 10             # 10 = satu blok bento penuh (1 besar + 9 kecil)
 
 def _url_imagem_antiga(obj):
     """Cadangan: kolom 'imagen' lama. Di NoticiasView nilainya berupa teks path,
     jadi dibentuk seperti di template lama: '/' + path."""
     antiga = getattr(obj, 'imagen', None)
     return f'/{antiga}' if antiga else None
- 
- 
+
 def _url_imagem(imagem_field):
     """URL gambar baru. Jika URL tampil salah, cukup ubah di SINI (satu tempat).
     Normalnya mengikuti MEDIA_URL di settings.py."""
     return imagem_field.url
- 
- 
+
 def _anexar_capas(objetos):
     """Pasang atribut .capa_url pada setiap objek NoticiasView (1 query untuk semua)."""
     ids = {o.pk for o in objetos}
@@ -149,8 +129,7 @@ def _anexar_capas(objetos):
         capa = capas.get(o.pk)
         o.capa_url = _url_imagem(capa.imagem) if capa else _url_imagem_antiga(o)
     return objetos
- 
- 
+
 def _montar_galeria(noticia):
     """Semua gambar notícia sebagai list [{'url':..., 'legenda':...}]."""
     galeria = [
@@ -162,11 +141,8 @@ def _montar_galeria(noticia):
         if antiga:
             galeria = [{'url': antiga, 'legenda': None}]
     return galeria
- 
- 
-# ---------------------------------------------------------------------------
-# Views
-# ---------------------------------------------------------------------------
+
+
 @logout_required(redirect_to='index')
 def noticias_publico_lista(request, pk=None):
     q = request.GET.get('q', '').strip()
@@ -252,7 +228,7 @@ def todas_noticias(request):
         'tipo': tipo,
         'tipos': tipos,
         'qs': params.urlencode(),
-        "active_menu": "home"
+        "active_menu": "noticias",
     })
 
 DDDO_POR_PAGINA = 10

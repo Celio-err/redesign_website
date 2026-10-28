@@ -2,7 +2,9 @@
 {% load i18n static %}
 
 {% block page_title %}{% if form.instance.pk %}{% translate "Editar mandato" %}{% else %}{% translate "Novo mandato" %}{% endif %}{% endblock %}
-
+{% block extra_head %}
+    {{ form.media }}
+{% endblock %}
 {% block content %}
 <div class="container-fluid px-4 py-4">
 

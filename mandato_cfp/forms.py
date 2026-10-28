@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-
+from ckeditor.widgets import CKEditorWidget  # <--- Impor CKEditorWidget
 from .models import Mandato, TipoMandato, FuncaoMandato
 
 
@@ -36,9 +36,12 @@ class MandatoForm(forms.ModelForm):
             'id_funcao_mandato': forms.Select(attrs={'class': 'form-control'}),
             'data_inicio': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'data_fim': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'descricao': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Descrição em Português...')}),
-            'descricao_tet': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Descrição em Tetun...')}),
-            'descricao_en': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Description in English...')}),
+            
+            # Menerapkan CKEditor pada field deskripsi multibahasa
+            'descricao': CKEditorWidget(config_name='default'),
+            'descricao_tet': CKEditorWidget(config_name='default'),
+            'descricao_en': CKEditorWidget(config_name='default'),
+            
             'imagen': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 

@@ -866,6 +866,11 @@
             <p class="cfp-nav__label">Conta</p>
             <ul>
                {% if user|has_group:"superadmin" %}
+               <li class="nav-item">
+  <a class="cfp-nav__link{% if active_menu == 'istoria_cfp' %} is-active{% endif %}" href="{% url 'istoria_cfp_form' %}" data-label="Istória da CFP"{% if active_menu == 'istoria_cfp' %} aria-current="page"{% endif %}>
+    <i class="fa fa-book"></i><span>Istória da CFP</span>
+  </a>
+</li>
                <li>
                   <a class="cfp-nav__link{% if url_config in request.path and url_perfil not in request.path %} is-active{% endif %}" href="{{ url_config }}" data-label="Configuração"{% if url_config in request.path and url_perfil not in request.path %} aria-current="page"{% endif %}>
                      <i class="fa fa-cog"></i><span>Configuração</span>

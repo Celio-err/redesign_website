@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+  {% if LANGUAGE_CODE == 'tet' and istoria.titulo_tet %}{{ istoria.titulo_tet }}
+  {% elif LANGUAGE_CODE == 'en' and istoria.titulo_en %}{{ istoria.titulo_en }}
+  {% else %}{{ istoria.titulo|default:_("Istória da CFP") }}{% endif %} — Comissão da Função Pública
+{% endblock %}
+
+{% block extra_head %}
+<style>
+html { scroll-behavior: smooth; }
+
+:root {
+  --cfp: #2A2160;
+  --cfp-deep: #1D1745;
+  --cfp-line: #D9D6EE;
+}
+
+/* Banner Hero */
+.list-hero { background: var(--pattern-bg); color: #fff; }
+.list-hero .wrap { padding-top: 64px; padding-bottom: 48px; }
+.list-hero h1 { margin: 0; font-family: 'Newsreader', serif; font-weight: 500; font-size: 64px; line-height: 1; letter-spacing: -.03em; }
+.list-hero p { margin: 18px 0 0; font-size: 17px; color: #D9D2EC; }
+
+/* Content Section */
+.sec { padding-top: 56px; padding-bottom: 96px; }
+.breadcrumb-nav { margin-bottom: 24px; font-size: 14px; color: var(--muted); }
+.breadcrumb-nav a { color: var(--cfp); text-decoration: none; }
+.breadcrumb-nav a:hover { text-decoration: underline; }
+
+.history-content { max-width: 800px; }
+.history-content .body-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #4A4560;
+}
+
+@media(max-width: 640px) {
+  .list-hero h1 { font-size: 44px; }
+}
+</style>
+{% endblock %}
+
+{% block hero %}
+<section class="list-hero">
+  <div class="wrap">
+    <h1>
+      {% if LANGUAGE_CODE == 'tet' and istoria.titulo_tet %}{{ istoria.titulo_tet }}
+      {% elif LANGUAGE_CODE == 'en' and istoria.titulo_en %}{{ istoria.titulo_en }}
+      {% else %}{{ istoria.titulo|default:_("Istória da CFP") }}{% endif %}
+    </h1>
+    <p>{{ istoria.subtitulo|default:_("Conheça a trajetória, origem e evolução institucional da Comissão da Função Pública de Timor-Leste") }}</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="sec">
+  <div class="wrap">
+    
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav" aria-label="breadcrumb">
+      <a href="{% url 'index' %}">{% translate "Início" %}</a> / 
+      <span>{% translate "Sobre a CFP" %}</span> / 
+      <strong style="color: var(--cfp);">{% translate "Istória" %}</strong>
+    </nav>
+
+    <div class="history-content">
+      {% if istoria %}
+        <div class="body-text">
+          {% if LANGUAGE_CODE == 'tet' and istoria.conteudo_tet %}
+            {{ istoria.conteudo_tet|linebreaks }}
+          {% elif LANGUAGE_CODE == 'en' and istoria.conteudo_en %}
+            {{ istoria.conteudo_en|linebreaks }}
+          {% else %}
+            {{ istoria.conteudo|linebreaks }}
+          {% endif %}
+        </div>
+      {% else %}
+        <p class="text-muted">{% translate "Nenhuma informação histórica cadastrada no momento." %}</p>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}

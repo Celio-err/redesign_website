@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from istoria_cfp.models import IstoriaCFP
 from mandato_cfp.models import Mandato, TipoMandato
 from noticias.models import Noticias, TipoNoticias
 from main_front_end.models import NoticiasView, MandatoView
@@ -58,6 +59,20 @@ def index(request):
         'mandatos': mandatos,
         'noticias_recentes': noticias_recentes,
         "active_menu": "home"
+    })
+
+@logout_required(redirect_to='index')
+def istoria_cfp(request):
+    istoria = IstoriaCFP.objects.first()
+
+    return render(request, 'istoria_cfp.html', {
+        'istoria': istoria,
+        'active_menu': 'about'
+    })
+
+def lista_mandatos(request):
+    return render(request, "lista_mandato.html", {
+        "active_menu": "about",
     })
 
 @logout_required(redirect_to='index')

@@ -1,0 +1,181 @@
+{% extends 'master/base.html' %}
+{% load i18n static %}
+
+{% block page_title %}{% translate "Gerir Istória da CFP" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+
+  <!-- Breadcrumb -->
+  <div class="mb-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="{% url 'istoria_cfp_form' %}" class="text-decoration-none">{% translate "Istória da CFP" %}</a></li>
+        <li class="breadcrumb-item active">{% translate "Gerir" %}</li>
+      </ol>
+    </nav>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-body p-4">
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- NAV TABS IDIOMAS -->
+            <ul class="nav nav-tabs mb-3" id="istoriaLangTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-semibold" id="pt-tab" data-bs-toggle="tab" data-bs-target="#pt-content" type="button" role="tab">
+                  Português <span class="badge bg-success ms-1" style="font-size: 10px;">PT</span>
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="tet-tab" data-bs-toggle="tab" data-bs-target="#tet-content" type="button" role="tab">
+                  Tetun <span class="badge bg-warning text-dark ms-1" style="font-size: 10px;">TET</span>
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="en-tab" data-bs-toggle="tab" data-bs-target="#en-content" type="button" role="tab">
+                  English <span class="badge bg-primary ms-1" style="font-size: 10px;">EN</span>
+                </button>
+              </li>
+            </ul>
+
+            <!-- CONTEÚDO DAS TABS -->
+            <div class="tab-content border border-top-0 p-4 rounded-bottom bg-light mb-4" id="istoriaLangContent">
+              
+              <!-- TAB 1: PORTUGUÊS -->
+              <div class="tab-pane fade show active" id="pt-content" role="tabpanel" aria-labelledby="pt-tab">
+                <div class="mb-3">
+                  <label for="{{ form.titulo.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Título" %} <span class="text-danger">*</span>
+                  </label>
+                  <div class="w-100">{{ form.titulo }}</div>
+                  {% for error in form.titulo.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="mb-3">
+                  <label for="{{ form.subtitulo.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Subtítulo / Text Banner" %}
+                  </label>
+                  <div class="w-100">{{ form.subtitulo }}</div>
+                  {% for error in form.subtitulo.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="mb-3">
+                  <label for="{{ form.conteudo.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Conteúdo da Istória" %} <span class="text-danger">*</span>
+                  </label>
+                  <div class="w-100">{{ form.conteudo }}</div>
+                  {% for error in form.conteudo.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+              </div>
+
+              <!-- TAB 2: TETUN -->
+              <div class="tab-pane fade" id="tet-content" role="tabpanel" aria-labelledby="tet-tab">
+                <div class="mb-3">
+                  <label for="{{ form.titulo_tet.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Título (Tetun)" %}
+                  </label>
+                  <div class="w-100">{{ form.titulo_tet }}</div>
+                  {% for error in form.titulo_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="mb-3">
+                  <label for="{{ form.subtitulo_tet.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Subtítulo (Tetun)" %}
+                  </label>
+                  <div class="w-100">{{ form.subtitulo_tet }}</div>
+                  {% for error in form.subtitulo_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="mb-3">
+                  <label for="{{ form.conteudo_tet.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Conteúdo da Istória (Tetun)" %}
+                  </label>
+                  <div class="w-100">{{ form.conteudo_tet }}</div>
+                  {% for error in form.conteudo_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+              </div>
+
+              <!-- TAB 3: ENGLISH -->
+              <div class="tab-pane fade" id="en-content" role="tabpanel" aria-labelledby="en-tab">
+                <div class="mb-3">
+                  <label for="{{ form.titulo_en.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Title (English)" %}
+                  </label>
+                  <div class="w-100">{{ form.titulo_en }}</div>
+                  {% for error in form.titulo_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="mb-3">
+                  <label for="{{ form.subtitulo_en.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "Subtitle (English)" %}
+                  </label>
+                  <div class="w-100">{{ form.subtitulo_en }}</div>
+                  {% for error in form.subtitulo_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="mb-3">
+                  <label for="{{ form.conteudo_en.id_for_label }}" class="form-label fw-medium small">
+                    {% translate "History Content (English)" %}
+                  </label>
+                  <div class="w-100">{{ form.conteudo_en }}</div>
+                  {% for error in form.conteudo_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+              </div>
+
+            </div>
+
+            <hr class="my-4">
+
+            <!-- BOTÕES DE AÇÃO -->
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary px-4" style="border-radius: 8px; font-weight: 600;">
+                <i class="fa fa-save me-1"></i> {% translate "Guardar" %}
+              </button>
+              <a href="{% url 'istoria_cfp_form' %}" class="btn btn-outline-secondary px-4" style="border-radius: 8px; font-weight: 600;">
+                <i class="fa fa-arrow-left me-1"></i> {% translate "Voltar" %}
+              </a>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  input[type="text"], select {
+    width: 100% !important;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    background-color: #fff;
+  }
+  textarea[name$="conteudo"], textarea[name$="conteudo_tet"], textarea[name$="conteudo_en"] {
+    width: 100% !important;
+    min-height: 250px !important;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    resize: vertical;
+  }
+</style>
+{% endblock %}

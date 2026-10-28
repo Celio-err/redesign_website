@@ -39,6 +39,7 @@ urlpatterns += i18n_patterns(
     path('documentos_publicos/', include('documentos_publicos.urls')),
     path('configuracao/', include('settings.urls')),
     path('contacto/', include('contacto.urls')),
+    path('istoria-cfp/', include('istoria_cfp.urls')),
     
     prefix_default_language=True,
 )

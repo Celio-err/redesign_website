@@ -362,6 +362,20 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
   <div class="site-nav" id="siteNav">
     <nav class="wrap nav" aria-label="Main">
       <a href="{% url 'home'%}" {% if active_menu == 'home' %}class="active"{% endif %}>{% translate "Inicio" %}</a>
+      <div class="dd {% if active_menu == 'about' or request.resolver_match.url_name == 'mandato_list_by_tipo' %}active{% endif %}">
+        <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
+          {% translate "Sobre a CFP" %}
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="dd-menu" role="menu">
+          {% for tipo in tipos_mandato_menu %}
+            <a role="menuitem" href="{% url 'mandato_list_by_tipo' tipo.pk %}">{{ tipo.current_tipo }}</a>
+          {% empty %}
+            <span class="dd-empty">Sem tipos disponíveis</span>
+          {% endfor %}
+        </div>
+      </div>
+      <a href="{% url 'noticias' %}" {% if active_menu == 'noticias' %}class="active"{% endif %}>{% translate "Notícias" %}</a>
       <a href="{% url 'noticias_csc_asean' %}" {% if active_menu == 'csc' %}class="active"{% endif %}>CSC &amp; ASEAN</a>
       <a href="{% url 'documentos_publicos_publico_list' %}" {% if active_menu == 'documents' %}class="active"{% endif %}>{% translate "Documentos Públicos" %}</a>
       
@@ -398,21 +412,6 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
         </div>
       </div>
       <a href="#" {% if active_menu == '#' %}class="active"{% endif %}>{% translate "Cooperação e Parcerias" %}</a>
-      
-      <div class="dd {% if active_menu == 'about' or request.resolver_match.url_name == 'mandato_list_by_tipo' %}active{% endif %}">
-        <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
-          {% translate "Sobre a CFP" %}
-          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="dd-menu" role="menu">
-          {% for tipo in tipos_mandato_menu %}
-            <a role="menuitem" href="{% url 'mandato_list_by_tipo' tipo.pk %}">{{ tipo.current_tipo }}</a>
-          {% empty %}
-            <span class="dd-empty">Sem tipos disponíveis</span>
-          {% endfor %}
-        </div>
-      </div>
-
       <a href="{% url 'contact' %}" {% if active_menu == 'contact' %}class="active"{% endif %}>{% translate "Contacto" %}</a>
 
       <!-- Language selector mobile -->
@@ -496,6 +495,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
       <h4>{% translate "Ligações" %}</h4>
       <ul>
         <li><a href="{% url 'home' %}">{% translate "Inicio" %}</a></li>
+        <li><a href="{% url 'noticias' %}">{% translate "Notícias" %}</a></li>
         <li><a href="{% url 'noticias_csc_asean' %}">CSC &amp; ASEAN</a></li>
         <li><a href="{% url 'documentos_publicos_publico_list' %}">{% translate "Documentos Públicos" %}</a></li>
         <li><a href="{% url 'contact' %}">{% translate "Contacto" %}</a></li>

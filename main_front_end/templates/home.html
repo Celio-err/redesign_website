@@ -440,7 +440,7 @@
   </div>
 </section>
 
-<!-- ============ Notícias (Grid 3x3 dengan Font Plus Jakarta Sans) ============ -->
+<!-- ============ Notícias Grid 3x3  ============ -->
 <section class="sec">
   <div class="wrap">
     <div class="sh">
@@ -448,35 +448,37 @@
     </div>
 
     <div class="news-grid-3x3">
-      {% for n in noticias_recentes|slice:":9" %}
-      <a class="news-card" href="{% url 'noticia_detalho' n.pk %}">
-        <div class="thumb">
-          {% if n.capa %}
-            <!-- Menggunakan properti .capa yang sudah didefinisikan di model Noticias -->
-            <img src="{{ n.capa.imagem.url }}" alt="{{ n.current_title }}" loading="lazy" onerror="this.style.display='none'">
-          {% elif n.imagen %}
-            <!-- Fallback ke field lama jika masih ada data lama -->
-            <img src="{{ n.imagen.url }}" alt="{{ n.current_title }}" loading="lazy" onerror="this.style.display='none'">
-          {% endif %}
-        </div>
-        <div class="body">
-          <div>
-            <div class="meta-row">
-              {% if n.current_tipo %}<span class="news-tag">{{ n.current_tipo }}</span>{% endif %}
-              <span class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</span>
-            </div>
-            <h3>{{ n.current_title }}</h3>
-          </div>
-          <span class="read-more">
-            {% translate "Ler mais" %} <span aria-hidden="true">→</span>
-          </span>
-        </div>
-      </a>
-      {% empty %}
-        <p style="grid-column: 1 / -1;">{% translate "Nenhuma notícia encontrada." %}</p>
-      {% endfor %}
+  {% for n in noticias_recentes|slice:":9" %}
+  <a class="news-card" href="{% url 'noticia_detalho' n.pk %}">
+    <div class="thumb">
+      {% if n.capa_url %}
+        <!-- Menggunakan capa_url yang diproses di views -->
+        <img src="{{ n.capa_url }}" alt="{{ n.current_title }}" loading="lazy" onerror="this.style.display='none'">
+      {% elif n.capa and n.capa.imagem %}
+        <img src="{{ n.capa.imagem.url }}" alt="{{ n.current_title }}" loading="lazy" onerror="this.style.display='none'">
+      {% elif n.imagen %}
+        <img src="{{ n.imagen.url }}" alt="{{ n.current_title }}" loading="lazy" onerror="this.style.display='none'">
+      {% endif %}
     </div>
-  </div>
+    <div class="body">
+      <div>
+        <div class="meta-row">
+          {% if n.current_tipo %}
+            <span class="news-tag">{{ n.current_tipo }}</span>
+          {% endif %}
+          <span class="meta">{{ n.data_publicacao|date:"d/m/Y" }}</span>
+        </div>
+        <h3>{{ n.current_title }}</h3>
+      </div>
+      <span class="read-more">
+        {% translate "Ler mais" %} <span aria-hidden="true">→</span>
+      </span>
+    </div>
+  </a>
+  {% empty %}
+    <p style="grid-column: 1 / -1;">{% translate "Nenhuma notícia encontrada." %}</p>
+  {% endfor %}
+</div>
 </section>
 
 <!-- ============ Institucional ============ -->

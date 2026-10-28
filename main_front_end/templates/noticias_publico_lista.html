@@ -7,6 +7,8 @@
 <style>
 html{scroll-behavior:smooth}
 
+:root{--cfp:#2A2160;--cfp-deep:#1D1745;--cfp-line:#D9D6EE}
+
 /* Banner */
 .list-hero{background:var(--pattern-bg);color:#fff}
 .list-hero .wrap{padding-top:64px;padding-bottom:48px}
@@ -34,30 +36,49 @@ html{scroll-behavior:smooth}
 .sh h2::after{content:"";display:block;width:56px;height:4px;background:var(--gold);margin-top:14px}
 .sh .n{font-size:14px;color:var(--muted)}
 
-/* Bento: 5 tile per halaman (1 besar 2x2 + 4 kecil), ukuran diperkecil */
-.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:156px;grid-auto-flow:dense;gap:12px}
-.tile{position:relative;overflow:hidden;border-radius:6px;display:flex;flex-direction:column;justify-content:flex-end;box-sizing:border-box;color:#fff;background:var(--indigo)}
-.tile:nth-child(5n+1){grid-column:span 2;grid-row:span 2}
-.tile>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
-.tile:hover>img{transform:scale(1.04)}
-.tile .shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(27,24,48,.9),rgba(27,24,48,.25) 60%,rgba(27,24,48,0))}
-.tile .in{position:relative;padding:14px 16px}
-.tile .meta{font-size:12px;color:#E4DEF5;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.tile .tag{font-size:11.5px;font-weight:500;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:1px 9px}
-.tile .ttl{margin:6px 0 0;font-family:'Newsreader',serif;font-size:16.5px;line-height:1.25;font-weight:500;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.tile:nth-child(5n+1) .ttl{font-size:25px;line-height:1.15;-webkit-line-clamp:3}
-.tile:nth-child(5n+1) .in{padding:22px 24px}
-.tile:hover .ttl{text-decoration:underline;text-underline-offset:3px}
-/* Tile teks (tanpa foto) */
-.tile.txt{background:#ECE8F6;color:var(--ink);justify-content:space-between}
-.alt .tile.txt{background:#fff;border:1px solid var(--line)}
-.tile.txt .in{padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;height:100%;box-sizing:border-box}
-.tile.txt .meta{color:#5A5475}
-.tile.txt .tag{border-color:rgba(42,33,96,.3);color:var(--indigo)}
-.tile.txt .ttl{color:var(--indigo)}
+/* ================= Grid berita 3x3 (sama dengan halaman inicial) ================= */
+.news-grid-3x3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+
+.news-card{
+  display:flex;flex-direction:column;overflow:hidden;
+  background:#F7F6FC;border:1px solid var(--cfp-line);border-radius:12px;
+  box-shadow:0 4px 12px -2px rgba(15,23,42,.06),0 2px 6px -1px rgba(15,23,42,.03);
+  transition:all .35s cubic-bezier(.4,0,.2,1)
+}
+.alt .news-card{background:#fff}
+.news-card:hover{
+  transform:translateY(-6px);border-color:var(--cfp);
+  box-shadow:0 20px 30px -10px rgba(15,23,42,.12),0 10px 15px -5px rgba(15,23,42,.05)
+}
+
+.news-card .thumb{position:relative;width:100%;height:210px;background:var(--cfp-line);overflow:hidden}
+.news-card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.news-card:hover .thumb img{transform:scale(1.05)}
+
+.news-card .body{padding:24px;display:flex;flex-direction:column;flex:1;justify-content:space-between}
+.news-card .meta-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.news-card .meta{font-size:13px;color:var(--muted);font-weight:500}
+.news-tag{
+  display:inline-block;padding:4px 12px;border-radius:999px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.04em;
+  color:var(--cfp-deep);background:#F3E7BF;border:1px solid #E4D08E
+}
+.news-card h3{
+  margin:0 0 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;line-height:1.5;
+  font-weight:700;letter-spacing:-.01em;color:var(--cfp);
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;
+  transition:color .2s ease
+}
+.news-card .read-more{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:13.5px;font-weight:600;color:var(--cfp);
+  transition:color .2s ease
+}
+.news-card:hover h3,.news-card:hover .read-more{color:var(--gold-hover)}
 
 /* Paginator per bagian */
-.pgbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:24px}
+.pgbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:32px}
 .rng{font-size:14px;color:var(--muted)}
 .pg{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
 .pg a,.pg span{min-width:36px;height:36px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;border-radius:6px;font-size:14px}
@@ -67,15 +88,19 @@ html{scroll-behavior:smooth}
 .pg .gap{color:var(--muted);min-width:20px;padding:0}
 .empty{padding:40px 0;color:var(--muted);margin:0}
 
-@media(max-width:960px){
-  .bento{grid-template-columns:repeat(2,1fr)}
-  .tile:nth-child(5n+1){grid-column:span 2;grid-row:span 1;min-height:220px}
+@media(max-width:1024px){
+  .news-grid-3x3{grid-template-columns:repeat(2,1fr)}
 }
-@media(max-width:600px){
+@media(max-width:640px){
   .list-hero h1{font-size:44px}
   .sh h2{font-size:38px}
-  .bento{grid-template-columns:1fr}
-  .tile:nth-child(5n+1){grid-column:span 1}
+  .news-grid-3x3{grid-template-columns:1fr}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .news-card,.news-card .thumb img{transition:none}
+  .news-card:hover{transform:none}
+  .news-card:hover .thumb img{transform:none}
 }
 </style>
 {% endblock %}
@@ -114,18 +139,29 @@ html{scroll-behavior:smooth}
     </header>
 
     {% if p.paginator.count %}
-    <div class="bento">
+    <div class="news-grid-3x3">
       {% for t in p %}
-      <a class="tile{% if not t.imagen %} txt{% endif %}" href="{% url 'noticia_detalho' t.pk %}">
-        {% if t.imagen %}<img src="/{{ t.imagen }}" alt="Imagem da notícia" loading="lazy"><div class="shade"></div>{% endif %}
-        <div class="in">
-          <div class="meta">
-            <!-- TIPO/CATEGORIA DINÂMICO PARA MULTILÍNGUE -->
-            {% if t.current_tipo %}<span class="tag">{{ t.current_tipo }}</span>{% endif %}
-            <span>{{ t.data_publicacao|date:"d/m/Y" }}</span>
+      <a class="news-card" href="{% url 'noticia_detalho' t.pk %}">
+        <div class="thumb">
+  {% if t.capa_url %}
+    <img src="{{ t.capa_url }}" alt="{{ t.current_title }}" loading="lazy" onerror="this.style.display='none'">
+  {% elif t.capa and t.capa.imagem %}
+    <img src="{{ t.capa.imagem.url }}" alt="{{ t.current_title }}" loading="lazy" onerror="this.style.display='none'">
+  {% elif t.imagen %}
+    <img src="{{ t.imagen.url }}" alt="{{ t.current_title }}" loading="lazy" onerror="this.style.display='none'">
+  {% endif %}
+</div>
+        <div class="body">
+          <div>
+            <div class="meta-row">
+              <!-- TIPO/CATEGORIA DINÂMICO PARA MULTILÍNGUE -->
+              {% if t.current_tipo %}<span class="news-tag">{{ t.current_tipo }}</span>{% endif %}
+              <span class="meta">{{ t.data_publicacao|date:"d/m/Y" }}</span>
+            </div>
+            <!-- TÍTULO DINÂMICO PARA MULTILÍNGUE -->
+            <h3>{{ t.current_title }}</h3>
           </div>
-          <!-- TÍTULO DINÂMICO PARA MULTILÍNGUE -->
-          <h3 class="ttl">{{ t.current_title }}</h3>
+          <span class="read-more">{% translate "Ler mais" %} <span aria-hidden="true">→</span></span>
         </div>
       </a>
       {% endfor %}

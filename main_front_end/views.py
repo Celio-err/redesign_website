@@ -26,21 +26,24 @@ def index(request):
         "id_funcao_mandato"  
     )
     noticias_recentes = Noticias.objects.prefetch_related('imagens').order_by('-data_publicacao')[:9]
+    
     for n in noticias_recentes:
+        n.current_title = getattr(n, 'nome_noticia', None) or getattr(n, 'titulo', '')
+        tipo_raw = getattr(n, 'tipo_noticia', None) or getattr(n, 'id_tipo_noticia', None) or getattr(n, 'tipo', '')
+        if hasattr(n, 'get_tipo_noticia_display'):
+            n.current_tipo = n.get_tipo_noticia_display()
+        else:
+            n.current_tipo = str(tipo_raw) if tipo_raw else ''
+
         capa_url = None
-        
-        # 1. Cek apakah ada field imagen langsung di berita
         if hasattr(n, 'imagen') and n.imagen:
             try:
                 capa_url = n.imagen.url
             except AttributeError:
-                # Jika imagen berupa string path biasa di database
                 path = str(n.imagen)
                 capa_url = path if path.startswith('/') or path.startswith('http') else f"/media/{path}"
         
-        # 2. Jika n.imagen kosong, cari foto pertama dari galeri (ImagemNoticia / imagens)
         if not capa_url:
-            # Cek relasi galeri
             galeria_fotos = getattr(n, 'imagens', None)
             if galeria_fotos and galeria_fotos.exists():
                 foto_primeira = galeria_fotos.first()
@@ -50,13 +53,29 @@ def index(request):
                     except AttributeError:
                         path = str(foto_primeira.imagem)
                         capa_url = path if path.startswith('/') or path.startswith('http') else f"/media/{path}"
-
-        # Simpan URL gambar yang sudah valid ke dalam atribut objek
         n.capa_url = capa_url
     return render(request, 'home.html', {
         'mandatos': mandatos,
         'noticias_recentes': noticias_recentes,
         "active_menu": "home"
+    })
+
+@logout_required(redirect_to='index')
+def noticias(request):
+    q = request.GET.get('q', '').strip()
+    page_number = request.GET.get('page', 1)
+    base_qs = NoticiasView.objects.order_by('-data_publicacao')
+    if q:
+        base_qs = base_qs.filter(nome_noticia__icontains=q)
+    paginator = Paginator(base_qs, 15)
+    page_obj = paginator.get_page(page_number)
+    page_obj.object_list = list(page_obj.object_list)
+    _anexar_capas(page_obj.object_list)
+
+    return render(request, 'noticias_lista_publico.html', { 
+        'page_obj': page_obj,
+        'q': q,
+        "active_menu": "noticias",  
     })
 
 @logout_required(redirect_to='index')
@@ -134,23 +153,24 @@ def _montar_galeria(noticia):
 # Views
 # ---------------------------------------------------------------------------
 @logout_required(redirect_to='index')
-def noticias_publico_lista(request, pk=None):      # pk tidak dipakai, dibiarkan agar URL lama tetap jalan
+def noticias_publico_lista(request, pk=None):
     q = request.GET.get('q', '').strip()
- 
+    
+    # Tanpa prefetch_related karena NoticiasView tidak memilikinya
     base = NoticiasView.objects.order_by('-data_publicacao')
     if q:
         base = base.filter(nome_noticia__icontains=q)
- 
+    
     grupos = []
     for tag in TAGS_CSC_ASEAN:
         qs = base.filter(tipo_noticia__icontains=tag)
- 
-        key = f'p_{tag.lower()}'                       # parameter halaman milik tag ini
+        
+        key = f'p_{tag.lower()}'
         page_obj = Paginator(qs, NOTICIAS_POR_PAGINA).get_page(request.GET.get(key))
- 
+        
         params = request.GET.copy()
-        params.pop(key, None)                          # halaman tag lain & pencarian tetap terbawa
- 
+        params.pop(key, None)
+        
         grupos.append({
             'tag': tag,
             'slug': tag.lower(),
@@ -158,20 +178,18 @@ def noticias_publico_lista(request, pk=None):      # pk tidak dipakai, dibiarkan
             'page_obj': page_obj,
             'qs': params.urlencode(),
         })
- 
-    # Ambil sampul semua kartu di semua grup dengan SATU query
+
     semua = []
     for g in grupos:
         g['page_obj'].object_list = list(g['page_obj'].object_list)
         semua.extend(g['page_obj'].object_list)
     _anexar_capas(semua)
- 
+
     return render(request, "noticias_publico_lista.html", {
         "grupos": grupos,
         "q": q,
         "active_menu": "csc",
     })
- 
  
 @logout_required(redirect_to='index')
 def noticia_detalho(request, pk):
@@ -188,7 +206,7 @@ def noticia_detalho(request, pk):
         "noticia": noticia,
         "galeria": _montar_galeria(noticia),
         "outras_noticias": outras_noticias,
-        "active_menu": "home",
+        "active_menu": "noticias",
     })
 @logout_required(redirect_to='index')
 def todas_noticias(request):

@@ -856,12 +856,11 @@
                      <i class="fa fa-newspaper-o"></i><span>Notícias</span>
                   </a>
                </li>
-               <li class="nav-item {% if active_menu == 'relatorio_noticias' %}active{% endif %}">
-                  <a class="nav-link" href="{% url 'relatorio_noticias' %}">
-                     <i class="fas fa-chart-bar me-2"></i>
-                        <span>Relatório de Notícias</span>
-                  </a>
-               </li>
+              <li>
+    <a class="cfp-nav__link{% if url_relatorio_noticias in request.path %} is-active{% endif %}" href="{{ url_relatorio_noticias }}" data-label="Relatório de Notícias"{% if url_relatorio_noticias in request.path %} aria-current="page"{% endif %}>
+        <i class="fa fa-file-text"></i><span>Relatório de Notícias</span>
+    </a>
+</li>
                <li>
                   <a class="cfp-nav__link{% if url_contacto in request.path %} is-active{% endif %}" href="{{ url_contacto }}" data-label="Contactos"{% if url_contacto in request.path %} aria-current="page"{% endif %}>
                      <i class="fa fa-envelope"></i><span>Contactos</span>

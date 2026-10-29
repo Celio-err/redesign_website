@@ -51,6 +51,7 @@ class Noticias(models.Model):
     data_publicacao = models.DateField(blank=True, null=True)
     inserido_por = models.CharField(max_length=50, blank=True, null=True)
     inserido_em = models.CharField(max_length=40, blank=True, null=True)
+    visualizacoes = models.PositiveIntegerField(default=0, blank=True, null=True)
 
     # LAMA: dibiarkan sementara agar data lama tidak hilang.
     # Hapus setelah data disalin ke ImagemNoticia (lihat migrasi data).

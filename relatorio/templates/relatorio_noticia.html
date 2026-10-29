@@ -1,72 +1,440 @@
-{% extends 'master/base.html' %} <!-- Sesuaikan dengan layout base admin Anda -->
+{% extends 'master/base.html' %}
 {% load static %}
+
+{% block title %}Relatório de Notícias - Comissão da Função Pública{% endblock %}
+{% block page_title %}Relatório e Estatísticas{% endblock %}
+
+{% block extra_head %}
+<link href="{% static 'back_end/DataTables/datatables.min.css' %}" rel="stylesheet">
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    /* CSS Variables & Executive Design Tokens */
+    :root {
+        --cfp-navy: #0f172a;
+        --cfp-navy-light: #1e293b;
+        --cfp-accent: #2563eb;
+        --cfp-bg-slate: #f8fafc;
+        --cfp-border: #e2e8f0;
+        --cfp-text-main: #0f172a;
+        --cfp-text-muted: #64748b;
+    }
+
+    .cfp-dashboard-wrapper {
+        background: #ffffff;
+        border: 1px solid var(--cfp-border);
+        border-radius: 12px;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
+    }
+
+    /* Executive KPI Cards */
+    .kpi-card {
+        background: #ffffff;
+        border: 1px solid var(--cfp-border);
+        border-radius: 10px;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.2s ease-in-out;
+    }
+    .kpi-card:hover {
+        border-color: #cbd5e1;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
+        transform: translateY(-2px);
+    }
+    .kpi-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+    }
+    .kpi-card.kpi-primary::before { background-color: #2563eb; }
+    .kpi-card.kpi-success::before { background-color: #10b981; }
+    .kpi-card.kpi-purple::before { background-color: #8b5cf6; }
+    .kpi-card.kpi-amber::before { background-color: #f59e0b; }
+
+    .kpi-icon-wrapper {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+    .kpi-primary .kpi-icon-wrapper { background: #eff6ff; color: #2563eb; }
+    .kpi-success .kpi-icon-wrapper { background: #ecfdf5; color: #10b981; }
+    .kpi-purple .kpi-icon-wrapper { background: #f5f3ff; color: #8b5cf6; }
+    .kpi-amber .kpi-icon-wrapper { background: #fffbeb; color: #f59e0b; }
+
+    /* Filter Bar Styling */
+    .filter-bar {
+        background: var(--cfp-bg-slate);
+        border: 1px solid var(--cfp-border);
+        border-radius: 10px;
+        padding: 16px 20px;
+    }
+    .btn-quick-filter {
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 13px;
+        padding: 6px 14px;
+        border: 1px solid var(--cfp-border);
+        background: #ffffff;
+        color: var(--cfp-text-muted);
+        text-decoration: none !important;
+        transition: all 0.15s ease-in-out;
+    }
+    .btn-quick-filter:hover {
+        background: #f1f5f9;
+        color: var(--cfp-text-main);
+    }
+    .btn-quick-filter.active {
+        background: var(--cfp-navy) !important;
+        border-color: var(--cfp-navy) !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 4px rgba(15, 23, 42, 0.15);
+    }
+
+    .form-control-custom {
+        border: 1px solid var(--cfp-border);
+        border-radius: 6px;
+        font-size: 13px;
+        color: var(--cfp-text-main);
+        background-color: #ffffff;
+        transition: border-color 0.15s ease-in-out;
+    }
+    .form-control-custom:focus {
+        border-color: var(--cfp-accent);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    /* Professional DataTables Overrides */
+    table.dataTable {
+        border-collapse: collapse !important;
+    }
+    table.dataTable<thead>th {
+        background: #f8fafc !important;
+        color: #475569 !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        padding: 12px 16px !important;
+    }
+    table.dataTable tbody td {
+        padding: 14px 16px !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        color: #334155;
+        font-size: 13px;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: var(--cfp-navy) !important;
+        border-color: var(--cfp-navy) !important;
+        color: #ffffff !important;
+        border-radius: 6px !important;
+    }
+
+    @media print {
+        body * { visibility: hidden; }
+        .cfp-dashboard-wrapper, .cfp-dashboard-wrapper * { visibility: visible; }
+        .cfp-dashboard-wrapper { position: absolute; left: 0; top: 0; width: 100%; border: none; }
+        .filter-bar, .graph_head_right, .dataTables_filter, .dataTables_length, .dataTables_paginate, form { display: none !important; }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Relatório e Estatísticas de Notícias</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-        <li class="breadcrumb-item active">Relatório de Notícias</li>
-    </ol>
 
-    <!-- Row Ringkasan Kartu Metrik (Summary Cards) -->
-    <div class="row">
-        <div class="col-xl-6 col-md-6">
-            <div class="card bg-primary text-white mb-4">
-                <div class="card-body">
-                    <h3>{{ total_noticias }}</h3>
-                    <p class="mb-0">Total Notícias Publicadas</p>
+    <div class="col-md-12 px-0">
+        <div class="cfp-dashboard-wrapper margin_bottom_30">
+
+            <!-- Header Panel -->
+            <div class="full graph_head" style="background: #0f172a; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                <div style="color: #ffffff; font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fa fa-line-chart" style="color: #10b981;"></i> 
+                    <span>Painel Analítico de Desempenho de Notícias</span>
+                </div>
+                <div class="graph_head_right">
+                    <button onclick="window.print()" class="btn btn-sm" style="background: rgba(255,255,255,0.08); color: #ffffff; padding: 7px 16px; border-radius: 6px; font-weight: 500; font-size: 13px; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: all 0.2s;">
+                        <i class="fa fa-print me-1"></i> Imprimir Relatório
+                    </button>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-6 col-md-6">
-            <div class="card bg-success text-white mb-4">
-                <div class="card-body">
-                    <h3>{{ total_views }}</h3>
-                    <p class="mb-0">Total Visualizações (Views)</p>
+
+            <div class="table_section padding_infor_info" style="padding: 24px;">
+
+                <!-- Summary Cards Row (Executive KPIs) -->
+                <div class="row mb-4 g-3">
+                    <div class="col-xl-3 col-md-6">
+                        <div class="kpi-card kpi-primary">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #64748b; letter-spacing: 0.025em;">Total Notícias</div>
+                                    <h3 class="mt-2 mb-0" style="font-weight: 700; color: #0f172a; font-size: 24px;">{{ total_noticias }}</h3>
+                                </div>
+                                <div class="kpi-icon-wrapper">
+                                    <i class="fa fa-newspaper-o"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2" style="font-size: 12px; color: #64748b;">
+                                Registos no sistema
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <div class="kpi-card kpi-success">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #64748b; letter-spacing: 0.025em;">Views Esta Semana</div>
+                                    <h3 class="mt-2 mb-0" style="font-weight: 700; color: #0f172a; font-size: 24px;">{{ views_semana }}</h3>
+                                </div>
+                                <div class="kpi-icon-wrapper">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2" style="font-size: 12px; color: #64748b;">
+                                Últimos 7 dias
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <div class="kpi-card kpi-purple">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #64748b; letter-spacing: 0.025em;">Views Este Mês</div>
+                                    <h3 class="mt-2 mb-0" style="font-weight: 700; color: #0f172a; font-size: 24px;">{{ views_mes }}</h3>
+                                </div>
+                                <div class="kpi-icon-wrapper">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2" style="font-size: 12px; color: #64748b;">
+                                Mês corrente
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <div class="kpi-card kpi-amber">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #64748b; letter-spacing: 0.025em;">Views Este Ano</div>
+                                    <h3 class="mt-2 mb-0" style="font-weight: 700; color: #0f172a; font-size: 24px;">{{ views_ano }}</h3>
+                                </div>
+                                <div class="kpi-icon-wrapper">
+                                    <i class="fa fa-bar-chart"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2" style="font-size: 12px; color: #64748b;">
+                                Ano civil corrente
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Monthly Analytics Chart Section -->
+                <div class="card mb-4" style="border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: none;">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items: center mb-3">
+                            <div>
+                                <h6 style="font-weight: 600; color: #0f172a; margin: 0; font-size: 14px;">
+                                    <i class="fa fa-area-chart text-primary me-1"></i> Volume de Visualizações Mensais
+                                </h6>
+                                <small style="color: #64748b; font-size: 12px;">Estatísticas consolidadas relativas ao ano de {{ target_year }}</small>
+                            </div>
+                        </div>
+                        <div style="position: relative; height: 260px; width: 100%;">
+                            <canvas id="viewsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Granular Filter Toolbar (Fast Presets & Custom Date Range) -->
+                <div class="filter-bar mb-4">
+                    <div class="row align-items-center g-3">
+                        <div class="col-xl-5 col-lg-12">
+                            <div style="font-weight: 600; color: #475569; font-size: 12px; text-transform: uppercase; letter-spacing: 0.025em; margin-bottom: 8px;">
+                                Período Predefinido:
+                            </div>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <a href="?filter=all" class="btn-quick-filter {% if current_filter == 'all' and not year_val %}active{% endif %}">
+                                    Todos
+                                </a>
+                                <a href="?filter=semana" class="btn-quick-filter {% if current_filter == 'semana' %}active{% endif %}">
+                                    Esta Semana
+                                </a>
+                                <a href="?filter=mes" class="btn-quick-filter {% if current_filter == 'mes' %}active{% endif %}">
+                                    Este Mês
+                                </a>
+                                <a href="?filter=ano" class="btn-quick-filter {% if current_filter == 'ano' %}active{% endif %}">
+                                    Este Ano
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-7 col-lg-12">
+                            <form method="GET" action="" class="d-flex align-items-center justify-content-xl-end gap-2 flex-wrap">
+                                <div style="font-weight: 600; color: #475569; font-size: 12px; text-transform: uppercase; letter-spacing: 0.025em; width: 100%; margin-bottom: 2px;">
+                                    Filtro Específico (Data Customizada):
+                                </div>
+                                
+                                <select name="ano" class="form-select form-control-sm form-control-custom" style="width: 110px;">
+                                    <option value="">Ano</option>
+                                    {% for yr in years_range %}
+                                    <option value="{{ yr }}" {% if year_val == yr|stringformat:"s" %}selected{% endif %}>{{ yr }}</option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <select name="mes" class="form-select form-control-sm form-control-custom" style="width: 125px;">
+                                    <option value="">Mês</option>
+                                    <option value="1" {% if month_val == '1' %}selected{% endif %}>Janeiro</option>
+                                    <option value="2" {% if month_val == '2' %}selected{% endif %}>Fevereiro</option>
+                                    <option value="3" {% if month_val == '3' %}selected{% endif %}>Março</option>
+                                    <option value="4" {% if month_val == '4' %}selected{% endif %}>Abril</option>
+                                    <option value="5" {% if month_val == '5' %}selected{% endif %}>Maio</option>
+                                    <option value="6" {% if month_val == '6' %}selected{% endif %}>Junho</option>
+                                    <option value="7" {% if month_val == '7' %}selected{% endif %}>Julho</option>
+                                    <option value="8" {% if month_val == '8' %}selected{% endif %}>Agosto</option>
+                                    <option value="9" {% if month_val == '9' %}selected{% endif %}>Setembro</option>
+                                    <option value="10" {% if month_val == '10' %}selected{% endif %}>Outubro</option>
+                                    <option value="11" {% if month_val == '11' %}selected{% endif %}>Novembro</option>
+                                    <option value="12" {% if month_val == '12' %}selected{% endif %}>Dezembro</option>
+                                </select>
+
+                                <input type="number" name="dia" min="1" max="31" placeholder="Dia" value="{{ day_val }}" class="form-control form-control-sm form-control-custom" style="width: 75px;">
+
+                                <button type="submit" class="btn btn-sm" style="border-radius: 6px; font-weight: 500; background: #0f172a; color: #ffffff; border: none; padding: 6px 14px;">
+                                    <i class="fa fa-search me-1"></i> Filtrar
+                                </button>
+                                
+                                <a href="?" class="btn btn-sm btn-outline-secondary" style="border-radius: 6px; padding: 6px 10px; background: #ffffff;" title="Resetar Filtros">
+                                    <i class="fa fa-refresh"></i>
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Structured Data Analytics Table -->
+                <div class="table-responsive">
+                    <table id="myTable" class="table align-middle w-100">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">No</th>
+                                <th>Título da Notícia</th>
+                                <th style="width: 140px;">Categoria</th>
+                                <th style="width: 140px;">Data Publicação</th>
+                                <th style="width: 130px;" class="text-center">Visualizações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in most_viewed %}
+                            <tr>
+                                <td style="color: #94a3b8; font-weight: 500;">{{ forloop.counter }}</td>
+                                <td style="font-weight: 600; color: #0f172a;">
+                                    <div style="line-height: 1.4;">{{ item.current_title|default:item.nome_noticia }}</div>
+                                </td>
+                                <td>
+                                    <span style="background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; display: inline-block;">
+                                        {{ item.tipo_noticia|default:"Geral" }}
+                                    </span>
+                                </td>
+                                <td style="color: #64748b; font-size: 13px; white-space: nowrap;">
+                                    {{ item.data_publicacao|date:"d/m/Y"|default:"—" }}
+                                </td>
+                                <td class="text-center">
+                                    <span style="background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                        <i class="fa fa-eye"></i> {{ item.visualizacoes|default:0 }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center" style="padding: 40px; color: #94a3b8;">
+                                    <i class="fa fa-folder-open-o" style="font-size: 32px; display: block; margin-bottom: 10px; opacity: 0.4;"></i>
+                                    Nenhum dado encontrado para o período selecionado.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
+
         </div>
     </div>
 
-    <!-- Tabel Berita Terpopuler (Most Viewed Analytics) -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            Top 5 Notícias Mais Vistas (Most Viewed)
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Título da Notícia</th>
-                        <th>Categoria (Tipo)</th>
-                        <th>Data Publicação</th>
-                        <th>Visualizações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in most_viewed %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ item.current_title|default:item.nome_noticia }}</td>
-                        <td>{{ item.tipo_noticia|default:"-" }}</td>
-                        <td>{{ item.data_publicacao|date:"d/m/Y" }}</td>
-                        <td>
-                            <span class="badge bg-info text-dark">
-                                <i class="fas fa-eye"></i> {{ item.visualizacoes|default:0 }} views
-                            </span>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center">Nenhum dado disponível.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'back_end/DataTables/datatables.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            "order": [[ 4, "desc" ]],
+            "responsive": true,
+            "language": {
+                "paginate": { "previous": "Anterior", "next": "Seguinte" },
+                "search": "Procurar:",
+                "lengthMenu": "Mostrar _MENU_ registos",
+                "info": "A mostrar _START_ até _END_ de _TOTAL_ registos",
+                "emptyTable": "Nenhum dado disponível na tabela"
+            }
+        });
+
+        // Smooth Bar Chart Config
+        const ctx = document.getElementById('viewsChart').getContext('2d');
+        const monthlyData = {{ monthly_data|safe }};
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                datasets: [{
+                    label: 'Visualizações',
+                    data: monthlyData,
+                    backgroundColor: '#0f172a',
+                    hoverBackgroundColor: '#2563eb',
+                    borderRadius: 4,
+                    barPercentage: 0.55
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0f172a',
+                        titleFont: { size: 13 },
+                        bodyFont: { size: 12 },
+                        padding: 10,
+                        cornerRadius: 6
+                    }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' },
+                        ticks: { font: { size: 11 }, color: '#64748b' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11 }, color: '#64748b' }
+                    }
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}

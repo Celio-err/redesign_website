@@ -26,35 +26,36 @@ def index(request):
         "id_tipo_mandato",
         "id_funcao_mandato"  
     )
-    noticias_recentes = Noticias.objects.prefetch_related('imagens').order_by('-data_publicacao')[:9]
+    
+    # 1. Gunakan NoticiasView agar property multibahasa (current_title, current_tipo) aktif
+    noticias_recentes = NoticiasView.objects.all().order_by('-data_publicacao')[:9]
     
     for n in noticias_recentes:
-        n.current_title = getattr(n, 'nome_noticia', None) or getattr(n, 'titulo', '')
-        tipo_raw = getattr(n, 'tipo_noticia', None) or getattr(n, 'id_tipo_noticia', None) or getattr(n, 'tipo', '')
-        if hasattr(n, 'get_tipo_noticia_display'):
-            n.current_tipo = n.get_tipo_noticia_display()
-        else:
-            n.current_tipo = str(tipo_raw) if tipo_raw else ''
-
         capa_url = None
-        if hasattr(n, 'imagen') and n.imagen:
-            try:
-                capa_url = n.imagen.url
-            except AttributeError:
-                path = str(n.imagen)
-                capa_url = path if path.startswith('/') or path.startswith('http') else f"/media/{path}"
         
+        # 2. Cek field 'imagen' dari NoticiasView (karena bentuknya string path database)
+        if hasattr(n, 'imagen') and n.imagen:
+            path = str(n.imagen).strip()
+            if path:
+                if path.startswith('/') or path.startswith('http'):
+                    capa_url = path
+                else:
+                    capa_url = f"/media/{path}"
+        
+        # 3. Fallback: Jika di view string imagen kosong, coba ambil dari relasi tabel Noticias aslinya berdasarkan pk (id_noticia)
         if not capa_url:
-            galeria_fotos = getattr(n, 'imagens', None)
-            if galeria_fotos and galeria_fotos.exists():
-                foto_primeira = galeria_fotos.first()
-                if hasattr(foto_primeira, 'imagem') and foto_primeira.imagem:
-                    try:
+            try:
+                noticia_asli = Noticias.objects.prefetch_related('imagens').get(pk=n.pk)
+                galeria_fotos = getattr(noticia_asli, 'imagens', None)
+                if galeria_fotos and galeria_fotos.exists():
+                    foto_primeira = galeria_fotos.first()
+                    if hasattr(foto_primeira, 'imagem') and foto_primeira.imagem:
                         capa_url = foto_primeira.imagem.url
-                    except AttributeError:
-                        path = str(foto_primeira.imagem)
-                        capa_url = path if path.startswith('/') or path.startswith('http') else f"/media/{path}"
+            except Noticias.DoesNotExist:
+                pass
+                
         n.capa_url = capa_url
+        
     return render(request, 'home.html', {
         'mandatos': mandatos,
         'noticias_recentes': noticias_recentes,
@@ -199,15 +200,51 @@ def noticia_detalho(request, pk):
         "outras_noticias": outras_noticias,
         "active_menu": "noticias",
     })
+
 @logout_required(redirect_to='index')
 def todas_noticias(request):
     q = request.GET.get('q', '').strip()
     tipo = request.GET.get('tipo', '').strip()
+    
     t_noticias = NoticiasView.objects.all().order_by('-data_publicacao')
+    
+    # 1. Perbaikan Pencarian Pintar (Mencari di semua bahasa: PT, TET, EN)
     if q:
-        t_noticias = t_noticias.filter(nome_noticia__icontains=q)
+        t_noticias = t_noticias.filter(
+            Q(nome_noticia__icontains=q) | 
+            Q(nome_noticia_tet__icontains=q) | 
+            Q(nome_noticia_en__icontains=q) |
+            Q(descricao__icontains=q) |
+            Q(descricao_tet__icontains=q)
+        )
+        
     if tipo:
         t_noticias = t_noticias.filter(tipo_noticia=tipo)
+
+    # 2. Proses URL Gambar (Capa) untuk setiap item berita di list
+    for n in t_noticias:
+        capa_url = None
+        if hasattr(n, 'imagen') and n.imagen:
+            path = str(n.imagen).strip()
+            if path:
+                if path.startswith('/') or path.startswith('http'):
+                    capa_url = path
+                else:
+                    capa_url = f"/media/{path}"
+        
+        # Fallback ke relasi tabel Noticias asli jika string view kosong
+        if not capa_url:
+            try:
+                noticia_asli = Noticias.objects.prefetch_related('imagens').get(pk=n.pk)
+                galeria_fotos = getattr(noticia_asli, 'imagens', None)
+                if galeria_fotos and galeria_fotos.exists():
+                    foto_primeira = galeria_fotos.first()
+                    if hasattr(foto_primeira, 'imagem') and foto_primeira.imagem:
+                        capa_url = foto_primeira.imagem.url
+            except Noticias.DoesNotExist:
+                pass
+                
+        n.capa_url = capa_url
 
     tipos = (
         NoticiasView.objects
@@ -217,6 +254,7 @@ def todas_noticias(request):
         .distinct()
         .order_by('tipo_noticia')
     )
+    
     paginator = Paginator(t_noticias, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
     params = request.GET.copy()

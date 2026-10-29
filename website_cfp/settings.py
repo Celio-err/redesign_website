@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'contacto',
     'istoria_cfp',
     'ckeditor',
+    'relatorio',
 ]
 
 MIDDLEWARE = [

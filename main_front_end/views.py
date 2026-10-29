@@ -17,6 +17,7 @@ from django.urls import reverse
 from django_ratelimit.decorators import ratelimit
 from .forms import CommentForm
 from noticias.models import ImagemNoticia
+from django.db.models import F
 
 
 #HOME PAGE
@@ -185,7 +186,9 @@ def noticias_publico_lista(request, pk=None):
  
 @logout_required(redirect_to='index')
 def noticia_detalho(request, pk):
+    Noticias.objects.filter(pk=pk).update(visualizacoes=F('visualizacoes') + 1)
     noticia = get_object_or_404(NoticiasView, pk=pk)
+    
  
     outras_noticias = list(
         NoticiasView.objects

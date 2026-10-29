@@ -1,0 +1,72 @@
+{% extends 'master/base.html' %} <!-- Sesuaikan dengan layout base admin Anda -->
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Relatório e Estatísticas de Notícias</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+        <li class="breadcrumb-item active">Relatório de Notícias</li>
+    </ol>
+
+    <!-- Row Ringkasan Kartu Metrik (Summary Cards) -->
+    <div class="row">
+        <div class="col-xl-6 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <h3>{{ total_noticias }}</h3>
+                    <p class="mb-0">Total Notícias Publicadas</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    <h3>{{ total_views }}</h3>
+                    <p class="mb-0">Total Visualizações (Views)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel Berita Terpopuler (Most Viewed Analytics) -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Top 5 Notícias Mais Vistas (Most Viewed)
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Título da Notícia</th>
+                        <th>Categoria (Tipo)</th>
+                        <th>Data Publicação</th>
+                        <th>Visualizações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in most_viewed %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.current_title|default:item.nome_noticia }}</td>
+                        <td>{{ item.tipo_noticia|default:"-" }}</td>
+                        <td>{{ item.data_publicacao|date:"d/m/Y" }}</td>
+                        <td>
+                            <span class="badge bg-info text-dark">
+                                <i class="fas fa-eye"></i> {{ item.visualizacoes|default:0 }} views
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Nenhum dado disponível.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

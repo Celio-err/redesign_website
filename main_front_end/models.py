@@ -73,29 +73,26 @@ class NoticiasView(models.Model):
     inserido_em = models.CharField(max_length=40, blank=True, null=True)
     imagen = models.CharField(max_length=255, blank=True, null=True)
     id_tipo_noticia_id = models.UUIDField(blank=True, null=True)
+    visualizacoes = models.PositiveIntegerField(blank=True, null=True, default=0)
     
-    # Field asli/default
+    # Field utama (berfungsi sebagai default / bahasa utama)
     nome_noticia = models.CharField(max_length=255)
-    noticia = models.TextField(blank=True, null=True)  # Isi berita utama
+    noticia = models.TextField(blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
     tipo_noticia = models.CharField(max_length=255, blank=True, null=True)
 
     # ---------------------------------------------------------
-    # KOLOM MULTIBAHASA UNTUK NOTICIAS (Sesuai database view)
+    # HANYA KOLOM TETUN & INGGRIS (Hapus semua yang _pt)
     # ---------------------------------------------------------
-    nome_noticia_pt = models.CharField(max_length=255, blank=True, null=True)
     nome_noticia_tet = models.CharField(max_length=255, blank=True, null=True)
     nome_noticia_en = models.CharField(max_length=255, blank=True, null=True)
 
-    noticia_pt = models.TextField(blank=True, null=True)
     noticia_tet = models.TextField(blank=True, null=True)
     noticia_en = models.TextField(blank=True, null=True)
 
-    descricao_pt = models.TextField(blank=True, null=True)
     descricao_tet = models.TextField(blank=True, null=True)
     descricao_en = models.TextField(blank=True, null=True)
 
-    tipo_noticia_pt = models.CharField(max_length=255, blank=True, null=True)
     tipo_noticia_tet = models.CharField(max_length=255, blank=True, null=True)
     tipo_noticia_en = models.CharField(max_length=255, blank=True, null=True)
 
@@ -106,7 +103,7 @@ class NoticiasView(models.Model):
     def __str__(self):
         return self.nome_noticia
 
-    # --- PROPERTY PINTAR UNTUK NOTICIAS ---
+    # --- PROPERTY PINTAR YANG SUDAH DIBERSIHKAN ---
     @property
     def current_title(self):
         lang = get_language()
@@ -114,7 +111,7 @@ class NoticiasView(models.Model):
             return self.nome_noticia_tet
         elif lang == 'en' and self.nome_noticia_en:
             return self.nome_noticia_en
-        return self.nome_noticia_pt or self.nome_noticia
+        return self.nome_noticia  # Fallback ke kolom utama
 
     @property
     def current_noticia(self):
@@ -123,7 +120,7 @@ class NoticiasView(models.Model):
             return self.noticia_tet
         elif lang == 'en' and self.noticia_en:
             return self.noticia_en
-        return self.noticia_pt or self.noticia
+        return self.noticia
 
     @property
     def current_descricao(self):
@@ -132,7 +129,7 @@ class NoticiasView(models.Model):
             return self.descricao_tet
         elif lang == 'en' and self.descricao_en:
             return self.descricao_en
-        return self.descricao_pt or self.descricao
+        return self.descricao
 
     @property
     def current_tipo(self):
@@ -141,6 +138,5 @@ class NoticiasView(models.Model):
             return self.tipo_noticia_tet
         elif lang == 'en' and self.tipo_noticia_en:
             return self.tipo_noticia_en
-        return self.tipo_noticia_pt or self.tipo_noticia
-
+        return self.tipo_noticia
     

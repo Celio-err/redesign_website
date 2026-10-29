@@ -812,6 +812,7 @@
       {% url 'settings' as url_config %}
       {% url 'contacto' as url_contacto %}
       {% url 'perfil' as url_perfil %}
+      {% url 'relatorio_noticias' as url_relatorio_noticias %}
 
       <!-- Sidebar -->
       <aside class="cfp-sidebar" id="cfpSidebar" aria-label="Navegação principal">
@@ -853,6 +854,12 @@
                <li>
                   <a class="cfp-nav__link{% if url_noticias in request.path %} is-active{% endif %}" href="{{ url_noticias }}" data-label="Notícias"{% if url_noticias in request.path %} aria-current="page"{% endif %}>
                      <i class="fa fa-newspaper-o"></i><span>Notícias</span>
+                  </a>
+               </li>
+               <li class="nav-item {% if active_menu == 'relatorio_noticias' %}active{% endif %}">
+                  <a class="nav-link" href="{% url 'relatorio_noticias' %}">
+                     <i class="fas fa-chart-bar me-2"></i>
+                        <span>Relatório de Notícias</span>
                   </a>
                </li>
                <li>

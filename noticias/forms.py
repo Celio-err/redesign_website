@@ -1,6 +1,6 @@
 from django import forms
 from .models import Noticias, TipoNoticias 
-from ckeditor.widgets import CKEditorWidget  
+from django_ckeditor_5.widgets import CKEditor5Widget  
 
 MAX_IMAGENS = 10          # jumlah maksimal gambar per notícia
 MAX_MB = 5                # ukuran maksimal per gambar
@@ -50,9 +50,9 @@ class NoticiasForm(forms.ModelForm):
             'descricao_tet': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
             'descricao_en': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
             
-            'noticia': CKEditorWidget(config_name='default'),
-            'noticia_tet': CKEditorWidget(config_name='default'),
-            'noticia_en': CKEditorWidget(config_name='default'),
+            'noticia': CKEditor5Widget(config_name='default'),
+            'noticia_tet': CKEditor5Widget(config_name='default'),
+            'noticia_en': CKEditor5Widget(config_name='default'),
         }
 
     def clean_imagens(self):

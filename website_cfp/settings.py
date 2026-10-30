@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'settings',
     'contacto',
     'istoria_cfp',
-    'ckeditor',
+    'django_ckeditor_5',
     'relatorio',
     'coperation',
 ]

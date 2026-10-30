@@ -18,12 +18,6 @@ class TipoDDDOForm(forms.ModelForm):
             'tipo_dddo_en': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Ex: Laws')}),
         }
 
-
-from django import forms
-from django.utils.translation import gettext_lazy as _
-from .models import DDDO, TipoDDDO
-
-
 class DDDOForm(forms.ModelForm):
     # Buat field kustom untuk upload file karena documentos_dddo adalah BinaryField
     documentos_dddo_file = forms.FileField(

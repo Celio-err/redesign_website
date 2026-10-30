@@ -1,77 +1,156 @@
 {% extends 'master/base.html' %}
-{% load static %}
+{% load i18n static %}
 
-{% block title %}{% if is_edit %}Editar{% else %}Nova{% endif %} Cooperação — Admin CFP{% endblock %}
+{% block page_title %}{% if is_edit %}{% translate "Editar Cooperação" %}{% else %}{% translate "Nova Cooperação" %}{% endif %}{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-4 py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h4 class="m-0" style="font-weight: 700; color: #0f172a;">
-                {% if is_edit %}<i class="fa fa-pencil text-warning me-2"></i>Editar Parceria{% else %}<i class="fa fa-plus text-success me-2"></i>Registar Nova Parceria{% endif %}
-            </h4>
-            <small class="text-muted">Gestão de instituições parceiras e cooperação institucional da CFP.</small>
-        </div>
-        <a href="{% url 'cooperacao_list' %}" class="btn btn-outline-secondary btn-sm" style="border-radius: 6px;">
-            <i class="fa fa-arrow-left me-1"></i> Voltar à Lista
-        </a>
-    </div>
 
-    <div class="card shadow-sm" style="border: 1px solid #e2e8f0; border-radius: 10px;">
+  <!-- ================= BREADCRUMB ================= -->
+  <div class="mb-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="{% url 'cooperacao_list' %}" class="text-decoration-none">{% translate "Cooperação e Parcerias" %}</a></li>
+        <li class="breadcrumb-item active">{% if is_edit %}{% translate "Editar" %}{% else %}{% translate "Novo" %}{% endif %}</li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card border-0 shadow-sm rounded-3">
         <div class="card-body p-4">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                
-                <div class="row g-3">
-                    <!-- Nome do Parceiro -->
-                    <div class="col-md-8">
-                        <label class="form-label font-weight-bold" style="font-size: 13px; color: #334155;">Nome da Instituição / Parceiro <span class="text-danger">*</span></label>
-                        {{ form.nome_parceiro }}
-                        {% if form.nome_parceiro.errors %}<div class="text-danger small mt-1">{{ form.nome_parceiro.errors.0 }}</div>{% endif %}
-                    </div>
 
-                    <!-- País -->
-                    <div class="col-md-4">
-                        <label class="form-label font-weight-bold" style="font-size: 13px; color: #334155;">País / Âmbito</label>
-                        {{ form.pais_parceiro }}
-                    </div>
+          <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
 
-                    <!-- Slug (Optional Override) -->
-                    <div class="col-md-12">
-                        <label class="form-label font-weight-bold" style="font-size: 13px; color: #334155;">Slug do URL (Gera automaticamente se deixado em branco)</label>
-                        {{ form.slug }}
-                        <small class="text-muted d-block mt-1" style="font-size: 11px;">Ex: 'asean', 'undp', 'csc'. Este valor será usado no URL público: /cooperacao/parceiro/<b>slug</b>/</small>
-                    </div>
+            <!-- ================= DADOS PRINCIPAIS E LOGO ================= -->
+            <div class="row mb-4">
+              <!-- Nome do Parceiro -->
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.nome_parceiro.id_for_label }}" class="form-label fw-medium small">
+                  {{ form.nome_parceiro.label }} <span class="text-danger">*</span>
+                </label>
+                {{ form.nome_parceiro }}
+                {% for error in form.nome_parceiro.errors %}
+                  <div class="text-danger small mt-1"><i class="fa fa-exclamation-circle me-1"></i>{{ error }}</div>
+                {% endfor %}
+              </div>
 
-                    <!-- Upload de Logo -->
-                    <div class="col-md-12">
-                        <label class="form-label font-weight-bold" style="font-size: 13px; color: #334155;">Logo da Instituição (Imagem)</label>
-                        {{ form.logo_parceiro }}
-                        {% if is_edit and parceiro.logo_parceiro %}
-                            <div class="mt-2 d-flex align-items-center gap-2">
-                                <span class="text-muted small">Logo atual:</span>
-                                <img src="{{ parceiro.logo_parceiro.url }}" alt="{{ parceiro.nome_parceiro }}" style="height: 40px; object-fit: contain; border: 1px solid #e2e8f0; padding: 2px; border-radius: 4px;">
-                            </div>
-                        {% endif %}
-                    </div>
+              <!-- País / Âmbito -->
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.pais_parceiro.id_for_label }}" class="form-label fw-medium small">
+                  {{ form.pais_parceiro.label }}
+                </label>
+                {{ form.pais_parceiro }}
+                {% for error in form.pais_parceiro.errors %}
+                  <div class="text-danger small mt-1"><i class="fa fa-exclamation-circle me-1"></i>{{ error }}</div>
+                {% endfor %}
+              </div>
 
-                    <!-- Descrição -->
-                    <div class="col-md-12">
-                        <label class="form-label font-weight-bold" style="font-size: 13px; color: #334155;">Descrição Resumida</label>
-                        {{ form.descricao }}
-                    </div>
+              <!-- Slug -->
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.slug.id_for_label }}" class="form-label fw-medium small">
+                  {{ form.slug.label }}
+                </label>
+                {{ form.slug }}
+                <div class="form-text text-muted small">{% translate "Gera automaticamente se deixado em branco." %}</div>
+                {% for error in form.slug.errors %}
+                  <div class="text-danger small mt-1"><i class="fa fa-exclamation-circle me-1"></i>{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Logo da Instituição -->
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.logo_parceiro.id_for_label }}" class="form-label fw-medium small">
+                  {{ form.logo_parceiro.label }}
+                </label>
+                {{ form.logo_parceiro }}
+                {% if is_edit and parceiro.logo_parceiro %}
+                  <div class="form-text text-muted mt-1 small d-flex align-items-center gap-2">
+                    <span>{% translate "Logo atual" %}:</span>
+                    <img src="{{ parceiro.logo_parceiro.url }}" alt="{{ parceiro.nome_parceiro }}" style="height: 30px; object-fit: contain; border: 1px solid #e2e8f0; padding: 2px; border-radius: 4px;">
+                  </div>
+                {% endif %}
+                {% for error in form.logo_parceiro.errors %}
+                  <div class="text-danger small mt-1"><i class="fa fa-exclamation-circle me-1"></i>{{ error }}</div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- ================= NAV TABS IDIOMAS (Caso aplicável à descrição) ================= -->
+            <ul class="nav nav-tabs mb-3" id="coopLangTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-semibold" id="pt-tab" data-bs-toggle="tab" data-bs-target="#pt-content" type="button" role="tab">
+                  Português <span class="badge bg-success ms-1" style="font-size: 10px;">PT</span>
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="tet-tab" data-bs-toggle="tab" data-bs-target="#tet-content" type="button" role="tab">
+                  Tetun <span class="badge bg-warning ms-1" style="font-size: 10px;">TET</span>
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="en-tab" data-bs-toggle="tab" data-bs-target="#en-content" type="button" role="tab">
+                  English <span class="badge bg-primary ms-1" style="font-size: 10px;">EN</span>
+                </button>
+              </li>
+            </ul>
+
+            <!-- ================= CONTEÚDO DAS TABS ================= -->
+            <div class="tab-content border border-top-0 p-4 rounded-bottom bg-light mb-4" id="coopLangContent">
+              
+              <!-- TAB 1: PORTUGUÊS -->
+              <div class="tab-pane fade show active" id="pt-content" role="tabpanel" aria-labelledby="pt-tab">
+                <div class="mb-3">
+                  <label for="{{ form.descricao.id_for_label }}" class="form-label fw-medium small">
+                    {{ form.descricao.label }}
+                  </label>
+                  {{ form.descricao }}
+                  {% for error in form.descricao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
+              </div>
 
-                <hr class="my-4" style="border-color: #f1f5f9;">
-
-                <div class="d-flex justify-content-end gap-2">
-                    <a href="{% url 'cooperacao_list' %}" class="btn btn-light border" style="border-radius: 6px;">Cancelar</a>
-                    <button type="submit" class="btn btn-primary px-4" style="border-radius: 6px; font-weight: 600;">
-                        <i class="fa fa-save me-1"></i> Guardar Dados
-                    </button>
+              <!-- TAB 2: TETUN (Remova ou ajuste se o seu form não usar campos multilíngues de descrição) -->
+              <div class="tab-pane fade" id="tet-content" role="tabpanel" aria-labelledby="tet-tab">
+                <div class="mb-3">
+                  <label for="{{ form.descricao_tet.id_for_label|default:'' }}" class="form-label fw-medium small">
+                    {% translate "Descrição (Tetun)" %}
+                  </label>
+                  {{ form.descricao_tet|default:form.descricao }}
                 </div>
-            </form>
+              </div>
+
+              <!-- TAB 3: ENGLISH -->
+              <div class="tab-pane fade" id="en-content" role="tabpanel" aria-labelledby="en-tab">
+                <div class="mb-3">
+                  <label for="{{ form.descricao_en.id_for_label|default:'' }}" class="form-label fw-medium small">
+                    {% translate "Descrição (English)" %}
+                  </label>
+                  {{ form.descricao_en|default:form.descricao }}
+                </div>
+              </div>
+
+            </div>
+
+            <hr class="my-4">
+            
+            <!-- ================= BOTÕES DE AÇÃO ================= -->
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary px-4" style="border-radius: 8px; font-weight: 600;">
+                <i class="fa fa-save me-1"></i> {% translate "Guardar" %}
+              </button>
+              <a href="{% url 'cooperacao_list' %}" class="btn btn-outline-secondary px-4" style="border-radius: 8px; font-weight: 600;">
+                <i class="fa fa-arrow-left me-1"></i> {% translate "Voltar" %}
+              </a>
+            </div>
+
+          </form>
+
         </div>
+      </div>
     </div>
+  </div>
+
 </div>
 {% endblock %}

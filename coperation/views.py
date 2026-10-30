@@ -2,11 +2,20 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Cooperacao
 from .forms import CooperacaoForm
+from main_front_end.models import NoticiasView
+from django.db.models import Q
 
 
 # --- List Admin ---
 def backend_cooperacao_list(request):
     parceiros = Cooperacao.objects.all().order_by('-data_criacao')
+    for p in parceiros:
+        p.noticias_count = NoticiasView.objects.filter(
+            Q(tipo_noticia__icontains=p.nome_parceiro) |
+            Q(tipo_noticia_tet__icontains=p.nome_parceiro) |
+            Q(tipo_noticia_en__icontains=p.nome_parceiro)
+        ).count()
+
     return render(request, 'coperation_list.html', {
         'parceiros': parceiros,
         'active_menu': 'backend_cooperacao'

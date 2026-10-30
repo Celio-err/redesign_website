@@ -1,26 +1,44 @@
-{% extends 'base.html' %}
+{% extends 'master/base.html' %}
+{% load i18n static %}
 
 {% block title %}Eliminar Parceria — Admin CFP{% endblock %}
+{% block page_title %}Eliminar Parceria Institucional{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card border-danger shadow-sm" style="border-radius: 10px;">
-                <div class="card-header bg-danger text-white font-weight-bold">
-                    <i class="fa fa-exclamation-triangle me-1"></i> Confirmar Eliminação
-                </div>
-                <div class="card-body p-4 text-center">
-                    <p class="mb-3">Tem certeza de que deseja eliminar o registo da instituição <strong>"{{ object.nome_parceiro }}"</strong>?</p>
-                    <p class="text-muted small">Esta ação não pode ser desfeita e removerá a associação direta das notícias a esta parceria.</p>
-                    
-                    <form method="post" class="mt-4">
-                        {% csrf_token %}
-                        <a href="{% url 'cooperacao_list' %}" class="btn btn-light border me-2">Cancelar</a>
-                        <button type="submit" class="btn btn-danger">Sim, Eliminar</button>
-                    </form>
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30" style="border-radius: 12px; overflow: hidden;">
+
+            <!-- Header Panel Merah/Pink Gradien -->
+            <div class="full graph_head" style="background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%); padding: 25px;">
+                <div style="color: #fff; font-weight: 600; font-size: 18px;">
+                    <i class="fa fa-exclamation-triangle"></i> Confirmar Eliminação
                 </div>
             </div>
+
+            <!-- Body Info & Form -->
+            <div class="padding_infor_info" style="padding: 30px;">
+
+                <p style="font-size: 15px; color: #636e72;">
+                    Tens certeza de que desejas eliminar a instituição / parceria 
+                    <strong>"{{ object.nome_parceiro}}"</strong>?
+                    Esta ação não pode ser desfeita e removerá a associação direta das notícias a esta parceria.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn" style="background: #e74c3c; color: #fff; padding: 10px 22px; border-radius: 8px; font-weight: 600; border: none;">
+                        <i class="fa fa-trash"></i> Sim, Eliminar
+                    </button>
+
+                    <a href="{% url 'cooperacao_list' %}" class="btn btn-secondary" style="padding: 10px 22px; border-radius: 8px; font-weight: 600;">
+                        <i class="fa fa-arrow-left"></i> Cancelar
+                    </a>
+                </form>
+
+            </div>
+
         </div>
     </div>
 </div>

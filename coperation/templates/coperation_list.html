@@ -6,103 +6,107 @@
 
 {% block extra_head %}
 <link href="{% static 'back_end/DataTables/datatables.min.css' %}" rel="stylesheet">
-<style>
-    .partner-logo-preview {
-        width: 50px;
-        height: 50px;
-        object-fit: contain;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        padding: 4px;
-    }
-    .badge-status {
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 11px;
-        font-weight: 600;
-    }
-</style>
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid px-4">
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30" style="border-radius: 12px; overflow: hidden;">
 
-    <div class="card mb-4" style="border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: none;">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center" style="background: #0f172a; border-top-left-radius: 10px; border-top-right-radius: 10px;">
-            <h6 class="m-0 font-weight-bold text-white">
-                <i class="fa fa-handshake-o text-success me-2"></i> Lista de Instituições & Parceiros Registados
-            </h6>
-            <!-- Tombol Tambah Partner Baru -->
-            <a href="{% url 'cooperacao_create' %}" class="btn btn-sm btn-success" style="border-radius: 6px; font-weight: 600;">
-                <i class="fa fa-plus me-1"></i> Adicionar Novo Parceiro
-            </a>
-        </div>
+            <!-- Header Panel -->
+            <div class="full graph_head" style="background: linear-gradient(135deg, #0c253f 0%, #0c253f 100%); padding: 20px 25px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="color: #fff; font-weight: 600; font-size: 18px;">
+                    <i class="fa fa-handshake-o me-2"></i> Lista de Instituições & Parceiros Registados
+                </div>
+                <div>
+                    <a href="{% url 'cooperacao_create' %}" class="btn" style="background: #fff; color: #0984e3; padding: 9px 18px; border-radius: 8px; font-weight: 600;">
+                        <i class="fa fa-plus"></i> Adicionar Novo Parceiro
+                    </a>
+                </div>
+            </div>
 
-        <div class="card-body p-4">
-            <div class="table-responsive">
-                <table id="coopTable" class="table align-middle w-100">
-                    <thead>
-                        <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                            <th style="width: 50px;">Logo</th>
-                            <th>Nome do Parceiro</th>
-                            <th>País</th>
-                            <th>Últimas Notícias Relacionadas</th>
-                            <th class="text-center" style="width: 120px;">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in parceiros %}
-                        <tr>
-                            <td>
-                                {% if item.logo_parceiro %}
-                                    <img src="{{ item.logo_parceiro.url }}" alt="{{ item.nome_parceiro }}" class="partner-logo-preview">
-                                {% else %}
-                                    <div class="partner-logo-preview d-flex align-items-center justify-content-center text-muted">
-                                        <i class="fa fa-building-o"></i>
-                                    </div>
-                                {% endif %}
-                            </td>
-                            <td style="font-weight: 600; color: #0f172a;">
-                                {{ item.nome_parceiro }}
-                                <small class="d-block text-muted" style="font-weight: normal; font-size: 11px;">Slug: /{{ item.slug }}/</small>
-                            </td>
-                            <td style="color: #64748b; font-size: 13px;">
-                                <i class="fa fa-globe text-secondary me-1"></i> {{ item.pais_parceiro|default:"—" }}
-                            </td>
-                            <td>
-                                <span class="badge bg-light text-dark border" style="font-size: 12px;">
-                                    <i class="fa fa-newspaper-o text-primary me-1"></i> {{ item.noticias.count }} Notícias
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <div class="btn-group btn-group-sm">
-                                    <a href="#" target="_blank" class="btn btn-outline-info" title="Ver Página Pública">
+            <div class="padding_infor_info" style="padding: 20px;">
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="table-responsive-sm">
+                    <table id="coopTable" class="table">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; width: 60px;">Logo</th>
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Nome do Parceiro</th>
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">País</th>
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Notícias Relacionadas</th>
+                                <th style="border: none; padding: 12px 15px; color: #636e72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;" class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in parceiros %}
+                            <tr style="border-bottom: 1px solid #f0f0f0;">
+                                <!-- Logo -->
+                                <td style="padding: 14px 15px; vertical-align: middle;">
+                                    {% if item.logo_parceiro %}
+                                        <img src="{{ item.logo_parceiro.url }}" alt="{{ item.nome_parceiro }}" style="width: 45px; height: 45px; object-fit: contain; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px;">
+                                    {% else %}
+                                        <div style="width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; color: #b2bec3;">
+                                            <i class="fa fa-building-o"></i>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                
+                                <!-- Nome & Slug -->
+                                <td style="padding: 14px 15px; vertical-align: middle; font-weight: 600; color: #2d3436;">
+                                    {{ item.nome_parceiro }}
+                                    <small class="d-block text-muted" style="font-weight: normal; font-size: 11px;">Slug: /{{ item.slug }}/</small>
+                                </td>
+
+                                <!-- País -->
+                                <td style="padding: 14px 15px; vertical-align: middle; color: #636e72;">
+                                    <i class="fa fa-globe text-secondary me-1"></i> {{ item.pais_parceiro|default:"—" }}
+                                </td>
+
+                                <!-- Notícias -->
+                                <td style="padding: 14px 15px; vertical-align: middle;">
+                                    <span style="background: #f0ecff; color: #6c5ce7; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">
+                                        <i class="fa fa-newspaper-o me-1"></i> {{ item.noticias_count|default:0 }} Notícias
+                                    </span>
+                                </td>
+
+                                <!-- Ações -->
+                                <td style="padding: 14px 15px; vertical-align: middle;" class="text-center">
+                                    <a href="{% url 'public_cooperacao_detail' item.slug %}" target="_blank" class="btn btn-sm" style="background: #e8f7ff; color: #0984e3; border-radius: 6px;" title="Ver Página Pública">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a href="{% url 'cooperacao_update' item.pk %}" class="btn btn-outline-warning" title="Editar">
-                                        <i class="fa fa-pencil"></i>
+                                    <a href="{% url 'cooperacao_update' item.pk %}" class="btn btn-sm" style="background: #fff6e0; color: #e67e22; border-radius: 6px;" title="Editar">
+                                        <i class="fa fa-edit"></i>
                                     </a>
-                                    <a href="{% url 'cooperacao_delete' item.pk %}" class="btn btn-outline-danger" title="Eliminar">
+                                    <a href="{% url 'cooperacao_delete' item.pk %}" class="btn btn-sm" style="background: #ffeaea; color: #e74c3c; border-radius: 6px;" title="Eliminar">
                                         <i class="fa fa-trash"></i>
                                     </a>
-                                </div>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">
-                                <i class="fa fa-folder-open-o fs-3 d-block mb-2 opacity-50"></i>
-                                Nenhum parceiro ou cooperação cadastrada até ao momento.
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center" style="padding: 40px; color: #b2bec3;">
+                                    <i class="fa fa-folder-open-o" style="font-size: 32px; display: block; margin-bottom: 10px;"></i>
+                                    Nenhum parceiro ou cooperação cadastrada até ao momento.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
+
         </div>
     </div>
-
 </div>
 {% endblock %}
 
@@ -111,7 +115,6 @@
 <script>
     $(document).ready(function() {
         $('#coopTable').DataTable({
-            "responsive": true,
             "language": {
                 "search": "Procurar:",
                 "paginate": { "previous": "Anterior", "next": "Seguinte" }

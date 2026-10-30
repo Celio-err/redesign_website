@@ -32,7 +32,8 @@ def index(request):
         "id_tipo_mandato",
         "id_funcao_mandato"  
     )
-    
+
+    all_parceiros = Cooperacao.objects.all().order_by('nome_parceiro')
     # 1. Gunakan NoticiasView agar property multibahasa (current_title, current_tipo) aktif
     noticias_recentes = NoticiasView.objects.all().order_by('-data_publicacao')[:9]
     
@@ -65,6 +66,7 @@ def index(request):
     return render(request, 'home.html', {
         'mandatos': mandatos,
         'noticias_recentes': noticias_recentes,
+        'all_parceiros': all_parceiros,
         "active_menu": "home"
     })
 
@@ -428,12 +430,6 @@ def public_cooperacao_directory(request):
 from main_front_end.models import NoticiasView  # Pastikan sudah di-import
 
 def public_cooperacao_detail(request, slug):
-    """
-    Frontend POV:
-    Mengambil data mitra berdasarkan slug, lalu filter NoticiasView 
-    menggunakan string tipo_noticia yang ada di database view.
-    """
-    # 1. Ambil data institusi/mitra yang diklik publik (misal: ASEAN)
     parceiro = get_object_or_404(Cooperacao, slug=slug)
     
     # 2. Filter NoticiasView berdasarkan nama partner di kolom tipo_noticia (semua bahasa)
@@ -452,7 +448,7 @@ def public_cooperacao_detail(request, slug):
     context = {
         'parceiro': parceiro,
         'noticias_parceiro': noticias_parceiro,
-        'active_menu': f'coop_{parceiro.slug}',
+        'active_menu': 'public_cooperacao_directory',
     }
     return render(request, 'coperation_public_detail.html', context)
 

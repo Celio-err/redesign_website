@@ -813,6 +813,7 @@
       {% url 'contacto' as url_contacto %}
       {% url 'perfil' as url_perfil %}
       {% url 'relatorio_noticias' as url_relatorio_noticias %}
+      {% url 'cooperacao_list' as url_cooperacao_list %}
 
       <!-- Sidebar -->
       <aside class="cfp-sidebar" id="cfpSidebar" aria-label="Navegação principal">
@@ -861,6 +862,12 @@
         <i class="fa fa-file-text"></i><span>Relatório de Notícias</span>
     </a>
 </li>
+               <li>
+    <a class="cfp-nav__link{% if url_cooperacao_list and url_cooperacao_list in request.path %} is-active{% endif %}" href="{{ url_cooperacao_list }}" data-label="Cooperação"{% if url_cooperacao_list and url_cooperacao_list in request.path %} aria-current="page"{% endif %}>
+        <i class="fa fa-handshake-o"></i><span>Cooperação</span>
+    </a>  
+</li>
+               {% comment %} {% if user|has_group:"admin" %} {% endcomment %}
                <li>
                   <a class="cfp-nav__link{% if url_contacto in request.path %} is-active{% endif %}" href="{{ url_contacto }}" data-label="Contactos"{% if url_contacto in request.path %} aria-current="page"{% endif %}>
                      <i class="fa fa-envelope"></i><span>Contactos</span>

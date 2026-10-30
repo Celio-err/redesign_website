@@ -1,0 +1,77 @@
+{% extends 'master/base.html' %}
+{% load static %}
+
+{% block title %}{% if is_edit %}Editar{% else %}Nova{% endif %} Cooperação — Admin CFP{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="m-0" style="font-weight: 700; color: #0f172a;">
+                {% if is_edit %}<i class="fa fa-pencil text-warning me-2"></i>Editar Parceria{% else %}<i class="fa fa-plus text-success me-2"></i>Registar Nova Parceria{% endif %}
+            </h4>
+            <small class="text-muted">Gestão de instituições parceiras e cooperação institucional da CFP.</small>
+        </div>
+        <a href="{% url 'cooperacao_list' %}" class="btn btn-outline-secondary btn-sm" style="border-radius: 6px;">
+            <i class="fa fa-arrow-left me-1"></i> Voltar à Lista
+        </a>
+    </div>
+
+    <div class="card shadow-sm" style="border: 1px solid #e2e8f0; border-radius: 10px;">
+        <div class="card-body p-4">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="row g-3">
+                    <!-- Nome do Parceiro -->
+                    <div class="col-md-8">
+                        <label class="form-label font-weight-bold" style="font-size: 13px; color: #334155;">Nome da Instituição / Parceiro <span class="text-danger">*</span></label>
+                        {{ form.nome_parceiro }}
+                        {% if form.nome_parceiro.errors %}<div class="text-danger small mt-1">{{ form.nome_parceiro.errors.0 }}</div>{% endif %}
+                    </div>
+
+                    <!-- País -->
+                    <div class="col-md-4">
+                        <label class="form-label font-weight-bold" style="font-size: 13px; color: #334155;">País / Âmbito</label>
+                        {{ form.pais_parceiro }}
+                    </div>
+
+                    <!-- Slug (Optional Override) -->
+                    <div class="col-md-12">
+                        <label class="form-label font-weight-bold" style="font-size: 13px; color: #334155;">Slug do URL (Gera automaticamente se deixado em branco)</label>
+                        {{ form.slug }}
+                        <small class="text-muted d-block mt-1" style="font-size: 11px;">Ex: 'asean', 'undp', 'csc'. Este valor será usado no URL público: /cooperacao/parceiro/<b>slug</b>/</small>
+                    </div>
+
+                    <!-- Upload de Logo -->
+                    <div class="col-md-12">
+                        <label class="form-label font-weight-bold" style="font-size: 13px; color: #334155;">Logo da Instituição (Imagem)</label>
+                        {{ form.logo_parceiro }}
+                        {% if is_edit and parceiro.logo_parceiro %}
+                            <div class="mt-2 d-flex align-items-center gap-2">
+                                <span class="text-muted small">Logo atual:</span>
+                                <img src="{{ parceiro.logo_parceiro.url }}" alt="{{ parceiro.nome_parceiro }}" style="height: 40px; object-fit: contain; border: 1px solid #e2e8f0; padding: 2px; border-radius: 4px;">
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Descrição -->
+                    <div class="col-md-12">
+                        <label class="form-label font-weight-bold" style="font-size: 13px; color: #334155;">Descrição Resumida</label>
+                        {{ form.descricao }}
+                    </div>
+                </div>
+
+                <hr class="my-4" style="border-color: #f1f5f9;">
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{% url 'cooperacao_list' %}" class="btn btn-light border" style="border-radius: 6px;">Cancelar</a>
+                    <button type="submit" class="btn btn-primary px-4" style="border-radius: 6px; font-weight: 600;">
+                        <i class="fa fa-save me-1"></i> Guardar Dados
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

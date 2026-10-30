@@ -14,11 +14,6 @@ def noticias_list(request):
     return render(request, 'noticias_list.html', {
         'noticias': noticias
     })
-
- 
-from .forms import NoticiasForm
-from .models import ImagemNoticia, Noticias
- 
  
 def _uuids(values):
     """Buang nilai yang bukan UUID valid agar filter tidak error."""

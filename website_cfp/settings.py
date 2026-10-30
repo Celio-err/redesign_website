@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'istoria_cfp',
     'ckeditor',
     'relatorio',
+    'coperation',
 ]
 
 MIDDLEWARE = [

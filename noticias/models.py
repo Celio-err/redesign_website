@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from coperation.models import Cooperacao
 
 
 class TipoNoticias(models.Model):
@@ -10,6 +11,10 @@ class TipoNoticias(models.Model):
         primary_key=True,
         default=uuid.uuid4,
         editable=False
+    )
+    is_cooperacao = models.BooleanField(
+        default=False, 
+        verbose_name="É uma categoria de Cooperação? (Ex: ASEAN, CSC, Local)"
     )
     tipo_noticia = models.CharField(max_length=100)  # Default / Português
     tipo_noticia_tet = models.CharField(max_length=100, blank=True, null=True)
@@ -30,6 +35,14 @@ class Noticias(models.Model):
     id_tipo_noticia = models.ForeignKey(
         TipoNoticias,
         on_delete=models.CASCADE
+    )
+    cooperacao = models.ForeignKey(
+        Cooperacao, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='noticias',
+        verbose_name="Parceria / Cooperação Relacionada"
     )
 
     # 1. PORTUGUÊS (Default / Utama)

@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from coperation.models import Cooperacao
+from coperation.models import Cooperacao
 from istoria_cfp.models import IstoriaCFP
 from mandato_cfp.models import Mandato, TipoMandato
 from noticias.models import Noticias, TipoNoticias
@@ -18,6 +20,9 @@ from django_ratelimit.decorators import ratelimit
 from .forms import CommentForm
 from noticias.models import ImagemNoticia
 from django.db.models import F
+from coperation.models import Cooperacao
+from noticias.models import Noticias
+from django.db import models
 
 
 #HOME PAGE
@@ -411,6 +416,45 @@ def documentos_publicos_download(request, pk):
     response = HttpResponse(documento.documentos_publicos, content_type='application/octet-stream')
     response['Content-Disposition'] = f'attachment; filename="{documento.nome_ficheiro_original}"'
     return response
+
+def public_cooperacao_directory(request):
+    """Menampilkan direktori logo partner/lembaga untuk publik"""
+    parceiros = Cooperacao.objects.all().order_by('nome_parceiro')
+    return render(request, 'coperation_public_list.html', {
+        'parceiros': parceiros,
+        'active_menu': 'public_cooperacao_directory',
+    })
+
+from main_front_end.models import NoticiasView  # Pastikan sudah di-import
+
+def public_cooperacao_detail(request, slug):
+    """
+    Frontend POV:
+    Mengambil data mitra berdasarkan slug, lalu filter NoticiasView 
+    menggunakan string tipo_noticia yang ada di database view.
+    """
+    # 1. Ambil data institusi/mitra yang diklik publik (misal: ASEAN)
+    parceiro = get_object_or_404(Cooperacao, slug=slug)
+    
+    # 2. Filter NoticiasView berdasarkan nama partner di kolom tipo_noticia (semua bahasa)
+    #    Tanpa memanggil field 'cooperacao' yang tidak ada di NoticiasView
+    noticias_parceiro = list(
+        NoticiasView.objects.filter(
+            Q(tipo_noticia__icontains=parceiro.nome_parceiro) |
+            Q(tipo_noticia_tet__icontains=parceiro.nome_parceiro) |
+            Q(tipo_noticia_en__icontains=parceiro.nome_parceiro)
+        ).order_by('-data_publicacao')
+    )
+    
+    # 3. Lampirkan gambar sampul (capa_url) agar sama persis dengan halaman index & noticias
+    _anexar_capas(noticias_parceiro)
+
+    context = {
+        'parceiro': parceiro,
+        'noticias_parceiro': noticias_parceiro,
+        'active_menu': f'coop_{parceiro.slug}',
+    }
+    return render(request, 'coperation_public_detail.html', context)
 
 def contacto(request):
     return render(request, "contacto.html" ,{

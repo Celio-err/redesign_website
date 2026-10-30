@@ -408,9 +408,8 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
           <a role="menuitem" class="ext" href="https://correio.cfp.gov.tl" target="_blank" rel="noopener noreferrer"><span>Webmail</span><span class="x" aria-hidden="true">↗</span></a>
         </div>
       </div>
-      <a href="#" {% if active_menu == '#' %}class="active"{% endif %}>{% translate "Cooperação e Parcerias" %}</a>
+      <a href="{% url 'public_cooperacao_directory' %}" {% if active_menu == 'public_cooperacao_directory' %}class="active"{% endif %}>{% translate "Cooperação e Parcerias" %}</a>
       <a href="{% url 'contact' %}" {% if active_menu == 'contact' %}class="active"{% endif %}>{% translate "Contacto" %}</a>
-
       <!-- Language selector mobile -->
       <div class="lang lang-m">
         <a href="javascript:void(0)" onclick="changeLanguage('tet')" title="Tetun" {% if LANGUAGE_CODE == 'tet' %}class="active"{% endif %}>

@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{{ parceiro.nome_parceiro }} — {% translate "Notícias de Cooperação" %} — Comissão da Função Pública{% endblock %}
+
+{% block extra_head %}
+<style>
+.l-hero{background:var(--pattern-bg,#0f172a);color:#fff}
+.l-hero .wrap{padding-top:64px;padding-bottom:56px}
+.crumb{font-size:14px;color:#D9D2EC;margin-bottom:24px}
+.l-hero h1{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:46px;line-height:1.08;letter-spacing:-.025em}
+.l-hero p{margin:12px 0 0;font-size:16px;color:#D9D2EC;max-width:65ch}
+
+.content-wrap{max-width:1200px;margin:0 auto;padding:40px 24px 96px}
+
+/* Partner Info Banner Card */
+.partner-banner{background:#fff;border:1px solid var(--line,#e2e8f0);border-radius:12px;padding:28px;margin-bottom:40px;display:flex;align-items:center;gap:24px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.02)}
+.partner-logo-box{width:90px;height:90px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid var(--line,#e2e8f0);border-radius:8px;padding:8px;flex-shrink:0}
+.partner-logo-img{max-height:100%;max-width:100%;object-fit:contain}
+
+.section-title{font-size:22px;font-weight:600;color:var(--ink,#0f172a);margin-bottom:24px;font-family:'Newsreader',serif}
+
+/* News Cards Grid */
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));gap:24px}
+.news-card{background:#fff;border:1px solid var(--line,#e2e8f0);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.2s ease, box-shadow 0.2s ease}
+.news-card:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(0,0,0,0.06)}
+
+/* Thumbnail Gambar Berita */
+.news-thumb{width:100%;height:180px;object-fit:cover;background:#f1f5f9;border-bottom:1px solid var(--line,#e2e8f0)}
+.news-thumb-placeholder{width:100%;height:140px;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:var(--muted,#64748b);border-bottom:1px solid var(--line,#e2e8f0);font-size:32px}
+
+.news-body{padding:20px;display:flex;flex-direction:column;flex-grow:1;justify-content:space-between}
+.news-date{font-size:12.5px;color:var(--muted,#64748b);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.news-title{font-size:16px;font-weight:600;color:var(--ink,#0f172a);line-height:1.4;margin-bottom:8px}
+
+.news-btn{display:inline-flex;align-items:center;justify-content:center;width:100%;padding:10px 16px;background:#f8fafc;color:var(--indigo,#0c253f);border:1px solid var(--line,#e2e8f0);border-radius:6px;font-weight:600;font-size:13px;text-decoration:none;transition:all 0.2s}
+.news-btn:hover{background:var(--indigo,#0c253f);color:#fff;border-color:var(--indigo,#0c253f)}
+
+.empty-state{grid-column:1/-1;text-align:center;padding:64px 20px;background:#fff;border:1px dashed var(--line,#e2e8f0);border-radius:12px}
+.empty-state i{font-size:48px;color:var(--muted,#64748b);margin-bottom:16px;opacity:0.5}
+
+@media(max-width:768px){
+  .partner-banner{flex-direction:column;align-items:flex-start}
+  .l-hero h1{font-size:32px}
+}
+</style>
+{% endblock %}
+
+{% block hero %}
+<section class="l-hero">
+  <div class="wrap" style="max-width:1200px;margin:0 auto;padding-left:24px;padding-right:24px;">
+    <div class="crumb">
+      <a href="{% url 'public_cooperacao_directory' %}" style="color:#D9D2EC;text-decoration:underline;">{% translate "Cooperação e Parcerias" %}</a> / {{ parceiro.nome_parceiro }}
+    </div>
+    <h1>{{ parceiro.nome_parceiro }}</h1>
+    <p>{{ parceiro.descricao|default:"Publicações oficiais, relatórios e atividades desenvolvidas no âmbito desta parceria institucional." }}</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="content-wrap">
+
+    <!-- Card Info Partner -->
+    <div class="partner-banner">
+        <div class="partner-logo-box">
+            {% if parceiro.logo_parceiro %}
+                <img src="{{ parceiro.logo_parceiro.url }}" alt="{{ parceiro.nome_parceiro }}" class="partner-logo-img">
+            {% else %}
+                <i class="fa fa-building-o text-secondary" style="font-size: 36px;"></i>
+            {% endif %}
+        </div>
+        <div>
+            <span class="tipo" style="display:inline-block;font-size:11px;font-weight:600;color:var(--indigo,#0c253f);background:#ECE8F6;border-radius:999px;padding:2px 10px;margin-bottom:6px;">
+                {% translate "Parceiro Oficial" %} {% if parceiro.pais_parceiro %}({{ parceiro.pais_parceiro }}){% endif %}
+            </span>
+            <h3 style="font-weight: 700; margin: 0 0 4px; color: var(--ink,#0f172a); font-size: 20px;">{{ parceiro.nome_parceiro }}</h3>
+            <p style="color: var(--muted,#64748b); font-size: 14px; margin: 0; line-height: 1.5;">
+                {{ parceiro.descricao|default:"Instituição parceira colaboradora da Comissão da Função Pública." }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Judul Bagian Berita -->
+    <h2 class="section-title">
+        <i class="fa fa-newspaper-o text-primary me-2"></i>{% translate "Notícias Relacionadas" %} ({{ noticias_parceiro|length }})
+    </h2>
+
+    <!-- Grid Berita Bergaya Home -->
+    <div class="news-grid">
+        {% for noticia in noticias_parceiro %}
+            <div class="news-card">
+                <!-- Gambar Sampul Berita -->
+                {% if noticia.capa_url %}
+                    <img src="{{ noticia.capa_url }}" alt="{{ noticia.current_title|default:noticia.nome_noticia }}" class="news-thumb">
+                {% else %}
+                    <div class="news-thumb-placeholder">
+                        <i class="fa fa-newspaper-o"></i>
+                    </div>
+                {% endif %}
+
+                <div class="news-body">
+                    <div>
+                        <div class="news-date">
+                            <i class="fa fa-calendar-o"></i> {{ noticia.data_publicacao|date:"d/m/Y" }}
+                        </div>
+                        <h4 class="news-title">
+                            {{ noticia.current_title|default:noticia.nome_noticia }}
+                        </h4>
+                    </div>
+
+                    <div style="margin-top: 16px;">
+                        <a href="{% url 'noticia_detalho' noticia.pk %}" class="news-btn">
+                            {% translate "Ler Detalhes" %} <i class="fa fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty-state">
+                <i class="fa fa-folder-open-o"></i>
+                <h5 style="color: var(--ink,#0f172a); font-weight: 600; font-size: 16px; margin-bottom: 6px;">{% translate "Nenhuma notícia encontrada" %}</h5>
+                <p style="color: var(--muted,#64748b); font-size: 13.5px; margin: 0;">{% translate "Ainda não existem notícias associadas à instituição" %} "{{ parceiro.nome_parceiro }}".</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

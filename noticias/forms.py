@@ -75,10 +75,11 @@ class NoticiasForm(forms.ModelForm):
 class TipoNoticiasForm(forms.ModelForm):
     class Meta:
         model = TipoNoticias
-        fields = ['tipo_noticia', 'tipo_noticia_tet', 'tipo_noticia_en', 'descricao']
+        fields = ['tipo_noticia', 'tipo_noticia_tet', 'tipo_noticia_en', 'is_cooperacao','descricao']
         widgets = {
             'tipo_noticia': forms.TextInput(attrs={'class': 'form-control'}),
             'tipo_noticia_tet': forms.TextInput(attrs={'class': 'form-control'}),
             'tipo_noticia_en': forms.TextInput(attrs={'class': 'form-control'}),
+            'is_cooperacao': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'descricao': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }

@@ -41,6 +41,7 @@ urlpatterns += i18n_patterns(
     path('contacto/', include('contacto.urls')),
     path('istoria-cfp/', include('istoria_cfp.urls')),
     path('relatorio/', include('relatorio.urls')),
+    path('cooperacao/', include('coperation.urls')),
     
     prefix_default_language=True,
 )

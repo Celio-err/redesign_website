@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Parceria — Admin CFP{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger shadow-sm" style="border-radius: 10px;">
+                <div class="card-header bg-danger text-white font-weight-bold">
+                    <i class="fa fa-exclamation-triangle me-1"></i> Confirmar Eliminação
+                </div>
+                <div class="card-body p-4 text-center">
+                    <p class="mb-3">Tem certeza de que deseja eliminar o registo da instituição <strong>"{{ object.nome_parceiro }}"</strong>?</p>
+                    <p class="text-muted small">Esta ação não pode ser desfeita e removerá a associação direta das notícias a esta parceria.</p>
+                    
+                    <form method="post" class="mt-4">
+                        {% csrf_token %}
+                        <a href="{% url 'cooperacao_list' %}" class="btn btn-light border me-2">Cancelar</a>
+                        <button type="submit" class="btn btn-danger">Sim, Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

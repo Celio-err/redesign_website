@@ -16,6 +16,8 @@ urlpatterns = [
     path("detallu-noticia/<uuid:pk>/", views.noticia_detalho, name="noticia_detalho"),
     path("<uuid:pk>/ver/", views.documentos_publicos_review, name="documentos_publicos_review"),
     path("detallu-mandatu/<uuid:pk>/", views.detallu_mandatu, name="detail_mandatu"),
+    path('cooperacao/parceiros/', views.public_cooperacao_directory, name='public_cooperacao_directory'),
+    path('cooperacao/parceiros/<slug:slug>/', views.public_cooperacao_detail, name='public_cooperacao_detail'),
     path("contacto/", views.contacto, name="contact"),
     path('i18n/', include ('django.conf.urls.i18n')),
 ]

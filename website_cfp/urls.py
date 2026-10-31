@@ -42,6 +42,7 @@ urlpatterns += i18n_patterns(
     path('istoria-cfp/', include('istoria_cfp.urls')),
     path('relatorio/', include('relatorio.urls')),
     path('cooperacao/', include('coperation.urls')),
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
     
     prefix_default_language=True,
 )

@@ -11,15 +11,6 @@
    <title>{% block title %}Comissão da Função Pública{% endblock %}</title>
 
    <link rel="icon" href="{% static 'back_end/images/logo/logo_comicao.webp' %}" type="image/webp">
-
-   <!-- fonts -->
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
-   <!-- ikon (Font Awesome 4.7). Hapus baris ini jika ikon sudah dimuat dari CSS proyek -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
    <!-- css proyek -->
    <link rel="stylesheet" href="{% static 'back_end/css/bootstrap.min.css' %}" />
    <link rel="stylesheet" href="{% static 'back_end/style.css' %}" />
@@ -1057,7 +1048,33 @@
       })();
    </script>
 
-   {% block extra_js %}{% endblock %}
+   {% block extra_js %}
+   #script ba koluna multilingua
+<script>
+    $(document).ready(function() {
+        // Skrip manual yang aman untuk mengatasi tab multibahasa yang macet di semua menu
+        $('.nav-tabs .nav-link').on('click', function (e) {
+            e.preventDefault();
+            
+            // 1. Nonaktifkan semua tombol tab pada grup ini
+            $(this).closest('.nav-tabs').find('.nav-link').removeClass('active').attr('aria-selected', 'false');
+            
+            // 2. Sembunyikan semua isi tab-pane di dalam wadah terkait
+            var targetContainer = $(this).closest('form').length ? $(this).closest('form') : $(document);
+            targetContainer.find('.tab-content .tab-pane').removeClass('show active');
+            
+            // 3. Aktifkan tab yang sedang diklik
+            $(this).addClass('active').attr('aria-selected', 'true');
+            
+            // 4. Tampilkan isi target tab yang sesuai
+            var targetID = $(this).attr('data-bs-target') || $(this).attr('href');
+            if (targetID) {
+                $(targetID).addClass('show active');
+            }
+        });
+    });
+</script>
+{% endblock %}
 
 </body>
 </html>

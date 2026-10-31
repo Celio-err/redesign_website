@@ -158,7 +158,18 @@
       </div>
     </div>
   </div>
-
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Memastikan tab Bootstrap berfungsi secara responsif dengan jQuery
+        $('#coopLangTabs button').on('click', function (e) {
+            e.preventDefault();
+            var targetTab = new bootstrap.Tab(this);
+            targetTab.show();
+        });
+    });
+</script>
+{% endblock %}
 </div>
 
 <style>

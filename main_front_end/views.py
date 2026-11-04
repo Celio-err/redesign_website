@@ -22,7 +22,10 @@ from noticias.models import ImagemNoticia
 from django.db.models import F
 from coperation.models import Cooperacao
 from noticias.models import Noticias
-from django.db import models
+from django.utils.html import strip_tags
+import time
+
+
 
 
 #HOME PAGE
@@ -412,12 +415,6 @@ def documentos_publicos_review(request, pk):
     response['Content-Disposition'] = f'attachment; filename="{documento.nome_ficheiro_original}"'
     return response
 
-@logout_required(redirect_to='index')
-def documentos_publicos_download(request, pk):
-    documento = get_object_or_404(DocumentosPublicos, pk=pk)
-    response = HttpResponse(documento.documentos_publicos, content_type='application/octet-stream')
-    response['Content-Disposition'] = f'attachment; filename="{documento.nome_ficheiro_original}"'
-    return response
 
 def public_cooperacao_directory(request):
     """Menampilkan direktori logo partner/lembaga untuk publik"""
@@ -426,8 +423,6 @@ def public_cooperacao_directory(request):
         'parceiros': parceiros,
         'active_menu': 'public_cooperacao_directory',
     })
-
-from main_front_end.models import NoticiasView  # Pastikan sudah di-import
 
 def public_cooperacao_detail(request, slug):
     parceiro = get_object_or_404(Cooperacao, slug=slug)
@@ -452,30 +447,50 @@ def public_cooperacao_detail(request, slug):
     }
     return render(request, 'coperation_public_detail.html', context)
 
-def contacto(request):
-    return render(request, "contacto.html" ,{
-        "active_menu": "contact",
-    })
-
 @logout_required(redirect_to='index')
-@ratelimit(key="ip", rate="5/m", method="POST", block=True)
+@ratelimit(key="ip", rate="1/d", method="POST", block=True)
 def contacto(request):
-    done = f"{reverse('contact')}?enviado=1#comentarios"
+  done = f"{reverse('contacto')}?enviado=1#comentarios"
 
-    if request.method == "POST":
-        # Honeypot terisi = bot: pura-pura sukses, jangan simpan
-        if request.POST.get("website"):
-            return redirect(done)
+  if request.method == 'POST':
+    # --- LAPISAN 1: Honeypot Trap (Menjebak Bot) ---
+    if request.POST.get('website'):
+      return redirect(done)  # Bot tertangkap, pura-pura sukses tanpa simpan data
 
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            form.save()          # disimpan ke tabel yang dibaca oleh backend
-            return redirect(done)  # Post/Redirect/Get
-    else:
-        form = CommentForm()
+    # --- LAPISAN 2: Time-Based Validation (Deteksi Kecepatan Bot) ---
+    form_time = request.session.get('form_timestamp')
+    if not form_time or (time.time() - form_time < 3):
+      # Jika form dikirim kurang dari 3 detik sejak dimuat, anggap sebagai bot
+      return redirect(done)
 
-    return render(request, "contacto.html", {
-        "form": form,
-        "enviado": request.GET.get("enviado") == "1",
-        "active_menu": "contact",
-    })
+    form = CommentForm(request.POST)
+    if form.is_valid():
+      # Hapus timestamp setelah validasi sukses
+      if 'form_timestamp' in request.session:
+        del request.session['form_timestamp']
+
+      # --- LAPISAN 3: Input Sanitization (Pembersihan XSS) ---
+      comment = form.save(commit=False)
+
+      # Membersihkan tag HTML/JavaScript berbahaya dari input teks
+      if hasattr(comment, 'mensagem'):
+        comment.mensagem = strip_tags(comment.mensagem)
+      if hasattr(comment, 'nome'):
+        comment.nome = strip_tags(comment.nome)
+
+      comment.save()
+      return redirect(done)
+  else:
+    # Set timestamp saat halaman form pertama kali dibuka (GET request)
+    request.session['form_timestamp'] = time.time()
+    form = CommentForm()
+
+  return render(
+      request,
+      'contacto.html',
+      {
+          'form': form,
+          'enviado': request.GET.get('enviado') == '1',
+          'active_menu': 'contact',
+      },
+  )

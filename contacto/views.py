@@ -4,11 +4,13 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
+from django.utils.translation import activate
 
 from .models import Comment
 
 
 def contacto(request):
+    activate('pt')
     status = request.GET.get("status", "")
     qs = Comment.objects.all()
     if status == "unread":

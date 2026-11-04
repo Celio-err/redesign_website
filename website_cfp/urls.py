@@ -23,27 +23,25 @@ from django.conf.urls.i18n import i18n_patterns
 # 1. URL global yang tidak menggunakan prefix bahasa (seperti endpoint switcher i18n bawaan)
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
-]
-
-# 2. URL utama yang dibungkus dengan i18n_patterns (Otomatis mendukung /pt/, /tet/, /en/)
-urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
-
-    # Front End & Back End routes
-    path('', include('main_front_end.urls')),
     path('', include('main.urls')),
-
     path('mandato_cfp/', include('mandato_cfp.urls')),
     path('dddo/', include('dddo.urls')),
-    path('noticias/', include('noticias.urls')),
     path('documentos_publicos/', include('documentos_publicos.urls')),
     path('configuracao/', include('settings.urls')),
+    path('noticias/', include('noticias.urls')),
     path('contacto/', include('contacto.urls')),
     path('istoria-cfp/', include('istoria_cfp.urls')),
     path('relatorio/', include('relatorio.urls')),
     path('cooperacao/', include('coperation.urls')),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
-    
+        
+]
+
+# 2. URL utama yang dibungkus dengan i18n_patterns (Otomatis mendukung /pt/, /tet/, /en/)
+urlpatterns += i18n_patterns(
+    # Front End & Back End routes
+    path('', include('main_front_end.urls')),
     prefix_default_language=True,
 )
 

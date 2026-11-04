@@ -2,9 +2,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.utils.translation import activate
 
 
 def login_view(request):
+    activate('pt')
     if request.user.is_authenticated:
         return redirect('noticias_list')
 
@@ -32,4 +34,5 @@ def logout_view(request):
 
 @login_required
 def index(request):
+    activate('pt')
     return render(request, 'index.html')

@@ -51,7 +51,7 @@ html { scroll-behavior: smooth; }
       {% elif LANGUAGE_CODE == 'en' and istoria.titulo_en %}{{ istoria.titulo_en }}
       {% else %}{{ istoria.titulo|default:_("Istória da CFP") }}{% endif %}
     </h1>
-    <p>{{ istoria.subtitulo|default:_("Conheça a trajetória, origem e evolução institucional da Comissão da Função Pública de Timor-Leste") }}</p>
+    <p>{% translate "Conheça a trajetória, origem e evolução institucional da Comissão da Função Pública de Timor-Leste" %}</p>
   </div>
 </section>
 {% endblock %}
@@ -59,14 +59,6 @@ html { scroll-behavior: smooth; }
 {% block content %}
 <section class="sec">
   <div class="wrap">
-    
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb-nav" aria-label="breadcrumb">
-      <a href="{% url 'index' %}">{% translate "Início" %}</a> / 
-      <span>{% translate "Sobre a CFP" %}</span> / 
-      <strong style="color: var(--cfp);">{% translate "Istória" %}</strong>
-    </nav>
-
     <div class="history-content">
       {% if istoria %}
         <div class="body-text">

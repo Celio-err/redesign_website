@@ -356,3 +356,23 @@ msgstr "Notísia Resente"
 msgid "Ler mais"
 msgstr "Lee detallu"
 
+msgid "Institucional"
+msgstr "Institusional"
+
+msgid "Histórico dos mandatos e comissários da Comissão da Função Pública de Timor-Leste"
+msgstr "Lista mandatu sira no komisariu Komisaun Funsaun Públika Timor-Leste"\
+
+msgid "Períodos de Mandato"
+msgstr "Períodu Mandatu sira"
+
+msgid "mandatos registados"
+msgstr "mandatu rejistadu"
+
+msgid "Consulte a lista completa dos membros e comissários em exercício durante este período de mandato."
+msgstr "Haree lista kompleta ba membru no komisariu iha periodu mandatu refere."
+
+msgid "Ver membros"
+msgstr "Haree membru"
+
+msgid "Conheça a trajetória, origem e evolução institucional da Comissão da Função Pública de Timor-Leste"
+msgstr "Hatene hamutukorijem no evolusaun institusional Komisau Funsaun Públika Timor-Leste"

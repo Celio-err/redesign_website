@@ -104,7 +104,6 @@ html { scroll-behavior: smooth; }
     {% if tipos_mandato_menu %}
     <div class="mandato-grid">
       {% for tipo in tipos_mandato_menu %}
-      <!-- Klik pada kartu akan mengarah ke daftar anggota di mandato tersebut (1, 2, 3, dst.) -->
       <a class="mandato-card" href="{% url 'mandato_list_by_tipo' tipo.pk %}">
         <div class="body">
           <div>

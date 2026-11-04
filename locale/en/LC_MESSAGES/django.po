@@ -48,7 +48,7 @@ msgstr "Contact"
 
 #: .\main_front_end\templates\base.html:239
 msgid "Ligações"
-msgstr ""
+msgstr "Connections"
 
 #: .\main_front_end\templates\base.html:273
 msgid "Voltar ao topo"
@@ -335,3 +335,26 @@ msgstr "Recent News"
 
 msgid "Ler mais"
 msgstr "Read more"
+
+msgid "Institucional"
+msgstr "Institutional"
+
+msgid "Histórico dos mandatos e comissários da Comissão da Função Pública de Timor-Leste"
+msgstr "History of mandates and commissioners of the Public Service Commission of Timor-Leste"
+
+msgid "Períodos de Mandato"
+msgstr "Mandates Period"
+
+msgid "mandatos registados"
+msgstr "mandate registed"
+
+msgid "Consulte a lista completa dos membros e comissários em exercício durante este período de mandato."
+msgstr "Consult the complete list of members and commissioners serving during this mandate."
+
+msgid "Ver membros"
+msgstr "View member"
+
+msgid "Conheça a trajetória, origem e evolução institucional da Comissão da Função Pública de Timor-Leste"
+msgstr "Discover the history, origins, and institutional evolution of the Civil Service Commission of Timor-Leste"
+
+

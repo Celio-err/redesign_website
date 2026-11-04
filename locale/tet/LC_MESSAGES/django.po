@@ -375,4 +375,46 @@ msgid "Ver membros"
 msgstr "Haree membru"
 
 msgid "Conheça a trajetória, origem e evolução institucional da Comissão da Função Pública de Timor-Leste"
-msgstr "Hatene hamutukorijem no evolusaun institusional Komisau Funsaun Públika Timor-Leste"
+msgstr "Hatene hamutuk orijem no evolusaun institusional Komisau Funsaun Públika Timor-Leste"
+
+msgid "Galeria de Imagens"
+msgstr "Galeria Imajem"
+
+msgid "Ver atividades"
+msgstr "Haree atividade"
+
+msgid "Parcerias e Cooperações Institucionais"
+msgstr "Parseria no Kooperasaun Institusional sira"
+
+msgid "parceiros registados"
+msgstr "parseria rejistadu"
+
+msgid "Total de parceiros"
+msgstr "Total parseria"
+
+msgid "Parceiro Oficial"
+msgstr "Parseria Ofisial"
+
+msgid "Ler Detalhes"
+msgstr "Lee kompletu"
+
+msgid "Notícias Relacionadas"
+msgstr "Notísia Relevante"
+
+msgid "Deixe o seu comentário"
+msgstr "Fo ita-boot nia komentáriu"
+
+msgid "A sua mensagem é enviada à nossa equipa, que a lerá com atenção."
+msgstr "Ita-boot nia mensajem sei manda mai ami nia ekipa hodi lee ho atensaun masimu."
+
+msgid "Enviar comentário"
+msgstr "Haruka komentáriu"
+
+msgid "Nome"
+msgstr "Naran"
+
+msgid "opcional"
+msgstr "opsional"
+
+msgid "Comentário"
+msgstr "Komentáriu"

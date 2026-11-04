@@ -357,4 +357,46 @@ msgstr "View member"
 msgid "Conheça a trajetória, origem e evolução institucional da Comissão da Função Pública de Timor-Leste"
 msgstr "Discover the history, origins, and institutional evolution of the Civil Service Commission of Timor-Leste"
 
+msgid "Galeria de Imagens"
+msgstr "Images Galery"
+
+msgid "Ver atividades"
+msgstr "View activities"
+
+msgid "Parcerias e Cooperações Institucionais"
+msgstr "Partnership and Institutional Cooperations"
+
+msgid "parceiros registados"
+msgstr "partnership registed"
+
+msgid "Total de parceiros"
+msgstr "Partnership total"
+
+msgid "Parceiro Oficial"
+msgstr "Oficial Partner"
+
+msgid "Ler Detalhes"
+msgstr "Read more"
+
+msgid "Notícias Relacionadas"
+msgstr "Related News"
+
+msgid "Deixe o seu comentário"
+msgstr "Give your feedback"
+
+msgid "A sua mensagem é enviada à nossa equipa, que a lerá com atenção."
+msgstr "Your message is sent to our team, who will read it carefully."
+
+msgid "Enviar comentário"
+msgstr "Sent comments"
+
+msgid "Nome"
+msgstr "Name"
+
+msgid "opcional"
+msgstr "opcional"
+
+msgid "Comentário"
+msgstr "Comments"
+
 

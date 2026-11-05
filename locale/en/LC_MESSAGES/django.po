@@ -399,4 +399,7 @@ msgstr "opcional"
 msgid "Comentário"
 msgstr "Comments"
 
+msgid "História da CFP"
+msgstr "CFP History"
+
 

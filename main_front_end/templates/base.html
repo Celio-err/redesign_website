@@ -361,7 +361,7 @@ section.list-hero,section.d-hero,section.l-hero,section.m-hero,section.p-hero,se
 
   <div class="site-nav" id="siteNav">
     <nav class="wrap nav" aria-label="Main">
-      <a href="{% url 'home'%}" {% if active_menu == 'home' %}class="active"{% endif %}>{% translate "Inicio" %}</a>
+      <a href="{% url 'home' %}" {% if active_menu == 'home' %}class="active"{% endif %}>{% translate "Inicio" %}</a>
       <div class="dd {% if active_menu == 'about' or request.resolver_match.url_name == 'mandato_list_by_tipo' %}active{% endif %}">
         <button type="button" class="dd-btn" aria-haspopup="true" aria-expanded="false">
           {% translate "Sobre a CFP" %}

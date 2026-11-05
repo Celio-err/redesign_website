@@ -86,12 +86,12 @@
 {% block content %}
 <div class="wrap layout">
 
-  <article class="{% if not galeria %}no-img{% endif %}">
+  <article class="{% if not noticia.imagem_capa %}no-img{% endif %}">
     
-    <!-- 1. FOTO PERTAMA (CAPA) DI BAGIAN ATAS -->
-    {% if galeria %}
+    <!-- 1. FOTO UTAMA (IMAGEM CAPA) -->
+    {% if noticia.imagem_capa %}
     <figure class="figure">
-      <img src="{{ galeria.0.url }}" alt="{{ galeria.0.legenda|default:noticia.current_title }}">
+      <img src="{{ noticia.imagem_capa.url }}" alt="{{ noticia.current_title }}">
 
       <!-- 2. DESKRIPSI/RINGKASAN TEPAT DI BAWAH FOTO UTAMA -->
       {% if noticia.current_descricao %}
@@ -102,32 +102,14 @@
 
     <!-- 3. ISI BERITA UTAMA (NOTICIA) -->
     <div class="body">
-      {% if noticia.current_noticia %}
-        {{ noticia.current_noticia|safe }}
-      {% elif noticia.current_descricao %}
-        {{ noticia.current_descricao|linebreaks }}
+      {% if noticia.current_content %}
+        {{ noticia.current_content|safe }}
       {% else %}
         <p>{% translate "Conteúdo não disponível." %}</p>
       {% endif %}
     </div>
 
-    <!-- 4. FOTO SISA DI BAWAH BERITA DENGAN UKURAN SEDANG -->
-    {% if galeria and galeria|length > 1 %}
-    <div class="extra-gallery">
-      <h3>{% translate "Galeria de Imagens" %}</h3>
-      <div class="gallery-grid">
-        {% for item in galeria %}
-          {% if not forloop.first %}
-          <button type="button" class="gallery-item" onclick="openLightbox('{{ item.url }}', '{{ item.legenda|default:noticia.current_title }}')">
-            <img src="{{ item.url }}" alt="{% translate 'Imagem' %} {{ forloop.counter }}" loading="lazy">
-          </button>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-    {% endif %}
-
-    <!-- 5. TOMBOL VOLTAR DI PALING BAWAH -->
+    <!-- 4. TOMBOL VOLTAR DI PALING BAWAH -->
     <div class="back">
       <a href="javascript:history.back()">← {% translate "Voltar" %}</a>
     </div>

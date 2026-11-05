@@ -1,64 +1,199 @@
 {% extends 'master/base.html' %}
+{% load i18n %}
+
+{% block extra_head %}
+<style>
+/* --- KARTU LEBAR PENUH MENGIKUTI MENU LAIN --- */
+.news-detail-container {
+    max-width: 100% !important; /* Membuatnya fleksibel selebar container halaman lain */
+}
+
+/* Breadcrumb Styling */
+.breadcrumb-custom {
+    font-size: 14px;
+    color: #6c757d;
+}
+.breadcrumb-custom a {
+    color: var(--bs-primary, #4b2e83);
+    text-decoration: none;
+}
+.breadcrumb-custom a:hover {
+    text-decoration: underline;
+}
+
+/* Header & Meta Info */
+.news-meta-badge {
+    background-color: #f3f0fb;
+    color: #4b2e83;
+    border: 1px solid #e2dbf5;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 50rem;
+    font-size: 13px;
+    display: inline-block;
+}
+
+.news-title {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #2b2b2b;
+    letter-spacing: -0.01em;
+}
+
+.news-lead {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: #555;
+    font-weight: 400;
+    background-color: #fcfbfd;
+    border-left: 4px solid #4b2e83;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 24px 0;
+}
+
+/* Featured Image / Capa (Dibuat proporsional & rapi) */
+.news-figure {
+    margin: 0 0 32px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    background: #fff;
+    border: 1px solid #eae6f0;
+}
+.news-figure img {
+    width: 100%;
+    max-height: 520px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Body Content (CKEditor Output) */
+.news-content {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: #333;
+}
+.news-content p {
+    margin-bottom: 1.5rem;
+}
+.news-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+}
+.news-content figure {
+    margin: 1.5rem 0;
+}
+.news-content blockquote {
+    border-left: 3px solid #ccc;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: #666;
+    font-style: italic;
+}
+
+/* Card Container */
+.editorial-card {
+    border: 1px solid #eae6f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(75, 46, 131, 0.03);
+    background: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .news-title {
+        font-size: 1.75rem;
+    }
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container-fluid px-4 py-4">
 
+  <!-- BREADCRUMB -->
   <div class="mb-4">
     <nav aria-label="breadcrumb">
-      <ol class="breadcrumb small">
-        <li class="breadcrumb-item"><a href="{% url 'noticias_list' %}" class="text-decoration-none">Notícias</a></li>
-        <li class="breadcrumb-item active">{{ noticia.nome_noticia }}</li>
+      <ol class="breadcrumb breadcrumb-custom mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'noticias_list' %}">Notícias</a></li>
+        <li class="breadcrumb-item active text-truncate" style="max-width: 500px;" aria-current="page">{{ noticia.current_title }}</li>
       </ol>
     </nav>
   </div>
 
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
+  <div class="row">
+    <!-- Menggunakan col-12 agar card melebar penuh mengikuti grid utama -->
+    <div class="col-12 news-detail-container">
 
-      {% if noticia.imagen %}
-      <div style="width:100%; height:360px; border-radius:12px; overflow:hidden;" class="mb-4">
-        <img src="{{ noticia.imagen.url }}" alt="{{ noticia.nome_noticia }}"
-             style="width:100%; height:100%; object-fit:cover;">
-      </div>
-      {% else %}
-      <div class="mb-4 d-flex align-items-center justify-content-center text-muted bg-light"
-           style="width:100%; height:200px; border-radius:12px;">
-        <div class="text-center">
-          <i class="fa fa-image fa-2x mb-2 d-block"></i>
-          <span class="small">Sem imagem</span>
-        </div>
-      </div>
-      {% endif %}
-
-      <div class="card border-0 shadow-sm rounded-3 mb-3">
-        <div class="card-body p-4">
-          <div class="d-flex align-items-start justify-content-between mb-3">
-            <span class="badge rounded-pill text-bg-light border small">{{ noticia.id_tipo_noticia }}</span>
-            <span class="text-muted small">
-              <i class="fa fa-calendar-o me-1"></i>{{ noticia.data_publicacao|date:"d/m/Y" }}
-            </span>
-          </div>
-          <h2 class="h4 fw-semibold mb-3">{{ noticia.nome_noticia }}</h2>
-          {% if noticia.descricao %}
-          <p class="text-muted">{{ noticia.descricao|linebreaks }}</p>
+      <!-- CARD UTAMA KONTEN -->
+      <div class="editorial-card p-4 p-md-5 mb-4">
+        
+        <!-- META HEADER (Kategori & Tanggal) -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4 pb-3 border-bottom">
+          {% if noticia.current_tipo %}
+            <span class="news-meta-badge">{{ noticia.current_tipo }}</span>
+          {% else %}
+            <span class="news-meta-badge">Geral</span>
           {% endif %}
-          <hr class="my-3">
-          <div>{{ noticia.noticia|linebreaks }}</div>
-          <hr class="my-3">
-          <p class="text-muted small mb-0">
-            <i class="fa fa-user-o me-1"></i> Inserido por <strong>{{ noticia.inserido_por }}</strong>
-          </p>
+          
+          <span class="text-muted small">
+            <i class="fa fa-calendar-o me-1"></i> {{ noticia.data_publicacao|date:"d/m/Y" }}
+          </span>
         </div>
+
+        <!-- JUDUL UTAMA -->
+        <h1 class="news-title mb-4">{{ noticia.current_title }}</h1>
+
+        <!-- GAMBAR UTAMA (IMAGEM CAPA) -->
+        {% if noticia.imagem_capa %}
+        <figure class="news-figure">
+          <img src="{{ noticia.imagem_capa.url }}" alt="{{ noticia.current_title }}">
+        </figure>
+        {% endif %}
+
+        <!-- DESKRIPSI / LEAD PARAGRAPH -->
+        {% if noticia.current_descricao %}
+        <div class="news-lead">
+          {{ noticia.current_descricao }}
+        </div>
+        {% endif %}
+
+        <!-- KONTEN UTAMA DARI CKEDITOR -->
+        <div class="news-content pt-2">
+          {% if noticia.current_content %}
+            {{ noticia.current_content|safe }}
+          {% else %}
+            <p class="text-muted fst-italic">{% translate "Conteúdo não disponível." %}</p>
+          {% endif %}
+        </div>
+
+        <!-- FOOTER / METADATA PENULIS -->
+        <div class="mt-5 pt-4 border-top d-flex align-items-center justify-content-between text-muted small flex-wrap gap-2">
+          <div>
+            <i class="fa fa-user-circle-o me-1 text-secondary"></i> Inserido por: <strong>{{ noticia.inserido_por|default:"Administrador" }}</strong>
+            {% if noticia.inserido_em %} <span class="ms-2">· {{ noticia.inserido_em }}</span>{% endif %}
+          </div>
+          <div>
+            <span class="badge bg-light text-dark border"><i class="fa fa-eye me-1"></i> {{ noticia.visualizacoes|default:0 }} visualizações</span>
+          </div>
+        </div>
+
       </div>
 
-      <div class="d-flex gap-2">
-        <a href="{% url 'noticias_update' noticia.pk %}" class="btn btn-warning btn-sm">
+      <!-- TOMBOL AKSI NAVIGASI -->
+      <div class="d-flex align-items-center gap-2 mb-5">
+        <a href="{% url 'noticias_update' noticia.pk %}" class="btn btn-warning px-4 fw-medium text-dark shadow-sm">
           <i class="fa fa-pencil me-1"></i> Editar
         </a>
-        <a href="{% url 'noticias_delete' noticia.pk %}" class="btn btn-outline-danger btn-sm">
+        <a href="{% url 'noticias_delete' noticia.pk %}" class="btn btn-outline-danger px-4 fw-medium">
           <i class="fa fa-trash me-1"></i> Excluir
         </a>
-        <a href="{% url 'noticias_list' %}" class="btn btn-outline-secondary btn-sm ms-auto">
-          <i class="fa fa-arrow-left me-1"></i> Voltar
+        <a href="{% url 'noticias_list' %}" class="btn btn-outline-secondary px-4 ms-auto shadow-sm">
+          <i class="fa fa-arrow-left me-1"></i> Voltar à Lista
         </a>
       </div>
 

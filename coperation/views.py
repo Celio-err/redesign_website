@@ -2,19 +2,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Cooperacao
 from .forms import CooperacaoForm
-from main_front_end.models import NoticiasView
+from noticias.models import Noticias
 from django.db.models import Q
+from django.db.models import Count
+from coperation.models import Cooperacao
 
 
 # --- List Admin ---
 def backend_cooperacao_list(request):
-    parceiros = Cooperacao.objects.all().order_by('-data_criacao')
-    for p in parceiros:
-        p.noticias_count = NoticiasView.objects.filter(
-            Q(tipo_noticia__icontains=p.nome_parceiro) |
-            Q(tipo_noticia_tet__icontains=p.nome_parceiro) |
-            Q(tipo_noticia_en__icontains=p.nome_parceiro)
-        ).count()
+    # Lakukan annotate langsung pada queryset utama (parceiros)
+    parceiros = Cooperacao.objects.annotate(
+        noticias_count=Count('noticias')
+    ).order_by('-data_criacao')
 
     return render(request, 'coperation_list.html', {
         'parceiros': parceiros,
@@ -69,4 +68,3 @@ def backend_cooperacao_delete(request, pk):
         'object': parceiro,
         'active_menu': 'backend_cooperacao'
     })
-

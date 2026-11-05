@@ -1,9 +1,8 @@
 import uuid
-
+import os
 from django.db import models
-from django.db.models.signals import post_delete
-from django.dispatch import receiver
 from coperation.models import Cooperacao
+from django.utils.translation import get_language
 
 
 class TipoNoticias(models.Model):
@@ -66,45 +65,59 @@ class Noticias(models.Model):
     inserido_em = models.CharField(max_length=40, blank=True, null=True)
     visualizacoes = models.PositiveIntegerField(default=0, blank=True, null=True)
 
-    # LAMA: dibiarkan sementara agar data lama tidak hilang.
-    # Hapus setelah data disalin ke ImagemNoticia (lihat migrasi data).
-    imagen = models.ImageField(upload_to='img', blank=True, null=True)
-
+    imagem_capa = models.ImageField(upload_to='noticias/capas/%Y/%m/', blank=True, null=True, verbose_name="Imagem de Capa")
+    def save(self, *args, **kwargs):
+        # Jika instance sudah ada di database (artinya sedang proses update/edit)
+        if self.pk:
+            try:
+                old_instance = Noticias.objects.get(pk=self.pk)
+                # Cek apakah user mengunggah gambar baru dan gambar lama itu ada
+                if old_instance.imagem_capa and old_instance.imagem_capa != self.imagem_capa:
+                    # Hapus file gambar lama dari storage/disk
+                    if os.path.isfile(old_instance.imagem_capa.path):
+                        os.remove(old_instance.imagem_capa.path)
+            except Noticias.DoesNotExist:
+                pass
+                
+        super().save(*args, **kwargs)
     def __str__(self):
         return self.nome_noticia
 
     @property
-    def capa(self):
-        """Gambar pertama sebagai sampul. Memakai cache prefetch_related."""
-        imgs = list(self.imagens.all())
-        return imgs[0] if imgs else None
+    def current_title(self):
+        lang = get_language()
+        if lang == 'tet' and self.nome_noticia_tet:
+            return self.nome_noticia_tet
+        elif lang == 'en' and self.nome_noticia_en:
+            return self.nome_noticia_en
+        return self.nome_noticia
 
+    @property
+    def current_content(self):
+        lang = get_language()
+        if lang == 'tet' and self.noticia_tet:
+            return self.noticia_tet
+        elif lang == 'en' and self.noticia_en:
+            return self.noticia_en
+        return self.noticia
 
-class ImagemNoticia(models.Model):
-    id_imagem = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
-    )
-    id_noticia = models.ForeignKey(
-        Noticias,
-        on_delete=models.CASCADE,
-        related_name='imagens'
-    )
-    imagem = models.ImageField(upload_to='noticias/%Y/%m/')
-    legenda = models.CharField(max_length=255, blank=True, null=True)
-    ordem = models.PositiveSmallIntegerField(default=0)
-    criado_em = models.DateTimeField(auto_now_add=True)
+    @property
+    def current_descricao(self):
+        lang = get_language()
+        if lang == 'tet' and self.descricao_tet:
+            return self.descricao_tet
+        elif lang == 'en' and self.descricao_en:
+            return self.descricao_en
+        return self.descricao
 
-    class Meta:
-        ordering = ['ordem', 'criado_em']
-
-    def __str__(self):
-        return f"{self.id_noticia} - {self.imagem.name}"
-
-
-@receiver(post_delete, sender=ImagemNoticia)
-def apagar_ficheiro_imagem(sender, instance, **kwargs):
-    """Django tidak menghapus file di disk saat baris dihapus; kita lakukan di sini."""
-    if instance.imagem:
-        instance.imagem.delete(save=False)
+    @property
+    def current_tipo(self):
+        if not self.id_tipo_noticia:
+            return ""
+        
+        lang = get_language()
+        if lang == 'tet' and self.id_tipo_noticia.tipo_noticia_tet:
+            return self.id_tipo_noticia.tipo_noticia_tet
+        elif lang == 'en' and self.id_tipo_noticia.tipo_noticia_en:
+            return self.id_tipo_noticia.tipo_noticia_en
+        return self.id_tipo_noticia.tipo_noticia

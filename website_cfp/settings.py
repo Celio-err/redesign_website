@@ -184,6 +184,7 @@ SESSION_IDLE_TIMEOUT = 1800  # 30 minutes in seconds
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload'],
+        'uploadUrl': '/ckeditor5/image_upload/',
     },
     'extends': {
         'blockToolbar': ['paragraph', 'heading1', 'heading2', 'heading3', '|', 'bulletedList', 'numberedList', '|', 'blockQuote'],
@@ -200,3 +201,4 @@ CKEDITOR_5_CONFIGS = {
         },
     }
 }
+CKEDITOR_5_ALLOW_NON_STAFF_IMAGES = True

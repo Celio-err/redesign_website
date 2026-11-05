@@ -19,8 +19,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
+from noticias.views import custom_upload_file
 
-# 1. URL global yang tidak menggunakan prefix bahasa (seperti endpoint switcher i18n bawaan)
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
@@ -34,18 +34,22 @@ urlpatterns = [
     path('istoria-cfp/', include('istoria_cfp.urls')),
     path('relatorio/', include('relatorio.urls')),
     path('cooperacao/', include('coperation.urls')),
+
+    # === URUTAN PENTING DI SINI ===
+    # Daftarkan endpoint custom upload PERSIS seperti yang dipanggil oleh CKEditor 5
+    path("ckeditor5/image_upload/", custom_upload_file, name="custom_ckeditor_upload"),
+    
+    # Baru kemudian include urls bawaan ckeditor5 untuk komponen lainnya
     path("ckeditor5/", include('django_ckeditor_5.urls')),
-        
 ]
 
-# 2. URL utama yang dibungkus dengan i18n_patterns (Otomatis mendukung /pt/, /tet/, /en/)
+# 2. i18n_patterns
 urlpatterns += i18n_patterns(
-    # Front End & Back End routes
     path('', include('main_front_end.urls')),
     prefix_default_language=True,
 )
 
-# 3. Penanganan file Media/Static khusus mode Development (Lokal)
+# 3. Media & Static files
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

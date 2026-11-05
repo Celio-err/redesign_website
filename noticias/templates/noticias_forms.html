@@ -41,46 +41,31 @@
                 {% endfor %}
               </div>
 
-              <!-- 3. Upload de Imagens -->
+              <!-- 3. Upload Imagem de Capa (Tunggal) -->
               <div class="col-md-4 mb-3">
-                <label for="{{ form.imagens.id_for_label }}" class="form-label fw-medium small">
-                  {% translate "Imagens" %}
+                <label for="{{ form.imagem_capa.id_for_label }}" class="form-label fw-medium small">
+                  {% translate "Imagem de Capa" %}
                 </label>
-                {{ form.imagens }}
+                {{ form.imagem_capa }}
                 <div class="form-text text-muted mt-1 small">
-                  {% translate "Máx. 10 imagens · 5 MB cada" %}
+                  {% translate "1 Imagem principal · Máx. 5 MB" %}
                 </div>
-                {% for error in form.imagens.errors %}
+                {% for error in form.imagem_capa.errors %}
                   <div class="text-danger small mt-1"><i class="fa fa-exclamation-circle me-1"></i>{{ error }}</div>
                 {% endfor %}
               </div>
 
-              <!-- Area Galeria & Preview Gambar -->
+              <!-- Area Preview Gambar Capa -->
               <div class="col-12 mt-2">
-                <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3" id="previa"></div>
-
-                {% if form.instance.pk %}
-                  {% with imagens=form.instance.imagens.all %}
-                  {% if imagens %}
-                  <p class="small text-muted fw-medium mt-3 mb-2">
-                    <i class="fa fa-picture-o me-1"></i> {% translate "Imagens atuais" %} <span class="fw-normal">— {% translate "marque para apagar ao guardar" %}</span>
-                  </p>
-                  <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
-                    {% for im in imagens %}
-                    <div class="col">
-                      <div class="card h-100 border rounded-2 overflow-hidden">
-                        <img src="{{ im.imagem.url }}" alt="Imagem {{ forloop.counter }}" style="width:100%; height:90px; object-fit:cover;">
-                        <div class="form-check m-2">
-                          <input class="form-check-input" type="checkbox" name="apagar_imagens" value="{{ im.pk }}" id="del-{{ im.pk }}">
-                          <label class="form-check-label small text-danger" for="del-{{ im.pk }}">{% translate "Apagar" %}</label>
-                        </div>
-                      </div>
+                <div id="previa-container" class="mt-2">
+                  {% if form.instance.pk and form.instance.imagem_capa %}
+                    <div class="mb-2">
+                      <span class="small text-muted d-block mb-1">{% translate "Imagem atual:" %}</span>
+                      <img src="{{ form.instance.imagem_capa.url }}" alt="Capa" style="max-height: 120px; border-radius: 6px; border: 1px solid #ced4da;">
                     </div>
-                    {% endfor %}
-                  </div>
                   {% endif %}
-                  {% endwith %}
-                {% endif %}
+                </div>
+                <div id="previa" class="row g-2"></div>
               </div>
 
             </div>
@@ -113,9 +98,7 @@
                   <label for="{{ form.nome_noticia.id_for_label }}" class="form-label fw-medium small">
                     {% translate "Título da Notícia" %} <span class="text-danger">*</span>
                   </label>
-                  <div class="w-100">
-                    {{ form.nome_noticia }}
-                  </div>
+                  <div class="w-100">{{ form.nome_noticia }}</div>
                   {% for error in form.nome_noticia.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
 
@@ -123,19 +106,15 @@
                   <label for="{{ form.descricao.id_for_label }}" class="form-label fw-medium small">
                     {% translate "Descrição" %}
                   </label>
-                  <div class="w-100">
-                    {{ form.descricao }}
-                  </div>
+                  <div class="w-100">{{ form.descricao }}</div>
                   {% for error in form.descricao.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="mb-3">
                   <label for="{{ form.noticia.id_for_label }}" class="form-label fw-medium small">
-                    {% translate "Notícia" %} <span class="text-danger">*</span>
+                    {% translate "Notícia (Gunakan CKEditor untuk menyisipkan gambar tambahan di sini)" %} <span class="text-danger">*</span>
                   </label>
-                  <div class="w-100">
-                    {{ form.noticia }}
-                  </div>
+                  <div class="w-100">{{ form.noticia }}</div>
                   {% for error in form.noticia.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
               </div>
@@ -146,9 +125,7 @@
                   <label for="{{ form.nome_noticia_tet.id_for_label }}" class="form-label fw-medium small">
                     {% translate "Título da Notícia (Tetun)" %}
                   </label>
-                  <div class="w-100">
-                    {{ form.nome_noticia_tet }}
-                  </div>
+                  <div class="w-100">{{ form.nome_noticia_tet }}</div>
                   {% for error in form.nome_noticia_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
 
@@ -156,9 +133,7 @@
                   <label for="{{ form.descricao_tet.id_for_label }}" class="form-label fw-medium small">
                     {% translate "Descrição (Tetun)" %}
                   </label>
-                  <div class="w-100">
-                    {{ form.descricao_tet }}
-                  </div>
+                  <div class="w-100">{{ form.descricao_tet }}</div>
                   {% for error in form.descricao_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
 
@@ -166,9 +141,7 @@
                   <label for="{{ form.noticia_tet.id_for_label }}" class="form-label fw-medium small">
                     {% translate "Notícia (Tetun)" %}
                   </label>
-                  <div class="w-100">
-                    {{ form.noticia_tet }}
-                  </div>
+                  <div class="w-100">{{ form.noticia_tet }}</div>
                   {% for error in form.noticia_tet.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
               </div>
@@ -179,9 +152,7 @@
                   <label for="{{ form.nome_noticia_en.id_for_label }}" class="form-label fw-medium small">
                     {% translate "Title" %}
                   </label>
-                  <div class="w-100">
-                    {{ form.nome_noticia_en }}
-                  </div>
+                  <div class="w-100">{{ form.nome_noticia_en }}</div>
                   {% for error in form.nome_noticia_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
 
@@ -189,9 +160,7 @@
                   <label for="{{ form.descricao_en.id_for_label }}" class="form-label fw-medium small">
                     {% translate "Description" %}
                   </label>
-                  <div class="w-100">
-                    {{ form.descricao_en }}
-                  </div>
+                  <div class="w-100">{{ form.descricao_en }}</div>
                   {% for error in form.descricao_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
 
@@ -199,9 +168,7 @@
                   <label for="{{ form.noticia_en.id_for_label }}" class="form-label fw-medium small">
                     {% translate "News Content" %}
                   </label>
-                  <div class="w-100">
-                    {{ form.noticia_en }}
-                  </div>
+                  <div class="w-100">{{ form.noticia_en }}</div>
                   {% for error in form.noticia_en.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
                 </div>
               </div>
@@ -230,7 +197,6 @@
 </div>
 
 <style>
-  /* Styling Presisi */
   input[type="text"], input[type="date"], select {
     width: 100% !important;
     padding: 0.45rem 0.75rem;
@@ -240,7 +206,6 @@
     background-color: #fff;
   }
   
-  /* Field Descrição Dibuat Ringkas/Kompak */
   textarea[name$="descricao"], textarea[name$="descricao_tet"], textarea[name$="descricao_en"] {
     width: 100% !important;
     height: 70px !important;
@@ -252,7 +217,6 @@
     resize: vertical;
   }
 
-  /* Field Notícia Lebar Penuh */
   textarea[name$="noticia"], textarea[name$="noticia_tet"], textarea[name$="noticia_en"] {
     width: 100% !important;
     min-height: 220px !important;
@@ -265,21 +229,27 @@
 </style>
 
 <script>
-/* Pratinjau Foto Banyak */
+/* Pratinjau 1 Gambar Capa Tunggal */
 (function () {
-  var input = document.getElementById('{{ form.imagens.id_for_label }}');
+  var input = document.getElementById('{{ form.imagem_capa.id_for_label }}');
   var box = document.getElementById('previa');
   if (!input || !box) return;
   input.addEventListener('change', function () {
     box.innerHTML = '';
-    Array.prototype.forEach.call(input.files, function (f) {
-      var col = document.createElement('div'); col.className = 'col';
-      var card = document.createElement('div'); card.className = 'card h-100 border rounded-2 overflow-hidden';
+    if (input.files && input.files[0]) {
+      var f = input.files[0];
+      var col = document.createElement('div'); col.className = 'col-md-3';
+      var card = document.createElement('div'); card.className = 'card h-100 border rounded-2 overflow-hidden p-1';
       var im = document.createElement('img');
       im.src = URL.createObjectURL(f); im.alt = f.name;
-      im.style.cssText = 'width:100%; height:90px; object-fit:cover;';
+      im.style.cssText = 'width:100%; height:100px; object-fit:cover; border-radius: 4px;';
       card.appendChild(im); col.appendChild(card); box.appendChild(col);
-    });
+    }
+  });
+
+  // Memperbaiki rendering CKEditor 5 saat berpindah antar tab bahasa
+  $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+      window.dispatchEvent(new Event('resize'));
   });
 })();
 </script>

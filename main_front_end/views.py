@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from coperation.models import Cooperacao
+from django.contrib import messages
 from coperation.models import Cooperacao
 from istoria_cfp.models import IstoriaCFP
 from mandato_cfp.models import Mandato, TipoMandato
 from noticias.models import Noticias, TipoNoticias
-from main_front_end.models import NoticiasView, MandatoView
 from dddo.models import DDDO, TipoDDDO
 from documentos_publicos.models import DocumentosPublicos
 from django.http import HttpResponse, Http404
@@ -18,17 +17,14 @@ from django.db.models import Q
 from django.urls import reverse
 from django_ratelimit.decorators import ratelimit
 from .forms import CommentForm
-from noticias.models import ImagemNoticia
 from django.db.models import F
-from coperation.models import Cooperacao
-from noticias.models import Noticias
 from django.utils.html import strip_tags
 import time
 
 
-
-
-#HOME PAGE
+# ==========================================
+# HOME PAGE
+# ==========================================
 @logout_required(redirect_to='index')
 def index(request):
     mandatos = Mandato.objects.all().select_related(
@@ -37,33 +33,17 @@ def index(request):
     )
 
     all_parceiros = Cooperacao.objects.all().order_by('nome_parceiro')
-    # 1. Gunakan NoticiasView agar property multibahasa (current_title, current_tipo) aktif
-    noticias_recentes = NoticiasView.objects.all().order_by('-data_publicacao')[:9]
+    
+    # Ambil data berita terbaru dari model fisik Noticias
+    noticias_recentes = Noticias.objects.all().order_by('-data_publicacao')[:9]
     
     for n in noticias_recentes:
         capa_url = None
-        
-        # 2. Cek field 'imagen' dari NoticiasView (karena bentuknya string path database)
-        if hasattr(n, 'imagen') and n.imagen:
-            path = str(n.imagen).strip()
-            if path:
-                if path.startswith('/') or path.startswith('http'):
-                    capa_url = path
-                else:
-                    capa_url = f"/media/{path}"
-        
-        # 3. Fallback: Jika di view string imagen kosong, coba ambil dari relasi tabel Noticias aslinya berdasarkan pk (id_noticia)
-        if not capa_url:
+        if hasattr(n, 'imagem_capa') and n.imagem_capa:
             try:
-                noticia_asli = Noticias.objects.prefetch_related('imagens').get(pk=n.pk)
-                galeria_fotos = getattr(noticia_asli, 'imagens', None)
-                if galeria_fotos and galeria_fotos.exists():
-                    foto_primeira = galeria_fotos.first()
-                    if hasattr(foto_primeira, 'imagem') and foto_primeira.imagem:
-                        capa_url = foto_primeira.imagem.url
-            except Noticias.DoesNotExist:
-                pass
-                
+                capa_url = n.imagem_capa.url
+            except Exception:
+                capa_url = f"/media/{n.imagem_capa}"
         n.capa_url = capa_url
         
     return render(request, 'home.html', {
@@ -73,6 +53,10 @@ def index(request):
         "active_menu": "home"
     })
 
+
+# ==========================================
+# ABOUT / ISTORIA & MANDATOS
+# ==========================================
 @logout_required(redirect_to='index')
 def istoria_cfp(request):
     istoria = IstoriaCFP.objects.first()
@@ -115,58 +99,44 @@ def detallu_mandatu(request, pk):
         "active_menu": "about",
     })
 
-TAGS_CSC_ASEAN = ['CSC', 'ASEAN']      # urutan tampil dari atas ke bawah
-NOTICIAS_POR_PAGINA = 10             # 10 = satu blok bento penuh (1 besar + 9 kecil)
 
-def _url_imagem_antiga(obj):
-    """Cadangan: kolom 'imagen' lama. Di NoticiasView nilainya berupa teks path,
-    jadi dibentuk seperti di template lama: '/' + path."""
-    antiga = getattr(obj, 'imagen', None)
-    return f'/{antiga}' if antiga else None
+# ==========================================
+# NOTICIAS (BERITA) - MENGGUNAKAN MODEL FISIK
+# ==========================================
+TAGS_CSC_ASEAN = ['CSC', 'ASEAN']
+NOTICIAS_POR_PAGINA = 10
 
-def _url_imagem(imagem_field):
-    """URL gambar baru. Jika URL tampil salah, cukup ubah di SINI (satu tempat).
-    Normalnya mengikuti MEDIA_URL di settings.py."""
-    return imagem_field.url
-
-def _anexar_capas(objetos):
-    """Pasang atribut .capa_url pada setiap objek NoticiasView (1 query untuk semua)."""
-    ids = {o.pk for o in objetos}
-    capas = {}
-    if ids:
-        qs = ImagemNoticia.objects.filter(id_noticia_id__in=ids)  # sudah urut: ordem, criado_em
-        for im in qs:
-            capas.setdefault(im.id_noticia_id, im)                # simpan hanya yang pertama
-    for o in objetos:
-        capa = capas.get(o.pk)
-        o.capa_url = _url_imagem(capa.imagem) if capa else _url_imagem_antiga(o)
-    return objetos
-
-def _montar_galeria(noticia):
-    """Semua gambar notícia sebagai list [{'url':..., 'legenda':...}]."""
-    galeria = [
-        {'url': _url_imagem(im.imagem), 'legenda': im.legenda}
-        for im in ImagemNoticia.objects.filter(id_noticia_id=noticia.pk)
-    ]
-    if not galeria:
-        antiga = _url_imagem_antiga(noticia)
-        if antiga:
-            galeria = [{'url': antiga, 'legenda': None}]
-    return galeria
+def _processar_capa_noticia(n):
+    """Helper untuk memproses URL gambar sampul berita baru."""
+    capa_url = None
+    if hasattr(n, 'imagem_capa') and n.imagem_capa:
+        try:
+            capa_url = n.imagem_capa.url
+        except Exception:
+            capa_url = f"/media/{n.imagem_capa}"
+    n.capa_url = capa_url
 
 
 @logout_required(redirect_to='index')
 def noticias_publico_lista(request, pk=None):
     q = request.GET.get('q', '').strip()
     
-    # Tanpa prefetch_related karena NoticiasView tidak memilikinya
-    base = NoticiasView.objects.order_by('-data_publicacao')
+    base = Noticias.objects.all().order_by('-data_publicacao')
     if q:
-        base = base.filter(nome_noticia__icontains=q)
+        base = base.filter(
+            Q(nome_noticia__icontains=q) | 
+            Q(nome_noticia_tet__icontains=q) | 
+            Q(nome_noticia_en__icontains=q)
+        )
     
     grupos = []
     for tag in TAGS_CSC_ASEAN:
-        qs = base.filter(tipo_noticia__icontains=tag)
+        # Filter berdasarkan relasi tipe berita atau teks
+        qs = base.filter(
+            Q(id_tipo_noticia__tipo_noticia__icontains=tag) |
+            Q(id_tipo_noticia__tipo_noticia_tet__icontains=tag) |
+            Q(id_tipo_noticia__tipo_noticia_en__icontains=tag)
+        )
         
         key = f'p_{tag.lower()}'
         page_obj = Paginator(qs, NOTICIAS_POR_PAGINA).get_page(request.GET.get(key))
@@ -182,11 +152,9 @@ def noticias_publico_lista(request, pk=None):
             'qs': params.urlencode(),
         })
 
-    semua = []
     for g in grupos:
-        g['page_obj'].object_list = list(g['page_obj'].object_list)
-        semua.extend(g['page_obj'].object_list)
-    _anexar_capas(semua)
+        for item in g['page_obj'].object_list:
+            _processar_capa_noticia(item)
 
     return render(request, "noticias_publico_lista.html", {
         "grupos": grupos,
@@ -197,19 +165,18 @@ def noticias_publico_lista(request, pk=None):
 @logout_required(redirect_to='index')
 def noticia_detalho(request, pk):
     Noticias.objects.filter(pk=pk).update(visualizacoes=F('visualizacoes') + 1)
-    noticia = get_object_or_404(NoticiasView, pk=pk)
+    noticia = get_object_or_404(Noticias, pk=pk)
     
- 
     outras_noticias = list(
-        NoticiasView.objects
+        Noticias.objects
         .exclude(pk=pk)
         .order_by('-data_publicacao')[:6]
     )
-    _anexar_capas(outras_noticias)
+    for o in outras_noticias:
+        _processar_capa_noticia(o)
  
     return render(request, "noticia_detalho.html", {
         "noticia": noticia,
-        "galeria": _montar_galeria(noticia),
         "outras_noticias": outras_noticias,
         "active_menu": "noticias",
     })
@@ -219,9 +186,8 @@ def todas_noticias(request):
     q = request.GET.get('q', '').strip()
     tipo = request.GET.get('tipo', '').strip()
     
-    t_noticias = NoticiasView.objects.all().order_by('-data_publicacao')
+    t_noticias = Noticias.objects.all().order_by('-data_publicacao')
     
-    # 1. Perbaikan Pencarian Pintar (Mencari di semua bahasa: PT, TET, EN)
     if q:
         t_noticias = t_noticias.filter(
             Q(nome_noticia__icontains=q) | 
@@ -232,41 +198,17 @@ def todas_noticias(request):
         )
         
     if tipo:
-        t_noticias = t_noticias.filter(tipo_noticia=tipo)
+        t_noticias = t_noticias.filter(
+            Q(id_tipo_noticia__tipo_noticia=tipo) |
+            Q(id_tipo_noticia__tipo_noticia_tet=tipo) |
+            Q(id_tipo_noticia__tipo_noticia_en=tipo)
+        )
 
-    # 2. Proses URL Gambar (Capa) untuk setiap item berita di list
     for n in t_noticias:
-        capa_url = None
-        if hasattr(n, 'imagen') and n.imagen:
-            path = str(n.imagen).strip()
-            if path:
-                if path.startswith('/') or path.startswith('http'):
-                    capa_url = path
-                else:
-                    capa_url = f"/media/{path}"
-        
-        # Fallback ke relasi tabel Noticias asli jika string view kosong
-        if not capa_url:
-            try:
-                noticia_asli = Noticias.objects.prefetch_related('imagens').get(pk=n.pk)
-                galeria_fotos = getattr(noticia_asli, 'imagens', None)
-                if galeria_fotos and galeria_fotos.exists():
-                    foto_primeira = galeria_fotos.first()
-                    if hasattr(foto_primeira, 'imagem') and foto_primeira.imagem:
-                        capa_url = foto_primeira.imagem.url
-            except Noticias.DoesNotExist:
-                pass
-                
-        n.capa_url = capa_url
+        _processar_capa_noticia(n)
 
-    tipos = (
-        NoticiasView.objects
-        .exclude(tipo_noticia__isnull=True)
-        .exclude(tipo_noticia='')
-        .values_list('tipo_noticia', flat=True)
-        .distinct()
-        .order_by('tipo_noticia')
-    )
+    # Ambil daftar jenis berita untuk dropdown filter
+    tipos = TipoNoticias.objects.values_list('tipo_noticia', flat=True).distinct().order_by('tipo_noticia')
     
     paginator = Paginator(t_noticias, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
@@ -282,12 +224,15 @@ def todas_noticias(request):
         "active_menu": "noticias",
     })
 
+
+# ==========================================
+# DDDO & LEGISLATION
+# ==========================================
 DDDO_POR_PAGINA = 10
 def _dddo_context(request, qs):
-    """Pencarian + paginator + penanda file, dipakai kedua view DDDO."""
     q = request.GET.get('q', '').strip()
     qs = (
-        qs.defer('documentos_dddo')          # jangan muat isi file ke memori
+        qs.defer('documentos_dddo')
           .annotate(
               tem_ficheiro=Case(
                   When(documentos_dddo__isnull=False, then=Value(True)),
@@ -324,9 +269,11 @@ def dddo_list_by_tipo(request, pk):
     ctx['tipo_selecionado'] = tipo_selecionado
     return render(request, "dddo_publico_list.html", ctx)
 
-# ---------- Melihat file di browser (tombol "Ver") ----------
+
+# ==========================================
+# FILE SERVING / DOWNLOADS
+# ==========================================
 def _servir_ficheiro(conteudo, nome, forcar_download=False):
-    """PDF dan gambar dibuka di browser; Word/Excel tetap diunduh."""
     if isinstance(conteudo, memoryview):
         conteudo = bytes(conteudo)
 
@@ -350,14 +297,17 @@ def documentos_dddo_review(request, pk):
     nome = getattr(documento, 'nome_ficheiro_original', None) or f'{documento.nome_dddo}.pdf'
     return _servir_ficheiro(documento.documentos_dddo, nome)
 
-ORDEM_TIPOS = [2, 1]   # 2 = Relatórios (karuk), 1 = Publicações (los)
-POR_PAGINA = 1        # dokumentu por pagina kada tipu
+
+# ==========================================
+# DOCUMENTOS PÚBLICOS
+# ==========================================
+ORDEM_TIPOS = [2, 1]
+POR_PAGINA = 1
 CAMPO_TIPO = 'id_tipo_documentos_publicos'
 
 @logout_required(redirect_to='index')
 def documentos_publicos_publico_list(request):
     q = request.GET.get('q', '').strip()
-    # Tipe mana saja yang punya dokumen (tidak terpengaruh pencarian)
     tids = set(
         DocumentosPublicos.objects.order_by()
         .values_list(f'{CAMPO_TIPO}_id', flat=True).distinct()
@@ -366,35 +316,39 @@ def documentos_publicos_publico_list(request):
     destinos = [(t.pk, str(t)) for t in TipoModel.objects.filter(pk__in=tids - {None})]
     if None in tids:
         destinos.append((None, _('Outros'))) 
+    
     def pozisaun(item):
         tid = item[0]
         if tid in ORDEM_TIPOS:
             return (0, ORDEM_TIPOS.index(tid))
         return (1, tid if tid is not None else 10**9)
+        
     base = (
         DocumentosPublicos.objects
-        .defer('documentos_publicos')          # jangan muat isi file (binary)
+        .defer('documentos_publicos')
         .annotate(
-        tem_ficheiro=Case(
-        When(documentos_publicos__isnull=False, then=Value(True)),
-        default=Value(False),
-        output_field=BooleanField(),
-        )
+            tem_ficheiro=Case(
+                When(documentos_publicos__isnull=False, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField(),
+            )
         )
         .order_by('nome_documentos_publicos')
     )
     if q:
         base = base.filter(nome_documentos_publicos__icontains=q)
+        
     grupos = []
     for tid, nome in sorted(destinos, key=pozisaun):
         if tid is None:
             qs = base.filter(**{f'{CAMPO_TIPO}__isnull': True})
         else:
             qs = base.filter(**{f'{CAMPO_TIPO}_id': tid})
-        key = f'p{tid}'                         # parameter halaman milik tipe ini
+            
+        key = f'p{tid}'
         page_obj = Paginator(qs, POR_PAGINA).get_page(request.GET.get(key))
         params = request.GET.copy()
-        params.pop(key, None)                   # halaman tipe lain & pencarian tetap terbawa
+        params.pop(key, None)
         grupos.append({
             'id': tid,
             'nome': nome,
@@ -402,6 +356,7 @@ def documentos_publicos_publico_list(request):
             'page_obj': page_obj,
             'qs': params.urlencode(),
         })
+        
     return render(request, "documentos_publicos_publico_list.html", {
         "grupos": grupos,
         "q": q,
@@ -416,8 +371,10 @@ def documentos_publicos_review(request, pk):
     return response
 
 
+# ==========================================
+# COOPERAÇÃO / PARTNER
+# ==========================================
 def public_cooperacao_directory(request):
-    """Menampilkan direktori logo partner/lembaga untuk publik"""
     parceiros = Cooperacao.objects.all().order_by('nome_parceiro')
     return render(request, 'coperation_public_list.html', {
         'parceiros': parceiros,
@@ -427,18 +384,17 @@ def public_cooperacao_directory(request):
 def public_cooperacao_detail(request, slug):
     parceiro = get_object_or_404(Cooperacao, slug=slug)
     
-    # 2. Filter NoticiasView berdasarkan nama partner di kolom tipo_noticia (semua bahasa)
-    #    Tanpa memanggil field 'cooperacao' yang tidak ada di NoticiasView
+    # Ambil berita yang berelasi dengan partner (melalui ForeignKey atau pencarian nama)
     noticias_parceiro = list(
-        NoticiasView.objects.filter(
-            Q(tipo_noticia__icontains=parceiro.nome_parceiro) |
-            Q(tipo_noticia_tet__icontains=parceiro.nome_parceiro) |
-            Q(tipo_noticia_en__icontains=parceiro.nome_parceiro)
+        Noticias.objects.filter(
+            Q(cooperacao=parceiro) |
+            Q(id_tipo_noticia__tipo_noticia__icontains=parceiro.nome_parceiro) |
+            Q(id_tipo_noticia__tipo_noticia_tet__icontains=parceiro.nome_parceiro)
         ).order_by('-data_publicacao')
     )
     
-    # 3. Lampirkan gambar sampul (capa_url) agar sama persis dengan halaman index & noticias
-    _anexar_capas(noticias_parceiro)
+    for n in noticias_parceiro:
+        _processar_capa_noticia(n)
 
     context = {
         'parceiro': parceiro,
@@ -447,50 +403,46 @@ def public_cooperacao_detail(request, slug):
     }
     return render(request, 'coperation_public_detail.html', context)
 
+
+# ==========================================
+# CONTACTO (COMMENT / INQUIRY)
+# ==========================================
 @logout_required(redirect_to='index')
 @ratelimit(key="ip", rate="1/d", method="POST", block=True)
 def contacto(request):
-  done = f"{reverse('contacto')}?enviado=1#comentarios"
+    done = f"{reverse('contacto')}?enviado=1#comentarios"
 
-  if request.method == 'POST':
-    # --- LAPISAN 1: Honeypot Trap (Menjebak Bot) ---
-    if request.POST.get('website'):
-      return redirect(done)  # Bot tertangkap, pura-pura sukses tanpa simpan data
+    if request.method == 'POST':
+        if request.POST.get('website'):
+            return redirect(done)
 
-    # --- LAPISAN 2: Time-Based Validation (Deteksi Kecepatan Bot) ---
-    form_time = request.session.get('form_timestamp')
-    if not form_time or (time.time() - form_time < 3):
-      # Jika form dikirim kurang dari 3 detik sejak dimuat, anggap sebagai bot
-      return redirect(done)
+        form_time = request.session.get('form_timestamp')
+        if not form_time or (time.time() - form_time < 3):
+            return redirect(done)
 
-    form = CommentForm(request.POST)
-    if form.is_valid():
-      # Hapus timestamp setelah validasi sukses
-      if 'form_timestamp' in request.session:
-        del request.session['form_timestamp']
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            if 'form_timestamp' in request.session:
+                del request.session['form_timestamp']
 
-      # --- LAPISAN 3: Input Sanitization (Pembersihan XSS) ---
-      comment = form.save(commit=False)
+            comment = form.save(commit=False)
+            if hasattr(comment, 'mensagem'):
+                comment.mensagem = strip_tags(comment.mensagem)
+            if hasattr(comment, 'nome'):
+                comment.nome = strip_tags(comment.nome)
 
-      # Membersihkan tag HTML/JavaScript berbahaya dari input teks
-      if hasattr(comment, 'mensagem'):
-        comment.mensagem = strip_tags(comment.mensagem)
-      if hasattr(comment, 'nome'):
-        comment.nome = strip_tags(comment.nome)
+            comment.save()
+            return redirect(done)
+    else:
+        request.session['form_timestamp'] = time.time()
+        form = CommentForm()
 
-      comment.save()
-      return redirect(done)
-  else:
-    # Set timestamp saat halaman form pertama kali dibuka (GET request)
-    request.session['form_timestamp'] = time.time()
-    form = CommentForm()
-
-  return render(
-      request,
-      'contacto.html',
-      {
-          'form': form,
-          'enviado': request.GET.get('enviado') == '1',
-          'active_menu': 'contact',
-      },
-  )
+    return render(
+        request,
+        'contacto.html',
+        {
+            'form': form,
+            'enviado': request.GET.get('enviado') == '1',
+            'active_menu': 'contact',
+        },
+    )

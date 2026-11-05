@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.db.models import Sum
 from django.db.models.functions import ExtractMonth, ExtractYear, ExtractDay
-from main_front_end.models import NoticiasView
+from noticias.models import Noticias  
 
 def relatorio_noticias(request):
     filter_type = request.GET.get('filter', 'all')
@@ -17,11 +17,11 @@ def relatorio_noticias(request):
     current_year = now.year
     
     target_year = int(year_val) if year_val else current_year
-    queryset = NoticiasView.objects.all()
+    queryset = Noticias.objects.all()
     
     # 1. Filter cepat (preset)
     if filter_type == 'semana':
-        queryset = queryset.filter(data_publicacao__gte=now - timedelta(days=7))
+        queryset = queryset.filter(data_publicacao__gte=now.date() - timedelta(days=7))
     elif filter_type == 'mes':
         queryset = queryset.filter(data_publicacao__year=current_year, data_publicacao__month=now.month)
     elif filter_type == 'ano':
@@ -36,14 +36,14 @@ def relatorio_noticias(request):
         queryset = queryset.filter(data_publicacao__day=day_val)
 
     # Metrik Kartu Ringkasan (Global)
-    total_noticias = NoticiasView.objects.count()
-    views_semana = NoticiasView.objects.filter(data_publicacao__gte=now - timedelta(days=7)).aggregate(Sum('visualizacoes'))['visualizacoes__sum'] or 0
-    views_mes = NoticiasView.objects.filter(data_publicacao__year=current_year, data_publicacao__month=now.month).aggregate(Sum('visualizacoes'))['visualizacoes__sum'] or 0
-    views_ano = NoticiasView.objects.filter(data_publicacao__year=current_year).aggregate(Sum('visualizacoes'))['visualizacoes__sum'] or 0
+    total_noticias = Noticias.objects.count()
+    views_semana = Noticias.objects.filter(data_publicacao__gte=now.date() - timedelta(days=7)).aggregate(Sum('visualizacoes'))['visualizacoes__sum'] or 0
+    views_mes = Noticias.objects.filter(data_publicacao__year=current_year, data_publicacao__month=now.month).aggregate(Sum('visualizacoes'))['visualizacoes__sum'] or 0
+    views_ano = Noticias.objects.filter(data_publicacao__year=current_year).aggregate(Sum('visualizacoes'))['visualizacoes__sum'] or 0
     
     # Data Grafik Bulanan
     monthly_views_qs = (
-        NoticiasView.objects.filter(data_publicacao__year=target_year)
+        Noticias.objects.filter(data_publicacao__year=target_year)
         .annotate(month=ExtractMonth('data_publicacao'))
         .values('month')
         .annotate(total=Sum('visualizacoes'))
@@ -60,7 +60,7 @@ def relatorio_noticias(request):
     
     # Ambil daftar tahun dinamis dari database
     years_queryset = (
-        NoticiasView.objects.exclude(data_publicacao__isnull=True)
+        Noticias.objects.exclude(data_publicacao__isnull=True)
         .annotate(year=ExtractYear('data_publicacao'))
         .values_list('year', flat=True)
         .distinct()

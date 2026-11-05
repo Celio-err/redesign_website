@@ -28,6 +28,7 @@ def contacto(request):
             "status": status,
             "q": q,
             "unread_count": Comment.objects.filter(is_read=False).count(),
+            
     }) 
 
 def _back(request):

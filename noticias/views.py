@@ -1,11 +1,11 @@
 import uuid
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Noticias, TipoNoticias
 from .forms import NoticiasForm, TipoNoticiasForm
-from django.db.models import Max
-from noticias.models import ImagemNoticia
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage
+from django.http import JsonResponse
 
 # ---------- Noticias ----------
 
@@ -14,54 +14,46 @@ def noticias_list(request):
     return render(request, 'noticias_list.html', {
         'noticias': noticias
     })
- 
-def _uuids(values):
-    """Buang nilai yang bukan UUID valid agar filter tidak error."""
-    out = []
-    for v in values:
-        try:
-            out.append(uuid.UUID(v))
-        except (ValueError, AttributeError):
-            pass
-    return out
- 
 
 def noticias_create(request, pk=None):
-    """Tambah (pk=None) atau ubah notícia, termasuk banyak gambar."""
+    """Tambah (pk=None) atau ubah notícia dengan 1 gambar capa tunggal."""
     noticia = get_object_or_404(Noticias, pk=pk) if pk else None
- 
+
     if request.method == "POST":
+        # Perhatikan parameter request.FILES di bawah ini:
         form = NoticiasForm(request.POST, request.FILES, instance=noticia)
         if form.is_valid():
             noticia = form.save(commit=False)
             if not noticia.inserido_por:
                 noticia.inserido_por = request.user.get_username() if request.user.is_authenticated else "admin"
-            noticia.save()
- 
-            # 1) apagar gambar yang dicentang
-            ids = _uuids(request.POST.getlist("apagar_imagens"))
-            if ids:
-                noticia.imagens.filter(pk__in=ids).delete()
- 
-            # 2) simpan gambar baru jika ada yang di-upload
-            imagens_novas = form.cleaned_data.get("imagens")
-            if imagens_novas:
-                ordem = noticia.imagens.aggregate(m=Max("ordem"))["m"] or 0
-                for i, f in enumerate(imagens_novas, start=1):
-                    ImagemNoticia.objects.create(
-                        id_noticia=noticia, imagem=f, ordem=ordem + i
-                    )
- 
+            noticia.save() # <-- Method save() di model akan otomatis mengeksekusi penghapusan gambar lama di sini
+
             messages.success(request, 'Notícia guardada com sucesso.')
             return redirect("noticias_list")
     else:
         form = NoticiasForm(instance=noticia)
- 
+
     return render(request, "noticias_forms.html", {
         "form": form,
         "noticia": noticia,
-        "imagens": noticia.imagens.all() if noticia else [],
     })
+
+@csrf_exempt
+def custom_upload_file(request):
+    if request.method == "POST" and request.FILES.get("upload"):
+        upload = request.FILES["upload"]
+        # Simpan file ke folder media/ckeditor5/
+        file_path = default_storage.save(f"ckeditor5/{upload.name}", upload)
+        file_url = default_storage.url(file_path)
+        return JsonResponse({
+            "url": file_url,
+            "uploaded": True,
+            "message": "Upload successful"
+        })
+    return JsonResponse({
+        "uploaded": False, 
+        "error": {"message": "Nenhum arquivo enviado ou método inválido."}
+    }, status=400)
 
 def noticias_detail(request, pk):
     noticia = get_object_or_404(Noticias, pk=pk)
@@ -90,7 +82,6 @@ def tipo_noticias_list(request):
         'tipos': tipos
     })
 
-
 def tipo_noticias_create(request):
     if request.method == 'POST':
         form = TipoNoticiasForm(request.POST)
@@ -105,13 +96,11 @@ def tipo_noticias_create(request):
         'form': form
     })
 
-
 def tipo_noticias_detail(request, pk):
     tipo = get_object_or_404(TipoNoticias, pk=pk)
     return render(request, 'tipo_noticias_detail.html', {
         'tipo': tipo
     })
-
 
 def tipo_noticias_update(request, pk):
     tipo = get_object_or_404(TipoNoticias, pk=pk)
@@ -128,7 +117,6 @@ def tipo_noticias_update(request, pk):
     return render(request, 'tipo_noticias_forms.html', {
         'form': form
     })
-
 
 def tipo_noticias_delete(request, pk):
     tipo = get_object_or_404(TipoNoticias, pk=pk)

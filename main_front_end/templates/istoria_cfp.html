@@ -49,7 +49,7 @@ html { scroll-behavior: smooth; }
     <h1>
       {% if LANGUAGE_CODE == 'tet' and istoria.titulo_tet %}{{ istoria.titulo_tet }}
       {% elif LANGUAGE_CODE == 'en' and istoria.titulo_en %}{{ istoria.titulo_en }}
-      {% else %}{{ istoria.titulo|default:_("Istória da CFP") }}{% endif %}
+      {% else %}{{ istoria.titulo|default:_("História da CFP") }}{% endif %}
     </h1>
     <p>{% translate "Conheça a trajetória, origem e evolução institucional da Comissão da Função Pública de Timor-Leste" %}</p>
   </div>

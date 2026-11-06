@@ -3,10 +3,11 @@ from .models import Mandato, TipoMandato
 from .forms import MandatoForm, TipoMandatoForm
 from .models import FuncaoMandato
 from .forms import FuncaoMandatoForm
+from django.contrib.auth.decorators import login_required
 
 
 # List
-
+@login_required
 def mandato_list(request):
     mandatos = Mandato.objects.select_related(
         "id_tipo_mandato",
@@ -18,6 +19,7 @@ def mandato_list(request):
 
 
 # Create
+@login_required
 def mandato_create(request):
     if request.method == "POST":
         form = MandatoForm(request.POST, request.FILES)  # ← tambah request.FILES
@@ -35,6 +37,7 @@ def mandato_create(request):
 
 
 # Update
+@login_required
 def mandato_update(request, pk):
     mandato = get_object_or_404(Mandato, pk=pk)
 
@@ -54,6 +57,7 @@ def mandato_update(request, pk):
 
 
 # Delete
+@login_required
 def mandato_delete(request, pk):
     mandato = get_object_or_404(Mandato, pk=pk)
 
@@ -67,6 +71,7 @@ def mandato_delete(request, pk):
 
 
 # Detail
+@login_required
 def mandato_detail(request, pk):
     mandato = get_object_or_404(
         Mandato.objects.select_related(
@@ -81,14 +86,14 @@ def mandato_detail(request, pk):
 
 
 # ---------- TipoMandato ----------
-
+@login_required
 def tipo_mandato_list(request):
     tipos = TipoMandato.objects.all().order_by('tipo_mandato')
     return render(request, "tipo_mandato_list.html", {
         "tipos": tipos
     })
 
-
+@login_required
 def tipo_mandato_create(request):
     if request.method == "POST":
         form = TipoMandatoForm(request.POST)
@@ -102,14 +107,14 @@ def tipo_mandato_create(request):
         "form": form
     })
 
-
+@login_required
 def tipo_mandato_detail(request, pk):
     tipo = get_object_or_404(TipoMandato, pk=pk)
     return render(request, "tipo_mandato_detail.html", {
         "tipo": tipo
     })
 
-
+@login_required
 def tipo_mandato_update(request, pk):
     tipo = get_object_or_404(TipoMandato, pk=pk)
 
@@ -125,7 +130,7 @@ def tipo_mandato_update(request, pk):
         "form": form
     })
 
-
+@login_required
 def tipo_mandato_delete(request, pk):
     tipo = get_object_or_404(TipoMandato, pk=pk)
 
@@ -139,14 +144,14 @@ def tipo_mandato_delete(request, pk):
 
 
 # ---------- FuncaoMandato ----------
-
+@login_required
 def funcao_mandato_list(request):
     funcoes = FuncaoMandato.objects.all().order_by('funcao_mandato')
     return render(request, "funcao_mandato_list.html", {
         "funcoes": funcoes
     })
 
-
+@login_required
 def funcao_mandato_create(request):
     if request.method == "POST":
         form = FuncaoMandatoForm(request.POST)
@@ -161,14 +166,14 @@ def funcao_mandato_create(request):
         "is_edit": False,
     })
 
-
+@login_required
 def funcao_mandato_detail(request, pk):
     funcao = get_object_or_404(FuncaoMandato, pk=pk)
     return render(request, "funcao_mandato_detail.html", {
         "funcao": funcao
     })
 
-
+@login_required
 def funcao_mandato_update(request, pk):
     funcao = get_object_or_404(FuncaoMandato, pk=pk)
 
@@ -185,7 +190,7 @@ def funcao_mandato_update(request, pk):
         "is_edit": True,
     })
 
-
+@login_required
 def funcao_mandato_delete(request, pk):
     funcao = get_object_or_404(FuncaoMandato, pk=pk)
 

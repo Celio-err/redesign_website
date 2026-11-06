@@ -4,17 +4,18 @@ from django.utils import timezone
 from django.http import HttpResponse
 from .models import DDDO, TipoDDDO
 from .forms import DDDOForm, TipoDDDOForm
+from django.contrib.auth.decorators import login_required
 
 
 # ---------- DDDO ----------
-
+@login_required
 def documentos_dddo_list(request):
     documentos = DDDO.objects.all().select_related('id_tipo_dddo')
     return render(request, 'documentos_dddo_list.html', {
         'documentos': documentos
     })
 
-
+@login_required
 def documentos_dddo_create(request):
     if request.method == 'POST':
         form = DDDOForm(request.POST, request.FILES)
@@ -37,14 +38,14 @@ def documentos_dddo_create(request):
         'is_edit': False,
     })
 
-
+@login_required
 def documentos_dddo_detail(request, pk):
     documento = get_object_or_404(DDDO, pk=pk)
     return render(request, 'documentos_dddo_detail.html', {
         'documento': documento
     })
 
-
+@login_required
 def documentos_dddo_update(request, pk):
     documento = get_object_or_404(DDDO, pk=pk)
 
@@ -67,7 +68,7 @@ def documentos_dddo_update(request, pk):
         'is_edit': True,
     })
 
-
+@login_required
 def documentos_dddo_delete(request, pk):
     documento = get_object_or_404(DDDO, pk=pk)
 
@@ -80,7 +81,7 @@ def documentos_dddo_delete(request, pk):
         'documento': documento
     })
 
-
+@login_required
 def documentos_dddo_download(request, pk):
     documento = get_object_or_404(DDDO, pk=pk)
     response = HttpResponse(documento.documentos_dddo, content_type='application/octet-stream')
@@ -89,14 +90,14 @@ def documentos_dddo_download(request, pk):
 
 
 # ---------- TipoDDDO ----------
-
+@login_required
 def tipo_dddo_list(request):
     tipos = TipoDDDO.objects.all().order_by('tipo_dddo')
     return render(request, 'tipo_dddo_list.html', {
         'tipos': tipos
     })
 
-
+@login_required
 def tipo_dddo_create(request):
     if request.method == 'POST':
         form = TipoDDDOForm(request.POST)
@@ -112,14 +113,14 @@ def tipo_dddo_create(request):
         'is_edit': False,
     })
 
-
+@login_required
 def tipo_dddo_detail(request, pk):
     tipo = get_object_or_404(TipoDDDO, pk=pk)
     return render(request, 'tipo_dddo_detail.html', {
         'tipo': tipo
     })
 
-
+@login_required
 def tipo_dddo_update(request, pk):
     tipo = get_object_or_404(TipoDDDO, pk=pk)
 
@@ -137,7 +138,7 @@ def tipo_dddo_update(request, pk):
         'is_edit': True,
     })
 
-
+@login_required
 def tipo_dddo_delete(request, pk):
     tipo = get_object_or_404(TipoDDDO, pk=pk)
 

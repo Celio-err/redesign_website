@@ -1,0 +1,136 @@
+{% extends 'master/base.html' %}
+{% load i18n static %}
+
+{% block page_title %}{% translate "Istória da CFP" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+
+  <!-- Breadcrumb -->
+  <div class="mb-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="#" class="text-decoration-none">{% translate "Istória da CFP" %}</a></li>
+        <li class="breadcrumb-item active">{% translate "Pré-visualização" %}</li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- Alert Messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      
+      <!-- Card Preview Container -->
+      <div class="card border-0 shadow-sm rounded-3 mb-4">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+          <h5 class="mb-0 text-primary fw-bold">
+            <i class="fa fa-book-open me-2"></i> {% translate "Istória da CFP (Visualização)" %}
+          </h5>
+          
+          <!-- Tombol Edit yang mengarah ke form edit -->
+          <a href="{% url 'istoria_cfp_form' %}" class="btn btn-primary btn-sm px-3" style="border-radius: 6px; font-weight: 600;">
+            <i class="fa fa-edit me-1"></i> {% translate "Editar Istória" %}
+          </a>
+        </div>
+
+        <div class="card-body p-4">
+
+          {% if istoria %}
+            <!-- Nav Tabs Bahasa untuk Preview -->
+            <ul class="nav nav-tabs mb-3" id="previewLangTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-semibold" id="prev-pt-tab" data-bs-toggle="tab" data-bs-target="#prev-pt" type="button" role="tab">
+                  Português <span class="badge bg-success ms-1" style="font-size: 10px;">PT</span>
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="prev-tet-tab" data-bs-toggle="tab" data-bs-target="#prev-tet" type="button" role="tab">
+                  Tetun <span class="badge bg-warning text-dark ms-1" style="font-size: 10px;">TET</span>
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="prev-en-tab" data-bs-toggle="tab" data-bs-target="#prev-en" type="button" role="tab">
+                  English <span class="badge bg-primary ms-1" style="font-size: 10px;">EN</span>
+                </button>
+              </li>
+            </ul>
+
+            <!-- Isi Konten Berdasarkan Bahasa -->
+            <div class="tab-content border border-top-0 p-4 rounded-bottom bg-light">
+              
+              <!-- TAB PT -->
+              <div class="tab-pane fade show active" id="prev-pt" role="tabpanel">
+                <h3 class="fw-bold text-dark mb-2">{{ istoria.titulo }}</h3>
+                <h6 class="text-muted fst-italic mb-3">{{ istoria.subtitulo }}</h6>
+                <hr>
+                <div class="content-preview text-secondary">
+                  {{ istoria.conteudo|safe }}
+                </div>
+              </div>
+
+              <!-- TAB TETUN -->
+              <div class="tab-pane fade" id="prev-tet" role="tabpanel">
+                <h3 class="fw-bold text-dark mb-2">{{ istoria.titulo_tet|default:istoria.titulo }}</h3>
+                <h6 class="text-muted fst-italic mb-3">{{ istoria.subtitulo_tet|default:istoria.subtitulo }}</h6>
+                <hr>
+                <div class="content-preview text-secondary">
+                  {{ istoria.conteudo_tet|default:istoria.conteudo|safe }}
+                </div>
+              </div>
+
+              <!-- TAB ENGLISH -->
+              <div class="tab-pane fade" id="prev-en" role="tabpanel">
+                <h3 class="fw-bold text-dark mb-2">{{ istoria.titulo_en|default:istoria.titulo }}</h3>
+                <h6 class="text-muted fst-italic mb-3">{{ istoria.subtitulo_en|default:istoria.subtitulo }}</h6>
+                <hr>
+                <div class="content-preview text-secondary">
+                  {{ istoria.conteudo_en|default:istoria.conteudo|safe }}
+                </div>
+              </div>
+
+            </div>
+
+          {% else %}
+            <!-- Jika Belum Ada Data Sama Sekali -->
+            <div class="text-center py-5">
+              <div class="text-muted mb-3">
+                <i class="fa fa-info-circle fa-3x"></i>
+              </div>
+              <h5 class="text-secondary">{% translate "Nenhuma istória registada ainda." %}</h5>
+              <p class="text-muted small">{% translate "Clique no botão abaixo para criar e preencher a istória da CFP." %}</p>
+              <a href="{% url 'istoria_cfp_form' %}" class="btn btn-success px-4 mt-2" style="border-radius: 8px; font-weight: 600;">
+                <i class="fa fa-plus me-1"></i> {% translate "Criar Istória" %}
+              </a>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<style>
+  /* Styling tambahan untuk konten HTML dari CKEditor agar rapi saat dipreview */
+  .content-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+  .content-preview p {
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+</style>
+{% endblock %}

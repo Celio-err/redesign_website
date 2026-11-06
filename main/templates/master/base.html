@@ -857,7 +857,7 @@
                {% comment %} {% if user|has_group:"admin" %} {% endcomment %}
                <li>
                   <a class="cfp-nav__link{% if url_contacto in request.path %} is-active{% endif %}" href="{{ url_contacto }}" data-label="Contactos"{% if url_contacto in request.path %} aria-current="page"{% endif %}>
-                     <i class="fa fa-envelope"></i><span>Contactos</span>
+                     <i class="fa fa-envelope"></i><span>Comentários</span>
                   </a>
                </li>
                {% comment %} {% endif %} {% endcomment %}
@@ -867,7 +867,7 @@
             <ul>
                {% if user|has_group:"superadmin" %}
                <li class="nav-item">
-  <a class="cfp-nav__link{% if active_menu == 'istoria_cfp' %} is-active{% endif %}" href="{% url 'istoria_cfp_form' %}" data-label="Istória da CFP"{% if active_menu == 'istoria_cfp' %} aria-current="page"{% endif %}>
+  <a class="cfp-nav__link{% if active_menu == 'istoria_cfp' %} is-active{% endif %}" href="{% url 'istoria_cfp_view' %}" data-label="Istória da CFP"{% if active_menu == 'istoria_cfp' %} aria-current="page"{% endif %}>
     <i class="fa fa-book"></i><span>Istória da CFP</span>
   </a>
 </li>

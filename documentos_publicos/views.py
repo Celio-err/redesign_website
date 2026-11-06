@@ -5,17 +5,18 @@ from .models import DocumentosPublicos, TipoDocumentosPublicos
 from .forms import DocumentosPublicosForm, TipoDocumentosPublicosForm
 from django.http import HttpResponse
 import mimetypes
+from django.contrib.auth.decorators import login_required
 
 
 # ---------- DocumentosPublicos ----------
-
+@login_required
 def documentos_publicos_list(request):
     documentos = DocumentosPublicos.objects.all().order_by('-data_publicacao')
     return render(request, 'documentos_publicos_list.html', {
         'documentos': documentos
     })
 
-
+@login_required
 def documentos_publicos_create(request):
     if request.method == 'POST':
         form = DocumentosPublicosForm(request.POST, request.FILES)
@@ -34,7 +35,7 @@ def documentos_publicos_create(request):
         'is_edit': False,
     })
 
-
+@login_required
 def documentos_publicos_update(request, pk):
     documento = get_object_or_404(DocumentosPublicos, pk=pk)
     if request.method == 'POST':
@@ -51,12 +52,14 @@ def documentos_publicos_update(request, pk):
         'is_edit': True,
     })
 
+@login_required
 def documentos_publicos_detail(request, pk):
     documento = get_object_or_404(DocumentosPublicos, pk=pk)
     return render(request, 'documentos_publicos_detail.html', {
         'documento': documento
     })
 
+@login_required
 def documentos_publicos_delete(request, pk):
     documento = get_object_or_404(DocumentosPublicos, pk=pk)
 
@@ -69,7 +72,7 @@ def documentos_publicos_delete(request, pk):
         'documento': documento
     })
 
-
+@login_required
 def documentos_publicos_review(request, pk):
     documento = get_object_or_404(DocumentosPublicos, pk=pk)
     
@@ -82,14 +85,14 @@ def documentos_publicos_review(request, pk):
     return response
 
 # ---------- TipoDocumentosPublicos ----------
-
+@login_required
 def tipo_documentos_publicos_list(request):
     tipos = TipoDocumentosPublicos.objects.all().order_by('tipo_documentos_publicos')
     return render(request, 'tipo_documentos_publicos_list.html', {
         'tipos': tipos
     })
 
-
+@login_required
 def tipo_documentos_publicos_create(request):
     if request.method == 'POST':
         form = TipoDocumentosPublicosForm(request.POST)
@@ -108,14 +111,14 @@ def tipo_documentos_publicos_create(request):
         'is_edit': False,
     })
 
-
+@login_required
 def tipo_documentos_publicos_detail(request, pk):
     tipo = get_object_or_404(TipoDocumentosPublicos, pk=pk)
     return render(request, 'tipo_documentos_publicos_detail.html', {
         'tipo': tipo
     })
 
-
+@login_required
 def tipo_documentos_publicos_update(request, pk):
     tipo = get_object_or_404(TipoDocumentosPublicos, pk=pk)
 
@@ -133,7 +136,7 @@ def tipo_documentos_publicos_update(request, pk):
         'is_edit': True,
     })
 
-
+@login_required
 def tipo_documentos_publicos_delete(request, pk):
     tipo = get_object_or_404(TipoDocumentosPublicos, pk=pk)
 

@@ -4,14 +4,17 @@ from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
 from .forms import UserCreateWithRoleForm, UserEditForm
 from settings.decorators import role_required 
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def settings(request):
     utilizadores = User.objects.all().order_by('username').prefetch_related('groups')
     return render(request, "setting.html", {
         "utilizadores": utilizadores,
     })
 
+@login_required
 @role_required('superadmin')
 def user_form(request, pk=None):
     is_edit = pk is not None
@@ -43,6 +46,7 @@ def user_form(request, pk=None):
         "is_edit": is_edit,
     })
 
+@login_required
 @role_required('superadmin')
 def delete_user(request, pk):
     utilizadores = get_object_or_404(User, id=pk)
@@ -50,6 +54,7 @@ def delete_user(request, pk):
     messages.success(request, "Sucesso de remover esta conta")
     return redirect('settings')
 
+@login_required
 def perfil(request):
     if request.method == "POST":
         novo_username = request.POST.get("username", "").strip()

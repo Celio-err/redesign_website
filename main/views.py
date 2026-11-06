@@ -34,5 +34,4 @@ def logout_view(request):
 
 @login_required
 def index(request):
-    activate('pt')
     return render(request, 'index.html')

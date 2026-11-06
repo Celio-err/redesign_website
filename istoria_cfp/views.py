@@ -2,8 +2,19 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import IstoriaCFPForm
 from istoria_cfp.models import IstoriaCFP
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
+def istoria_cfp_view(request):
+    # Mengambil data istoria pertama (biasanya data singleton / profil tunggal)
+    istoria = IstoriaCFP.objects.first()
+    
+    return render(request, 'istoria_cfp_preview.html', {
+        'istoria': istoria,
+        'active_menu': 'istoria_cfp'})
+
+@login_required
 def istoria_cfp_form(request):
     """View backend untuk menginput / mengedit data Istória CFP"""
     # Ambil data yang ada atau buat instance baru jika belum pernah ada data

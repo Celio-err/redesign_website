@@ -6,9 +6,11 @@ from noticias.models import Noticias
 from django.db.models import Q
 from django.db.models import Count
 from coperation.models import Cooperacao
+from django.contrib.auth.decorators import login_required
 
 
 # --- List Admin ---
+@login_required
 def backend_cooperacao_list(request):
     # Lakukan annotate langsung pada queryset utama (parceiros)
     parceiros = Cooperacao.objects.annotate(
@@ -20,7 +22,8 @@ def backend_cooperacao_list(request):
         'active_menu': 'backend_cooperacao'
     })
 
-# --- Inserir / Tambah ---
+# --- Inserir 
+@login_required
 def backend_cooperacao_create(request):
     if request.method == 'POST':
         form = CooperacaoForm(request.POST, request.FILES)
@@ -38,6 +41,7 @@ def backend_cooperacao_create(request):
     })
 
 # --- Editar / Update ---
+@login_required
 def backend_cooperacao_update(request, pk):
     parceiro = get_object_or_404(Cooperacao, pk=pk)
     if request.method == 'POST':
@@ -57,12 +61,13 @@ def backend_cooperacao_update(request, pk):
     })
 
 # --- Eliminar / Delete ---
+@login_required
 def backend_cooperacao_delete(request, pk):
     parceiro = get_object_or_404(Cooperacao, pk=pk)
     if request.method == 'POST':
         parceiro.delete()
         messages.success(request, 'Parceria eliminada com sucesso!')
-        return redirect('backend_cooperacao_list')
+        return redirect('cooperacao_list')
         
     return render(request, 'coperation_delete.html', {
         'object': parceiro,

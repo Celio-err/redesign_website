@@ -4,7 +4,9 @@ from django.utils import timezone
 from django.db.models import Sum
 from django.db.models.functions import ExtractMonth, ExtractYear, ExtractDay
 from noticias.models import Noticias  
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def relatorio_noticias(request):
     filter_type = request.GET.get('filter', 'all')
     

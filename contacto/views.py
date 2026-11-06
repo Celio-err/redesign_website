@@ -5,10 +5,11 @@ from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 from django.utils.translation import activate
+from django.contrib.auth.decorators import login_required
 
 from .models import Comment
 
-
+@login_required
 def contacto(request):
     activate('pt')
     status = request.GET.get("status", "")
@@ -31,6 +32,7 @@ def contacto(request):
             
     }) 
 
+@login_required
 def _back(request):
     """Volta para a página anterior (só URLs do próprio site)."""
     nxt = request.POST.get("next", "")
@@ -38,6 +40,7 @@ def _back(request):
         return redirect(nxt)
     return redirect(reverse("backend_comment_list"))
 
+@login_required
 @require_POST
 def comment_toggle_read(request, pk):
     c = get_object_or_404(Comment, pk=pk)
@@ -45,7 +48,7 @@ def comment_toggle_read(request, pk):
     c.save(update_fields=["is_read"])
     return _back(request)
 
-
+@login_required
 @require_POST
 def comment_delete(request, pk):
     get_object_or_404(Comment, pk=pk).delete()

@@ -55,7 +55,6 @@
 }
 
 .news-card {
-  /* Latar belakang dengan warna gradien lembut agar tidak terasa polos/kosong */
   background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
   border: 1px solid #E2E8F0;
   border-radius: 12px;
@@ -63,14 +62,12 @@
   display: flex;
   flex-direction: column;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Bayangan default yang halus dan berisi */
   box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
 }
 
 .news-card:hover {
   transform: translateY(-6px);
   border-color: rgba(49, 46, 129, 0.25);
-  /* Bayangan lembut bertingkat saat kursor diarahkan (Hover) */
   box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.12), 0 10px 15px -5px rgba(15, 23, 42, 0.05);
 }
 
@@ -124,7 +121,6 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.03);
 }
 
-/* Menggunakan Plus Jakarta Sans (seragam dengan navbar) */
 .news-card h3 {
   margin: 0 0 16px;
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -144,20 +140,6 @@
   color: var(--gold-hover);
 }
 
-.news-card .read-more {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--indigo);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: color 0.2s ease;
-}
-
-.news-card:hover .read-more {
-  color: var(--gold-hover);
-}
 .news-card .read-more {
   font-size: 13.5px;
   font-weight: 600;
@@ -199,36 +181,123 @@
   box-shadow: 0 6px 18px rgba(30, 27, 75, 0.15);
 }
 
-/* ================= Dashboard dadus ================= */
-.dash{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.dcard{position:relative;overflow:hidden;background:var(--pattern-bg);color:#fff;border-radius:8px;padding:34px 36px;min-height:240px;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.2s}
-.dcard:hover{transform:translateY(-2px)}
-.dcard .bars{position:absolute;right:-4px;bottom:-4px;width:200px;height:140px;color:#fff;opacity:.11}
-.dcard .tp{position:relative;font-size:13px;color:#CBD5E1}
-.dcard h3{position:relative;margin:14px 0 0;font-family:'Merriweather',serif;font-size:26px;line-height:1.2;font-weight:700;max-width:20ch}
-.dcard:hover h3{text-decoration:underline;text-underline-offset:4px}
-.dcard .go{position:relative;align-self:flex-start;margin-top:26px;display:inline-flex;gap:8px;padding:10px 20px;border-radius:999px;background:var(--gold);color:#fff;font-weight:600;font-size:14px;transition:background 0.2s}
-.dcard:hover .go{background:var(--gold-hover)}
-
 /* ================= Cooperação (Parceiros/Parceria) ================= */
-.coop{background:var(--pattern-bg);color:#fff;padding-top:80px;padding-bottom:80px}
-.coop .wrap{max-width:1240px;margin:0 auto;padding-left:32px;padding-right:32px}
-.coop-header{text-align:center;max-width:700px;margin:0 auto 48px}
-.coop-header .gl{width:48px;height:48px;color:var(--gold);margin:0 auto 12px}
-.coop-header h2{margin:0;font-family:'Merriweather',serif;font-size:36px;line-height:1.1;font-weight:700;letter-spacing:-.01em}
-.coop-header h2::after{content:"";display:block;width:48px;height:3px;background:var(--gold);margin:16px auto 0}
-.coop-header p{margin:20px 0 0;color:#CBD5E1;line-height:1.7;font-size:16px}
+.coop {
+  background: var(--pattern-bg);
+  color: #fff;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+.coop .wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.coop-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+.coop-header .gl {
+  width: 44px;
+  height: 44px;
+  color: var(--gold);
+  margin: 0 auto 12px;
+}
+.coop-header h2 {
+  margin: 0;
+  font-family: 'Merriweather', serif;
+  font-size: 32px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+.coop-header h2::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  background: var(--gold);
+  margin: 14px auto 0;
+}
+.coop-header p {
+  margin: 16px 0 0;
+  color: #CBD5E1;
+  line-height: 1.6;
+  font-size: 15px;
+}
 
-/* Grid Card Parceria */
-.coop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.coop-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:28px;display:flex;flex-direction:column;justify-content:space-between;transition:all .3s ease}
-.coop-card:hover{background:rgba(255,255,255,.09);border-color:var(--gold);transform:translateY(-3px)}
-.coop-card .c-logo{height:56px;display:flex;align-items:center;margin-bottom:20px}
-.coop-card .c-logo img{max-height:100%;max-width:160px;object-fit:contain}
-.coop-card h3{margin:0 0 10px;font-family:'Merriweather',serif;font-size:19px;color:#fff;font-weight:700}
-.coop-card p{margin:0 0 20px;font-size:14px;color:#CBD5E1;line-height:1.6}
-.coop-card .c-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--gold)}
-.coop-card .c-link:hover{color:#fff;text-decoration:underline}
+/* Grid fleksibel yang otomatis ke tengah dan responsif (Maksimal 3 kolom, card diperkecil) */
+.coop-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important; /* Otomatis ke tengah jika card 1 atau 2 */
+  gap: 20px !important;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.coop-card {
+  background: #352B78 !important;
+  border: 1px solid rgba(255, 255, 255, .14) !important;
+  border-radius: 8px !important;
+  padding: 22px 24px !important; /* Ukuran card diperkecil agar lebih padat/pas */
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  transition: all .3s ease !important;
+  
+  /* Ukuran kotak pas-pasan, fleksibel hingga 3 per baris */
+  flex: 0 1 340px !important;
+  min-width: 280px !important;
+}
+
+.coop-card:hover {
+  background: #3E3388 !important;
+  border-color: var(--gold) !important;
+  transform: translateY(-3px);
+}
+
+.coop-card .c-logo {
+  height: 46px !important; /* Logo disesuaikan agar lebih proporsional */
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.coop-card .c-logo img {
+  max-height: 100%;
+  max-width: 140px;
+  object-fit: contain;
+}
+
+.coop-card h3 {
+  margin: 0 0 8px;
+  font-family: 'Merriweather', serif;
+  font-size: 17px !important; /* Judul sedikit diperkecil */
+  color: #fff;
+  font-weight: 700;
+}
+
+.coop-card p {
+  margin: 0 0 18px;
+  font-size: 13.5px !important; /* Teks deskripsi disesuaikan */
+  color: #CBD5E1;
+  line-height: 1.5;
+}
+
+.coop-card .c-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--gold);
+}
+.coop-card .c-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
 
 /* ================= Institucional ================= */
 .inst{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -258,7 +327,6 @@
   .sec{padding-top:56px;padding-bottom:56px}
   .sh h2{font-size:26px}
   .svc{grid-template-columns:1fr}
-  .dcard{padding:28px 24px}
   .coop-header h2{font-size:30px}
   .coop-grid{grid-template-columns:1fr}
 }
@@ -266,34 +334,147 @@
 :root{
   --cfp:#2A2160; --cfp-deep:#1D1745; --cfp-tint:#EEEDF6; --cfp-line:#D9D6EE;
 }
- 
-/* ---- Layanan digital: isi lavender, saat di-hover seluruh card jadi ungu CFP ---- */
+  
 .svc a{background:var(--cfp-tint);border-color:var(--cfp-line)}
 .svc .ic{background:var(--cfp);color:#fff;border-color:var(--cfp)}
 .svc a:hover{background:var(--cfp);border-color:var(--cfp);box-shadow:none}
 .svc a:hover .nm{color:#fff}
 .svc a:hover .x{color:var(--gold)}
 .svc a:hover .ic{background:var(--gold);color:var(--cfp-deep);border-color:var(--gold)}
- 
-/* ---- Dashboard: CFP  ---- */
-.dcard{background:linear-gradient(rgba(42,33,96,.94),rgba(29,23,69,.97)),url("{% static 'front_end/img/presence-iii.png' %}") 0 0/260px auto}
- 
-/* ---- Cooperação: ---- */
+  
 .coop-card{background:#352B78;border-color:rgba(255,255,255,.14)}
 .coop-card:hover{background:#3E3388;border-color:var(--gold)}
- 
-/* ---- Berita: ---- */
+  
 .news-card{background:#F7F6FC;border-color:var(--cfp-line)}
 .news-card:hover{border-color:var(--cfp)}
 .news-card .thumb{background:var(--cfp-line)}
 .news-tag{background:#F3E7BF;color:var(--cfp-deep);border-color:#E4D08E}
 .news-card h3,.news-card .read-more{color:var(--cfp)}
- 
-/* ---- Institucional: ---- */
+  
 .panel{background:#F7F6FC;border-color:var(--cfp-line)}
 .panel h3{color:var(--cfp)}
 .panel a.r{border-top-color:var(--cfp-line)}
-.panel a.r:hover{color:var(--cfp)}ee
+.panel a.r:hover{color:var(--cfp)}
+
+/* ================= Dados da Força de Trabalho (Posisi Tengah & Layout Kotak Pas-pasan) ================= */
+section.sec.band .sh {
+  display: block !important;
+  text-align: center !important; /* Judul section juga ikut di tengah agar seimbang */
+}
+section.sec.band .sh h2::after {
+  margin: 12px auto 0 auto !important; /* Garis emas di bawah judul diposisikan di tengah */
+}
+section.sec.band .sh p {
+  margin: 6px auto 0 auto !important;
+  max-width: 50ch !important;
+}
+
+/* Memusatkan posisi card di tengah layar */
+.cfp-stats-row {
+  display: flex !important;
+  justify-content: center !important; /* Posisi card berada di tengah */
+  align-items: stretch !important;
+  gap: 20px !important;
+  width: 100% !important;
+  margin-top: 24px !important;
+  flex-wrap: wrap !important;
+}
+
+/* Ukuran kotak card pas-pasan dan proporsional */
+.cfp-stat-card {
+  background: #ffffff !important;
+  border-radius: 8px !important;
+  padding: 20px 24px !important;
+  text-decoration: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05) !important;
+  border: 1px solid #E2E8F0 !important;
+  box-sizing: border-box !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  /* Lebar kotak pas-pasan */
+  flex: 0 1 340px !important;
+  min-width: 280px !important;
+}
+
+.cfp-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px -5px rgba(15, 23, 42, 0.1) !important;
+  border-color: rgba(49, 46, 129, 0.2) !important;
+}
+
+/* Susunan dalam card: Angka besar di atas, teks & ikon kecil di bawah */
+.cfp-stat-top {
+  display: flex !important;
+  flex-direction: column !important; /* Ditumpuk agar angka besar menjadi fokus utama */
+  align-items: flex-start !important;
+  gap: 4px !important;
+  margin-bottom: 16px !important;
+}
+
+/* Angka dibuat besar mencolok */
+.cfp-stat-number {
+  font-size: 2.2rem !important;
+  font-weight: 700 !important;
+  color: var(--cfp, #2A2160) !important;
+  line-height: 1.1 !important;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  order: 1; /* Memastikan angka berada di urutan atas */
+}
+
+/* Bagian ikon dan label kecil pengikut angka */
+.cfp-stat-icon-label-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  order: 2;
+}
+
+.cfp-stat-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cfp, #2A2160);
+  flex-shrink: 0;
+}
+
+.cfp-stat-icon.red-icon {
+  color: #d90429;
+}
+
+.cfp-stat-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.cfp-stat-bottom h3 {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+  margin: 0 0 8px 0 !important;
+  line-height: 1.35 !important;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.cfp-stat-action {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: var(--cfp, #2A2160) !important;
+}
+
+.cfp-stat-card:hover .cfp-stat-action {
+  text-decoration: underline;
+}
+
+@media(max-width: 768px) {
+  .cfp-stat-card {
+    flex: 1 1 100% !important;
+  }
+}
 </style>
 {% endblock %}
 
@@ -367,26 +548,87 @@
       <h2>{% translate "Dados da Força de Trabalho" %}</h2>
       <p>{% translate "Dashboards públicos com os dados da função pública de Timor-Leste." %}</p>
     </div>
-    <div class="dash">
-      <a class="dcard" href="https://bipublic.cfp.gov.tl/public/dashboard/c0121995-9855-4190-98b3-ad463f38bf91" target="_blank" rel="noopener noreferrer">
-        <svg class="bars" viewBox="0 0 210 150" fill="currentColor" aria-hidden="true"><rect x="10" y="80" width="28" height="70"/><rect x="50" y="50" width="28" height="100"/><rect x="90" y="95" width="28" height="55"/><rect x="130" y="20" width="28" height="130"/><rect x="170" y="60" width="28" height="90"/></svg>
-        <div>
-          <div class="tp">{% translate "Dashboard público" %}</div>
+
+    <!-- Container Grid/Flex di Tengah -->
+    <div class="cfp-stats-row">
+      
+      <!-- Card 1 -->
+      <a class="cfp-stat-card" href="https://bipublic.cfp.gov.tl/public/dashboard/c0121995-9855-4190-98b3-ad463f38bf91" target="_blank" rel="noopener noreferrer">
+        <div class="cfp-stat-top">
+          <!-- Angka Besar di atas -->
+          <span class="cfp-stat-number">{{ total_forca_trabalho|default:"--" }}</span>
+          <!-- Ikon & label kecil di bawah angka -->
+          <div class="cfp-stat-icon-label-wrapper">
+            <div class="cfp-stat-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--muted, #64748b); font-weight: 500;">{% translate "Total Funcionários" %}</span>
+          </div>
+        </div>
+        <div class="cfp-stat-bottom">
           <h3>{% translate "Dashboard de Dados da Função Pública" %}</h3>
+          <span class="cfp-stat-action">{% translate "Abrir dashboard" %} ↗</span>
         </div>
-        <span class="go">{% translate "Abrir dashboard" %} <span aria-hidden="true">↗</span></span>
       </a>
-      <a class="dcard" href="https://bipublic.cfp.gov.tl/public/dashboard/00e95e1c-d727-424b-b93f-0640a8240547" target="_blank" rel="noopener noreferrer">
-        <svg class="bars" viewBox="0 0 210 150" fill="currentColor" aria-hidden="true"><rect x="10" y="40" width="28" height="110"/><rect x="50" y="90" width="28" height="60"/><rect x="90" y="30" width="28" height="120"/><rect x="130" y="70" width="28" height="80"/><rect x="170" y="100" width="28" height="50"/></svg>
-        <div>
-          <div class="tp">{% translate "Dashboard público" %}</div>
+
+      <!-- Card 2 -->
+      <a class="cfp-stat-card" href="https://bipublic.cfp.gov.tl/public/dashboard/00e95e1c-d727-424b-b93f-0640a8240547" target="_blank" rel="noopener noreferrer">
+        <div class="cfp-stat-top">
+          <!-- Angka Besar di atas -->
+          <span class="cfp-stat-number">{{ total_saida_definitiva|default:"--" }}</span>
+          <!-- Ikon & label kecil di bawah angka -->
+          <div class="cfp-stat-icon-label-wrapper">
+            <div class="cfp-stat-icon red-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="8.5" cy="7" r="4"></circle>
+                <line x1="18" y1="8" x2="23" y2="13"></line>
+                <line x1="23" y1="8" x2="18" y2="13"></line>
+              </svg>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--muted, #64748b); font-weight: 500;">{% translate "Saída Definitiva" %}</span>
+          </div>
+        </div>
+        <div class="cfp-stat-bottom">
           <h3>{% translate "Dashboard Funcionários Saída Definitiva" %}</h3>
+          <span class="cfp-stat-action">{% translate "Abrir dashboard" %} ↗</span>
         </div>
-        <span class="go">{% translate "Abrir dashboard" %} <span aria-hidden="true">↗</span></span>
       </a>
+
     </div>
   </div>
 </section>
+  {% comment %} <section class="sec band">
+    <div class="wrap">
+      <div class="sh">
+        <h2>{% translate "Dados da Força de Trabalho" %}</h2>
+        <p>{% translate "Dashboards públicos com os dados da função pública de Timor-Leste." %}</p>
+      </div>
+      <div class="dash">
+        <a class="dcard" href="https://bipublic.cfp.gov.tl/public/dashboard/c0121995-9855-4190-98b3-ad463f38bf91" target="_blank" rel="noopener noreferrer">
+          <svg class="bars" viewBox="0 0 210 150" fill="currentColor" aria-hidden="true"><rect x="10" y="80" width="28" height="70"/><rect x="50" y="50" width="28" height="100"/><rect x="90" y="95" width="28" height="55"/><rect x="130" y="20" width="28" height="130"/><rect x="170" y="60" width="28" height="90"/></svg>
+          <div>
+            <div class="tp">{% translate "Dashboard público" %}</div>
+            <h3>{% translate "Dashboard de Dados da Função Pública" %}</h3>
+          </div>
+          <span class="go">{% translate "Abrir dashboard" %} <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="dcard" href="https://bipublic.cfp.gov.tl/public/dashboard/00e95e1c-d727-424b-b93f-0640a8240547" target="_blank" rel="noopener noreferrer">
+          <svg class="bars" viewBox="0 0 210 150" fill="currentColor" aria-hidden="true"><rect x="10" y="40" width="28" height="110"/><rect x="50" y="90" width="28" height="60"/><rect x="90" y="30" width="28" height="120"/><rect x="130" y="70" width="28" height="80"/><rect x="170" y="100" width="28" height="50"/></svg>
+          <div>
+            <div class="tp">{% translate "Dashboard público" %}</div>
+            <h3>{% translate "Dashboard Funcionários Saída Definitiva" %}</h3>
+          </div>
+          <span class="go">{% translate "Abrir dashboard" %} <span aria-hidden="true">↗</span></span>
+        </a>
+      </div>
+    </div>
+  </section> {% endcomment %}
 
 <!-- ============ Cooperação / Parcerias ============ -->
 <section class="coop">
@@ -400,7 +642,7 @@
       <p>{% translate "Atividades e articulação institucional com redes de cooperação da Função Pública, CSC e ASEAN." %}</p>
     </div>
 
-    <!-- Grid Kartu Beranda Dinamis -->
+    <!-- Grid Card Parceria Responsif & Otomatis di Tengah -->
     <div class="coop-grid">
       {% for item in all_parceiros %}
         <div class="coop-card">
@@ -408,26 +650,26 @@
             <div class="c-logo">
               {% if item.logo_parceiro %}
                 <img src="{{ item.logo_parceiro.url }}" alt="Logo {{ item.nome_parceiro }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <span style="display:none; font-family:'Merriweather',serif; font-size:20px; font-weight:bold; color:#fff;">{{ item.nome_parceiro|truncatechars:10 }}</span>
+                <span style="display:none; font-family:'Merriweather',serif; font-size:18px; font-weight:bold; color:#fff;">{{ item.nome_parceiro|truncatechars:10 }}</span>
               {% else %}
-                <span style="font-family:'Merriweather',serif; font-size:20px; font-weight:bold; color:#fff;">{{ item.nome_parceiro|truncatechars:10 }}</span>
+                <span style="font-family:'Merriweather',serif; font-size:18px; font-weight:bold; color:#fff;">{{ item.nome_parceiro|truncatechars:10 }}</span>
               {% endif %}
             </div>
             <h3>{{ item.nome_parceiro }}</h3>
             <p>
               {% if item.descricao %}
-                {{ item.descricao|striptags|truncatechars:95 }}
+                {{ item.descricao|striptags|truncatechars:85 }}
               {% else %}
                 {% translate "Parceria estratégica para o desenvolvimento de capacidades e cooperação institucional." %}
               {% endif %}
             </p>
           </div>
           <a class="c-link" href="{% url 'public_cooperacao_detail' item.slug %}">
-            {% translate "Ver atividades" %} {{ item.nome_parceiro }} <span aria-hidden="true">→</span>
+            {% translate "Ver atividades" %} <span aria-hidden="true">→</span>
           </a>
         </div>
       {% empty %}
-        <div class="coop-card" style="grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
+        <div class="coop-card" style="flex: 1 1 100%; text-align: center; padding: 30px 20px;">
           <p style="color: #ffffff; margin: 0;">{% translate "Sem parcerias registadas no momento." %}</p>
         </div>
       {% endfor %}

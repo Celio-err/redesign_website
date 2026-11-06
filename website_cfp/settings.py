@@ -183,16 +183,68 @@ SESSION_IDLE_TIMEOUT = 1800  # 30 minutes in seconds
 # ckeditor5 settings
 CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload'],
+        'toolbar': ['heading', '|', 'bold', 'italic', 'specialCharacters', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload'],
+        'specialCharacters': {
+            'symbols': [
+                # Huruf C dengan Cedilla
+                { 'title': 'c with cedilla (lower)', 'character': 'ç' },
+                { 'title': 'C with cedilla (upper)', 'character': 'Ç' },
+                
+                # Huruf A dengan Tilde & Aksen
+                { 'title': 'a with tilde (lower)', 'character': 'ã' },
+                { 'title': 'A with tilde (upper)', 'character': 'Ã' },
+                { 'title': 'a with acute (lower)', 'character': 'á' },
+                { 'title': 'A with acute (upper)', 'character': 'Á' },
+                { 'title': 'a with circumflex (lower)', 'character': 'â' },
+                { 'title': 'A with circumflex (upper)', 'character': 'Â' },
+                
+                # Huruf E dengan Aksen
+                { 'title': 'e with acute (lower)', 'character': 'é' },
+                { 'title': 'E with acute (upper)', 'character': 'É' },
+                { 'title': 'e with circumflex (lower)', 'character': 'ê' },
+                { 'title': 'E with circumflex (upper)', 'character': 'Ê' },
+                
+                # Huruf I dengan Aksen
+                { 'title': 'i with acute (lower)', 'character': 'í' },
+                { 'title': 'I with acute (upper)', 'character': 'Í' },
+                
+                # Huruf O dengan Tilde & Aksen
+                { 'title': 'o with tilde (lower)', 'character': 'õ' },
+                { 'title': 'O with tilde (upper)', 'character': 'Õ' },
+                { 'title': 'o with acute (lower)', 'character': 'ó' },
+                { 'title': 'O with acute (upper)', 'character': 'Ó' },
+                { 'title': 'o with circumflex (lower)', 'character': 'ô' },
+                { 'title': 'O with circumflex (upper)', 'character': 'Ô' },
+                
+                # Huruf U dengan Aksen
+                { 'title': 'u with acute (lower)', 'character': 'ú' },
+                { 'title': 'U with acute (upper)', 'character': 'Ú' },
+            ]
+        },
         'uploadUrl': '/ckeditor5/image_upload/',
     },
     'extends': {
         'blockToolbar': ['paragraph', 'heading1', 'heading2', 'heading3', '|', 'bulletedList', 'numberedList', '|', 'blockQuote'],
         'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'stricethrough',
-        'code', 'subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
+        'code', 'specialCharacters', 'subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
         'bulletedList', 'numberedList', 'todoList', '|', 'blockQuote', 'imageUpload', '|',
         'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
         'insertTable'],
+        'specialCharacters': {
+            'symbols': [
+                { 'title': 'ç', 'character': 'ç' }, { 'title': 'Ç', 'character': 'Ç' },
+                { 'title': 'ã', 'character': 'ã' }, { 'title': 'Ã', 'character': 'Ã' },
+                { 'title': 'á', 'character': 'á' }, { 'title': 'Á', 'character': 'Á' },
+                { 'title': 'â', 'character': 'â' }, { 'title': 'Â', 'character': 'Â' },
+                { 'title': 'é', 'character': 'é' }, { 'title': 'É', 'character': 'É' },
+                { 'title': 'ê', 'character': 'ê' }, { 'title': 'Ê', 'character': 'Ê' },
+                { 'title': 'í', 'character': 'í' }, { 'title': 'Í', 'character': 'Í' },
+                { 'title': 'õ', 'character': 'õ' }, { 'title': 'Õ', 'character': 'Õ' },
+                { 'title': 'ó', 'character': 'ó' }, { 'title': 'Ó', 'character': 'Ó' },
+                { 'title': 'ô', 'character': 'ô' }, { 'title': 'Ô', 'character': 'Ô' },
+                { 'title': 'ú', 'character': 'ú' }, { 'title': 'Ú', 'character': 'Ú' },
+            ]
+        },
         'image': {
             'toolbar': ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side'],
         },

@@ -6,15 +6,17 @@ from .forms import NoticiasForm, TipoNoticiasForm
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 # ---------- Noticias ----------
-
+@login_required
 def noticias_list(request):
     noticias = Noticias.objects.all().order_by('-data_publicacao')
     return render(request, 'noticias_list.html', {
         'noticias': noticias
     })
 
+@login_required
 def noticias_create(request, pk=None):
     """Tambah (pk=None) atau ubah notícia dengan 1 gambar capa tunggal."""
     noticia = get_object_or_404(Noticias, pk=pk) if pk else None
@@ -38,6 +40,7 @@ def noticias_create(request, pk=None):
         "noticia": noticia,
     })
 
+@login_required
 @csrf_exempt
 def custom_upload_file(request):
     if request.method == "POST" and request.FILES.get("upload"):
@@ -55,12 +58,14 @@ def custom_upload_file(request):
         "error": {"message": "Nenhum arquivo enviado ou método inválido."}
     }, status=400)
 
+@login_required
 def noticias_detail(request, pk):
     noticia = get_object_or_404(Noticias, pk=pk)
     return render(request, 'noticias_detail.html', {
         'noticia': noticia
     })
 
+@login_required
 def noticias_delete(request, pk):
     noticia = get_object_or_404(Noticias, pk=pk)
 
@@ -75,13 +80,14 @@ def noticias_delete(request, pk):
 
 
 # ---------- TipoNoticias ----------
-
+@login_required
 def tipo_noticias_list(request):
     tipos = TipoNoticias.objects.all().order_by('tipo_noticia')
     return render(request, 'tipo_noticias_list.html', {
         'tipos': tipos
     })
 
+@login_required
 def tipo_noticias_create(request):
     if request.method == 'POST':
         form = TipoNoticiasForm(request.POST)
@@ -96,12 +102,14 @@ def tipo_noticias_create(request):
         'form': form
     })
 
+@login_required
 def tipo_noticias_detail(request, pk):
     tipo = get_object_or_404(TipoNoticias, pk=pk)
     return render(request, 'tipo_noticias_detail.html', {
         'tipo': tipo
     })
 
+@login_required
 def tipo_noticias_update(request, pk):
     tipo = get_object_or_404(TipoNoticias, pk=pk)
 
@@ -118,6 +126,7 @@ def tipo_noticias_update(request, pk):
         'form': form
     })
 
+@login_required
 def tipo_noticias_delete(request, pk):
     tipo = get_object_or_404(TipoNoticias, pk=pk)
 

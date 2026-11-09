@@ -4,53 +4,6 @@
 {% block title %}{{ tipo_selecionado.current_tipo|default:_("Legislação") }} — Comissão da Função Pública{% endblock %}
 
 {% block extra_head %}
-<style>
-.l-hero{background:var(--pattern-bg);color:#fff}
-.l-hero .wrap{padding-top:64px;padding-bottom:56px}
-.crumb{font-size:14px;color:#D9D2EC;margin-bottom:24px}
-.l-hero h1{margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:52px;line-height:1.08;letter-spacing:-.025em;max-width:22ch}
-.l-hero p{margin:18px 0 0;font-size:17px;color:#D9D2EC}
-
-.tabs{display:flex;flex-wrap:wrap;gap:8px;padding-top:32px}
-.tabs a{font-size:14px;font-weight:500;color:var(--indigo);background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 18px}
-.tabs a:hover{border-color:var(--indigo)}
-.tabs a.on{background:var(--indigo);border-color:var(--indigo);color:#fff}
-
-.list{max-width:960px;margin-left:0;padding-top:32px;padding-bottom:96px}
-.search{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:620px;margin-bottom:12px}
-.search input{flex:1 1 260px;min-width:0;box-sizing:border-box;font:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:6px;padding:11px 14px}
-.search input:focus{outline:2px solid var(--gold);outline-offset:1px}
-.search button{font:inherit;font-size:15px;font-weight:500;color:#fff;background:var(--indigo);border:0;border-radius:6px;padding:11px 22px;cursor:pointer}
-.search .reset{font-size:14px;color:var(--muted);border-bottom:1px solid var(--line)}
-.count{font-size:14px;color:var(--muted);margin:0 0 16px}
-
-.rows{list-style:none;margin:0;padding:0;border-top:3px solid var(--gold)}
-.rows li{border-bottom:1px solid var(--line)}
-.row{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:baseline;padding:12px 8px}
-a.row:hover{background:#F3F0FA}
-a.row:hover .nm{color:var(--indigo);text-decoration:underline;text-underline-offset:3px}
-.no{font-size:13px;color:var(--gold);font-weight:600;font-variant-numeric:tabular-nums}
-.nm{font-size:15.5px;line-height:1.45;color:var(--ink)}
-.tipo{display:inline-block;margin-top:4px;font-size:12px;font-weight:500;color:var(--indigo);background:#ECE8F6;border-radius:999px;padding:1px 10px}
-.act{font-size:13px;font-weight:500;color:var(--indigo);white-space:nowrap}
-.act.off{color:var(--muted);font-weight:400;font-size:12px}
-.empty{padding:48px 8px;color:var(--muted)}
-
-.pgbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:24px}
-.rng{font-size:14px;color:var(--muted)}
-.pg{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
-.pg a,.pg span{min-width:36px;height:36px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;border-radius:6px;font-size:14px}
-.pg a{color:var(--indigo);border:1px solid var(--line);background:#fff;font-weight:500}
-.pg a:hover{border-color:var(--indigo)}
-.pg .cur{background:var(--indigo);color:#fff;font-weight:600}
-.pg .gap{color:var(--muted);min-width:20px;padding:0}
-
-@media(max-width:600px){
-  .l-hero h1{font-size:34px}
-  .row{grid-template-columns:34px 1fr}
-  .act{grid-column:2}
-}
-</style>
 {% endblock %}
 
 {% block hero %}
